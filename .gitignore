@@ -3,6 +3,10 @@ replays/
 saves/
 *.log
 
+# Game binaries (download via `npm run setup`)
+games/*.gblorb
+games/*.ulx
+
 # OS files
 .DS_Store
 Thumbs.db

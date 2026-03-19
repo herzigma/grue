@@ -28,10 +28,8 @@ git clone <repo-url> grue
 cd grue
 npm install
 
-# Add some games
-# Download .gblorb files from the IF Archive:
-# https://ifarchive.org/indexes/if-archive/games/glulx/
-# Place them in the games/ directory
+# Download game files from the IF Archive
+npm run setup
 
 # Start the server
 node index.js
@@ -142,7 +140,20 @@ See [CLAUDE.md](./CLAUDE.md) for instructions on connecting an AI agent to Grue.
 
 ## Adding Games
 
-Download pre-compiled `.gblorb` or `.ulx` files from the [IF Archive](https://ifarchive.org/indexes/if-archive/games/glulx/) and place them in the `games/` directory. Grue automatically scans this directory on startup.
+Games are managed through a manifest file at `games/games.json`. To add a game:
+
+1. Find a `.gblorb` or `.ulx` file on the [IF Archive](https://ifarchive.org/indexes/if-archive/games/glulx/)
+2. Add an entry to `games/games.json`:
+   ```json
+   {
+     "filename": "MyGame.gblorb",
+     "url": "https://www.ifarchive.org/if-archive/games/glulx/MyGame.gblorb",
+     "description": "My Game by Some Author"
+   }
+   ```
+3. Run `npm run setup` to download it
+
+You can also place `.gblorb` or `.ulx` files directly into the `games/` directory — Grue scans it automatically on startup.
 
 ## License
 
