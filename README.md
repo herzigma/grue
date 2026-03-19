@@ -57,9 +57,9 @@ You can also send a single character (e.g. `q` to quit the menu, `1` for option 
 
 ```
 ┌──────────────┐     TCP :8080     ┌─────────────────┐
-│  AI Agent /  │────────────────── │                  │     ┌──────────────────┐
-│  Developer   │                   │   Grue Server    │────▸│  dumb-glulxe     │
-│              │────────────────── │                  │     │  (child process) │
+│  AI Agent /  │────────────────── │                 │     ┌──────────────────┐
+│  Developer   │                   │   Grue Server   │────▸│  dumb-glulxe     │
+│              │────────────────── │                 │     │  (child process) │
 └──────────────┘     WS :8081      └─────────────────┘     └──────────────────┘
                                           │
                                      ┌────┴─────┐
