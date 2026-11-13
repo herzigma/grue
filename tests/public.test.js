@@ -81,3 +81,16 @@ test('static files: allowed types only, no traversal', async () => {
   }
   assert.equal((await s.get('/../config.js')).status, 404);
 });
+
+test('harness test runs (mock:, human:, probe) are hidden from listings but fetchable by id', async () => {
+  const auth = { Authorization: `Bearer ${KEY}` };
+  const o = await s.post('/api/sessions', { game: 'lantern-lane', meta: { model: 'mock:walkthrough.txt' } }, auth);
+  assert.equal(o.status, 201);
+  const sid = o.json.session_id;
+  await s.del(`/api/sessions/${sid}`, auth);
+  const listed = (await s.get('/api/results')).json.results.map((r) => r.session_id);
+  assert.ok(!listed.includes(sid), 'mock run hidden from the public list');
+  assert.equal((await s.get(`/api/results/${sid}`)).status, 200, 'still fetchable by id');
+  const all = (await s.get('/api/results?include_tests=1')).json.results.map((r) => r.session_id);
+  assert.ok(all.includes(sid), 'include_tests=1 shows it');
+});

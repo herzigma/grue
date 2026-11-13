@@ -30,7 +30,7 @@ test('health, metrics, dashboard, catalog', async () => {
   const dash = await s.get('/');
   assert.equal(dash.status, 200);
   assert.match(dash.headers.get('content-type'), /text\/html/);
-  assert.match(dash.text, /<title>Grue<\/title>/);
+  assert.match(dash.text, /<title>Grue[:<]/);
 
   const games = await s.get('/api/games');
   assert.equal(games.status, 200);

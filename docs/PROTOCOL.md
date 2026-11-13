@@ -105,7 +105,7 @@ belongs to the key that created it (see section 9, Auth).
 | `GET /api/sessions/:id` | – | `{"session":SessionSummary,"observation":Observation}` (last obs) |
 | `DELETE /api/sessions/:id` | – | 200 `Result` (ends with `ending:"aborted"` if still running) |
 | `GET /api/sessions` | – | `{"sessions":[SessionSummary,...]}` (active only; with API keys, only the caller's) |
-| `GET /api/results` | query: `game`, `limit` | `{"results":[Result,...]}` newest first |
+| `GET /api/results` | query: `game`, `limit`, `include_tests` | `{"results":[Result,...]}` newest first; harness test runs (`meta.model` starting `mock:` or `human:`, or `meta.agent` `probe`) are left out unless `include_tests=1` |
 | `GET /api/results/:id` | – | `Result` |
 | `GET /api/results/:id/transcript` | – | `{"entries":[ReplayEntry,...]}` |
 | `GET /` | – | HTML dashboard (games, live sessions, leaderboard, transcript viewer) |
