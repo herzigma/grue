@@ -6,7 +6,7 @@ Grue runs on Railway in the project **grue**. There are two environments, built 
 | Environment | URL | Purpose | Deploys |
 |---|---|---|---|
 | `production` | https://grue.party (also `grue-production.up.railway.app`) | Public benchmark server | Manually, when a release is promoted |
-| `qa` | https://grue-qa.up.railway.app | Testing changes before release | Every push to `main`, once the Railway GitHub App has access to the repo (see below) |
+| `qa` | https://grue-qa.up.railway.app | Testing changes before release | Every push to `main` |
 
 Each environment has:
 - Its own `GRUE_API_KEYS`. A key for one environment is rejected by the other.
@@ -46,8 +46,8 @@ QA works the same way with `GRUE_URL=https://grue-qa.up.railway.app` and a QA ke
 
 ## QA auto-deploy: one-time setup
 
-Done on 2026-11-13: the Railway GitHub App has access to the account's repositories.
-
+Done on 2026-11-13: the Railway GitHub App has access to the account's repositories, and `qa` tracks `main`.
+Verified: a push to `main` deploys QA and leaves production alone.
 
 Railway only deploys on push when its GitHub App can see the repository. On GitHub, go to Settings, then
 Applications, then **Railway**, and under Repository access add `herzigma/grue`. Once that is done, check that
