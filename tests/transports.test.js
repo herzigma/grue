@@ -226,7 +226,8 @@ test('idle timeout ends the session with "timeout" and frees the interpreter', n
 });
 
 test('API keys: /api and /ws/v1 require a bearer key; /health stays open; legacy off by default', needZork, async () => {
-  const s = await testServer({ API_KEYS: ['sekret'], LEGACY_ENABLED: false });
+  // PUBLIC_READ=false: the fully closed mode (public reads are covered in public.test.js).
+  const s = await testServer({ API_KEYS: ['sekret'], LEGACY_ENABLED: false, PUBLIC_READ: false });
   try {
     assert.equal(s.tcpPort, null, 'no TCP listener when legacy is disabled');
     assert.equal((await s.get('/health')).status, 200);

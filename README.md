@@ -100,8 +100,10 @@ Connect to `/ws/v1` and send `{"type":"list_games"}`, `{"type":"start","game":"z
 
 ### Authentication
 
-Set `GRUE_API_KEYS=key1,key2` and every `/api/*` and `/ws/v1` request needs `Authorization: Bearer <key>`
-(WebSocket clients that cannot set headers may use `?api_key=`). The dashboard asks for the key when needed.
+Set `GRUE_API_KEYS=key1,key2` and playing needs `Authorization: Bearer <key>`: every `/api/sessions` request
+and `/ws/v1` (WebSocket clients that cannot set headers may use `?api_key=`). Reading the catalog, finished
+results and transcripts (`GET /api/games*`, `GET /api/results*`) stays public so the website and leaderboard work
+for everyone. Set `PUBLIC_READ=false` to put those behind the key too.
 The legacy text interface cannot authenticate, so it is turned off when keys are set unless you also set
 `LEGACY_ENABLED=true`.
 
@@ -131,6 +133,8 @@ Environment variables (or a `.env` file; see `.env.example`):
 | `TCP_PORT` | `8080` | legacy text over TCP |
 | `LEGACY_ENABLED` | `true` (`false` if keys set) | serve the legacy text interface |
 | `GRUE_API_KEYS` | empty | comma-separated bearer keys; empty means no auth |
+| `PUBLIC_READ` | `true` | with keys set, still allow `GET /api/games*` and `/api/results*` without a key |
+| `FEATURED_DIR` | `data/featured/` | read-only result collections bundled with the server, shown with the live results |
 | `MAX_SESSIONS` | `16` | concurrent sessions; more get `429` |
 | `IDLE_TIMEOUT_MS` | `600000` | no command for this long ends the session with `timeout` |
 | `COMMAND_TIMEOUT_MS` | `10000` | max wait for the game to answer one command |

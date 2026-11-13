@@ -89,8 +89,9 @@ All three share the same sessions, replay logs, results, and metrics.
 ## 4. HTTP REST API
 
 All bodies are JSON. Errors: non-2xx with `{"error": "<code>", "message": "<human text>"}`.
-If the server is started with `GRUE_API_KEYS` (comma-separated), every `/api/*` request must send
-`Authorization: Bearer <key>`; otherwise 401 `{"error":"unauthorized"}`. With keys configured, a session
+If the server is started with `GRUE_API_KEYS` (comma-separated), every `/api/sessions*` request must send
+`Authorization: Bearer <key>`; otherwise 401 `{"error":"unauthorized"}`. `GET /api/games*` and `GET /api/results*`
+are public unless the server sets `PUBLIC_READ=false`, in which case they need the key too. With keys configured, a session
 belongs to the key that created it (see section 9, Auth).
 
 | Method & path | Body | Response |
@@ -212,7 +213,9 @@ unknown results/transcripts), `game_over` 409, `game_unavailable` 409 (in the ca
 installed), `too_many_sessions` 429, `internal` 500. Wrong method on a known route is 405
 `method_not_allowed`; unknown route is 404 `not_found`.
 
-**Auth.** `GRUE_API_KEYS` protects `/api/*` and `/ws/v1`. `/health`, `/metrics` and `/` stay open. For
+**Auth.** `GRUE_API_KEYS` protects `/api/sessions*` and `/ws/v1`, plus every other `/api/*` route when `PUBLIC_READ=false`.
+`/health`, `/metrics`, `/` and static files from `public/` stay open. Results bundled under `data/featured/<collection>/`
+are listed with live results and carry a `collection` field. For
 `/ws/v1` the key may be sent as the `Authorization: Bearer` header or, for browsers, as `?api_key=<key>`.
 The legacy text interface has no authentication, so it is disabled when keys are set unless
 `LEGACY_ENABLED=true`. With keys set, sessions are scoped to the key that created them (`/ws/v1` sockets

@@ -1,0 +1,201 @@
+{
+ "title": "November 2026 benchmark",
+ "date": "2026-11-13",
+ "spend_usd": 7.86,
+ "setup": "Nine models via OpenRouter played Grue's games with Brass Lantern's default agent (30-turn context, no notes, temperature 0.7, low reasoning effort, 150-turn limit). Budget models ran Skerrin Light three times; everything else once.",
+ "collection": "2026-11-benchmark",
+ "writeup_url": "https://github.com/herzigma/brass-lantern/blob/main/docs/results/2026-11-13.md",
+ "originals": [
+  {
+   "model": "openai/gpt-6.1-sol",
+   "score_pct": 100.0,
+   "win_rate": 1.0,
+   "runs": 2,
+   "cost_usd": 1.01,
+   "lantern_lane": 10,
+   "skerrin_light": 50
+  },
+  {
+   "model": "google/gemini-4-argon",
+   "score_pct": 91.0,
+   "win_rate": 0.5,
+   "runs": 2,
+   "cost_usd": 1.8,
+   "lantern_lane": 10,
+   "skerrin_light": 41
+  },
+  {
+   "model": "anthropic/claude-sonnet-5.5",
+   "score_pct": 82.0,
+   "win_rate": 0.5,
+   "runs": 2,
+   "cost_usd": 1.26,
+   "lantern_lane": 10,
+   "skerrin_light": 32
+  },
+  {
+   "model": "google/gemini-3.5-flash-lite",
+   "score_pct": 81.3,
+   "win_rate": 0.25,
+   "runs": 4,
+   "cost_usd": 0.46,
+   "lantern_lane": 10,
+   "skerrin_light": 31.3
+  },
+  {
+   "model": "openai/gpt-6-luna",
+   "score_pct": 72.7,
+   "win_rate": 0.25,
+   "runs": 4,
+   "cost_usd": 0.14,
+   "lantern_lane": 10,
+   "skerrin_light": 22.7
+  },
+  {
+   "model": "qwen/qwen3.8-flash",
+   "score_pct": 71.3,
+   "win_rate": 0.25,
+   "runs": 4,
+   "cost_usd": 0.19,
+   "lantern_lane": 10,
+   "skerrin_light": 21.3
+  },
+  {
+   "model": "anthropic/claude-haiku-5.5",
+   "score_pct": 69.7,
+   "win_rate": 0.25,
+   "runs": 4,
+   "cost_usd": 0.23,
+   "lantern_lane": 10,
+   "skerrin_light": 19.7
+  },
+  {
+   "model": "z-ai/glm-5.3-flash",
+   "score_pct": 69.0,
+   "win_rate": 0.25,
+   "runs": 4,
+   "cost_usd": 0.04,
+   "lantern_lane": 10,
+   "skerrin_light": 19
+  },
+  {
+   "model": "deepseek/deepseek-v4-flash",
+   "score_pct": 21.0,
+   "win_rate": 0.0,
+   "runs": 4,
+   "cost_usd": 0.23,
+   "lantern_lane": 4,
+   "skerrin_light": 1
+  }
+ ],
+ "budget_all_games": [
+  {
+   "model": "google/gemini-3.5-flash-lite",
+   "overall_pct": 50.8,
+   "games": {
+    "lantern-lane": 100,
+    "skerrin-light": 63,
+    "lost-pig": 29,
+    "zork1": 11
+   }
+  },
+  {
+   "model": "openai/gpt-6-luna",
+   "overall_pct": 46.8,
+   "games": {
+    "lantern-lane": 100,
+    "skerrin-light": 45,
+    "lost-pig": 29,
+    "zork1": 13
+   }
+  },
+  {
+   "model": "anthropic/claude-haiku-5.5",
+   "overall_pct": 42.0,
+   "games": {
+    "lantern-lane": 100,
+    "skerrin-light": 39,
+    "lost-pig": 14,
+    "zork1": 15
+   }
+  },
+  {
+   "model": "qwen/qwen3.8-flash",
+   "overall_pct": 42.0,
+   "games": {
+    "lantern-lane": 100,
+    "skerrin-light": 43,
+    "lost-pig": 14,
+    "zork1": 11
+   }
+  },
+  {
+   "model": "z-ai/glm-5.3-flash",
+   "overall_pct": 41.5,
+   "games": {
+    "lantern-lane": 100,
+    "skerrin-light": 38,
+    "lost-pig": 14,
+    "zork1": 14
+   }
+  },
+  {
+   "model": "deepseek/deepseek-v4-flash",
+   "overall_pct": 16.8,
+   "games": {
+    "lantern-lane": 40,
+    "skerrin-light": 2,
+    "lost-pig": 14,
+    "zork1": 11
+   }
+  }
+ ],
+ "skerrin_runs": {
+  "anthropic/claude-haiku-5.5": [
+   19,
+   19,
+   21
+  ],
+  "google/gemini-3.5-flash-lite": [
+   23,
+   30,
+   41
+  ],
+  "openai/gpt-6-luna": [
+   19,
+   19,
+   30
+  ],
+  "qwen/qwen3.8-flash": [
+   19,
+   19,
+   26
+  ],
+  "z-ai/glm-5.3-flash": [
+   18,
+   19,
+   20
+  ],
+  "deepseek/deepseek-v4-flash": [
+   1,
+   1,
+   1
+  ],
+  "anthropic/claude-sonnet-5.5": [
+   32
+  ],
+  "google/gemini-4-argon": [
+   41
+  ],
+  "openai/gpt-6.1-sol": [
+   50
+  ]
+ },
+ "findings": [
+  "Original games separate models; classics don't. Every model scored 11-15% on Zork I, while Skerrin Light scores ranged from 1 to 50 (out of 50).",
+  "Only GPT-6.1 Sol fully solved Skerrin Light (50/50 in 146 turns). Gemini 4 Argon and Claude Sonnet 5.5 were still scoring when the 150-turn limit hit; the game's suggested limit is 300.",
+  "Variance is real: Gemini 3.5 Flash Lite scored 23, 30 and 41 on three runs of the same game. Use three or more runs before ranking close models.",
+  "Following the output format is part of the test. DeepSeek V4 Flash kept inventing the game's replies after its own command, so 64% of its commands were invalid.",
+  "Cost per point varies about 50x: GLM 5.3 Flash played four games for $0.04, while Gemini 4 Argon spent $1.80 on two."
+ ]
+}

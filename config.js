@@ -57,6 +57,11 @@ const config = {
   REPLAYS_DIR: str('REPLAYS_DIR', path.join(ROOT, 'replays')),
   RESULTS_DIR: str('RESULTS_DIR', path.join(ROOT, 'results')),
   PUBLIC_DIR: path.join(ROOT, 'public'),
+  /** Read-only featured result collections bundled with the server (data/featured/<collection>/{results,replays}). */
+  FEATURED_DIR: str('FEATURED_DIR', path.join(ROOT, 'data', 'featured')),
+
+  /** Let anyone read the catalog, results and transcripts without a key. Playing always needs a key when keys are set. */
+  PUBLIC_READ: str('PUBLIC_READ', 'true') !== 'false',
 
   /** Max concurrent sessions; beyond this POST /api/sessions returns 429. */
   MAX_SESSIONS: int('MAX_SESSIONS', 16),
