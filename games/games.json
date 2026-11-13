@@ -10,7 +10,11 @@
     "max_score": null,
     "difficulty": "easy",
     "suggested_turn_limit": 300,
-    "tags": ["inform7", "puzzle", "short"],
+    "tags": [
+      "inform7",
+      "puzzle",
+      "short"
+    ],
     "description": "A short Inform 7 puzzle game: you are stuck in an airport during a snowstorm and need to reach your flight.",
     "license": null
   },
@@ -25,8 +29,155 @@
     "max_score": 350,
     "difficulty": "hard",
     "suggested_turn_limit": 600,
-    "tags": ["classic", "memorization-risk"],
+    "tags": [
+      "classic",
+      "memorization-risk"
+    ],
     "description": "The classic underground treasure hunt. Widely documented online, so models may recall walkthroughs.",
     "license": "MIT"
+  },
+  {
+    "id": "dreamhold",
+    "title": "The Dreamhold",
+    "author": "Andrew Plotkin",
+    "format": "zcode",
+    "filename": "dreamhold.z8",
+    "url": "https://www.ifarchive.org/if-archive/games/zcode/dreamhold.z8",
+    "sha256": "399dbfb92024d2a702029dd1921a1023569888941683d953d3755d6856ce2941",
+    "max_score": null,
+    "difficulty": "tutorial",
+    "suggested_turn_limit": 600,
+    "tags": [
+      "short",
+      "no-score"
+    ],
+    "description": "A gentle tutorial adventure in which an amnesiac wakes in a magical stronghold and must work out who he is and how to escape.",
+    "license": "Freeware (IF Archive; IFDB: Freeware)"
+  },
+  {
+    "id": "detective",
+    "title": "Detective",
+    "author": "Matt Barringer (Inform port by Stuart Moore)",
+    "format": "zcode",
+    "filename": "detective.z5",
+    "url": "https://www.ifarchive.org/if-archive/games/zcode/detective.z5",
+    "sha256": "f6b0b9b5f4ff8890ab481b11e63ea18350b43640c88a9b8c23d6a2b269f9a040",
+    "max_score": 360,
+    "difficulty": "easy",
+    "suggested_turn_limit": 150,
+    "tags": [
+      "short",
+      "classic"
+    ],
+    "description": "A famously naive 1993 crime romp where you trek through dead-end rooms to catch the Mayor's killer, picking up items for points.",
+    "license": "Freeware (IF Archive; IFDB: Freeware)"
+  },
+  {
+    "id": "lost-pig",
+    "title": "Lost Pig",
+    "author": "Admiral Jota",
+    "format": "zcode",
+    "filename": "LostPig.z8",
+    "url": "https://www.ifarchive.org/if-archive/games/zcode/LostPig.z8",
+    "sha256": "7bffe25e933aa22a2b1e9bfc8073bee5687d79a70394da19e50bfed5755368c4",
+    "max_score": 7,
+    "difficulty": "easy",
+    "suggested_turn_limit": 300,
+    "tags": [
+      "classic",
+      "short"
+    ],
+    "description": "As Grunk the orc, find and capture an escaped pig in a dark forest and cave, with a charmingly forgiving parser.",
+    "license": "Freeware (IF Archive; IFDB: Freeware)"
+  },
+  {
+    "id": "balances",
+    "title": "Balances",
+    "author": "Graham Nelson",
+    "format": "zcode",
+    "filename": "Balances.z5",
+    "url": "https://www.ifarchive.org/if-archive/games/zcode/Balances.z5",
+    "sha256": "10e717578f85200c6aadc8149d95e43f7b6c09fb473770d309a0d6afe3b29538",
+    "max_score": 51,
+    "difficulty": "medium",
+    "suggested_turn_limit": 300,
+    "tags": [
+      "short"
+    ],
+    "description": "A short magic puzzle story in which you learn memorizable spells and use them to retrieve a treasure from a ruined hut and its surroundings.",
+    "license": "Freeware (IF Archive; IFDB: Freeware)"
+  },
+  {
+    "id": "savoir-faire",
+    "title": "Savoir-Faire",
+    "author": "Emily Short",
+    "format": "zcode",
+    "filename": "Savoir-Faire.zblorb",
+    "url": "https://www.ifarchive.org/if-archive/games/zcode/Savoir-Faire.zblorb",
+    "sha256": "682cca3629facd0dc1ab0a2d6f4b96be46522a63138f916395ae35db1f793eb1",
+    "max_score": 125,
+    "difficulty": "medium",
+    "suggested_turn_limit": 700,
+    "tags": [
+      "classic"
+    ],
+    "description": "An 18th-century gentleman hunts for a Count's hidden loot in a mansion filled with linked-object puzzles.",
+    "license": "Freeware (IF Archive; IFDB: Freeware)"
+  },
+  {
+    "id": "advent",
+    "title": "Colossal Cave Adventure",
+    "author": "Will Crowther and Don Woods (Inform port by Graham Nelson)",
+    "format": "zcode",
+    "filename": "Advent.z5",
+    "url": "https://www.ifarchive.org/if-archive/games/zcode/Advent.z5",
+    "sha256": "6179b5d5b17d692ec83fe64101ff8e4092390166c2b05063e7310eb976b93ea0",
+    "max_score": 350,
+    "difficulty": "medium",
+    "suggested_turn_limit": 1000,
+    "tags": [
+      "classic",
+      "memorization-risk",
+      "long"
+    ],
+    "description": "The original 350-point cave-exploring treasure hunt, ported faithfully to Inform; the game starts at 36 points.",
+    "license": "Freeware (IF Archive; IFDB: Freeware)"
+  },
+  {
+    "id": "jigsaw",
+    "title": "Jigsaw",
+    "author": "Graham Nelson",
+    "format": "zcode",
+    "filename": "Jigsaw.z8",
+    "url": "https://www.ifarchive.org/if-archive/games/zcode/Jigsaw.z8",
+    "sha256": "1776c051db9cc3ceccd876e0cc8808188494db06957c231a9f27bc61e3f16fcf",
+    "max_score": 100,
+    "difficulty": "hard",
+    "suggested_turn_limit": 1000,
+    "tags": [
+      "long",
+      "char-input-start"
+    ],
+    "description": "A time-travelling tour of the twentieth century where you recover the pieces of a jigsaw puzzle; starts with a press-SPACE title screen and shows time, not score, in the status line.",
+    "license": "Freeware (IF Archive; IFDB: Freeware)"
+  },
+  {
+    "id": "curses",
+    "title": "Curses",
+    "author": "Graham Nelson",
+    "format": "zcode",
+    "filename": "curses.z5",
+    "url": "https://www.ifarchive.org/if-archive/games/zcode/curses.z5",
+    "sha256": "330100bf1c1ab8ed64065ceb58145ebb87cb6faef5b331fbc6684be4f14fe7da",
+    "max_score": 550,
+    "difficulty": "hard",
+    "suggested_turn_limit": 1000,
+    "tags": [
+      "classic",
+      "long",
+      "char-input-start"
+    ],
+    "description": "A sprawling, notoriously difficult 1993 treasure hunt through a family mansion and across time, in search of the family curse's origin.",
+    "license": "Freeware (IF Archive; IFDB: Freeware)"
   }
 ]
