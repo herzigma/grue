@@ -3,23 +3,23 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Grue: an interactive-fiction benchmark for LLMs</title>
-<meta name="description" content="Grue hosts Zork-style text adventures, including original games no model has ever seen, and scores every turn, so LLMs can be compared on exploration, memory and parser discipline. Plug any model in with Brass Lantern.">
+<title>Grue: text adventures for language models</title>
+<meta name="description" content="An open benchmark that has language models play text adventures. Original games, scored every turn, with full transcripts.">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#0c0a08">
 <link rel="canonical" href="https://grue.party/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Grue">
 <meta property="og:url" content="https://grue.party/">
-<meta property="og:title" content="Grue: an interactive-fiction benchmark for LLMs">
-<meta property="og:description" content="It is pitch black. You are likely to be eaten by a grue. Text adventures, original games no model has seen, and every turn scored. Real benchmark results inside.">
+<meta property="og:title" content="Grue: text adventures for language models">
+<meta property="og:description" content="Nine models played two games nobody has written a walkthrough for. Eight finished the easy one.">
 <meta property="og:image" content="https://grue.party/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="A brass lantern glowing in the dark beside the words: It is pitch black. You are likely to be eaten by a grue.">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Grue: an interactive-fiction benchmark for LLMs">
-<meta name="twitter:description" content="Text adventures, original games no model has seen, and every turn scored. Plug in any LLM with Brass Lantern.">
+<meta name="twitter:title" content="Grue: text adventures for language models">
+<meta name="twitter:description" content="Nine models played two games nobody has written a walkthrough for. Eight finished the easy one.">
 <meta name="twitter:image" content="https://grue.party/og.png">
 <meta name="twitter:image:alt" content="A brass lantern glowing in the dark beside the words: It is pitch black. You are likely to be eaten by a grue.">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='12' fill='%230c0a08'/%3E%3Cpath d='M23 20c0-13 18-13 18 0' fill='none' stroke='%23e9a63c' stroke-width='3'/%3E%3Cpath d='M20 22h24l-4-7H24zM23 24h18l2 26H21z' fill='none' stroke='%23e9a63c' stroke-width='3' stroke-linejoin='round'/%3E%3Cpath d='M32 29c5 5 6 9 0 14-6-5-5-9 0-14z' fill='%23e9a63c'/%3E%3Cpath d='M18 50h28l2 6H16z' fill='%23e9a63c'/%3E%3C/svg%3E">
@@ -40,7 +40,7 @@
   --bg: #eee4cd; --bg2: #e5d9bc; --panel: #f6efdc; --ink: #231c12; --muted: #5d513a; --line: #c8b994;
   --accent: #804b00; --accent-hi: #b97a1c; --on-accent: #fbf3e0; --accent-soft: rgba(128,75,0,.12);
   --good: #2b6a36; --bad: #9a2f23; --warn: #7a5800;
-  --glow: 255,196,104; --glow-a: .55; --grain: .16; --grain-inv: 0; --grid: rgba(35,28,18,.07);
+  --glow: 255,196,104; --glow-a: .55; --grain: .16; --grain-inv: 0;
   --vig: rgba(120,84,30,.12);
   --serif: "Fraunces", "Iowan Old Style", "Palatino Linotype", Georgia, serif;
   --mono: "IBM Plex Mono", "Cascadia Mono", Consolas, Menlo, monospace;
@@ -50,7 +50,7 @@
   --bg: #0c0a08; --bg2: #14110d; --panel: #15110d; --ink: #ebe0c8; --muted: #a79c84; --line: #302920;
   --accent: #e9a63c; --accent-hi: #f3bd63; --on-accent: #1a1105; --accent-soft: rgba(233,166,60,.12);
   --good: #7bc98a; --bad: #ee8b7f; --warn: #e3c166;
-  --glow: 233,166,60; --glow-a: .32; --grain: .12; --grain-inv: 1; --grid: rgba(235,224,200,.045);
+  --glow: 233,166,60; --glow-a: .32; --grain: .12; --grain-inv: 1;
   --vig: rgba(0,0,0,0);
 }
 * { box-sizing: border-box; }
@@ -76,7 +76,7 @@ h1, h2, h3, h4 { font-weight: 600; line-height: 1.1; margin: 0; letter-spacing: 
 p { margin: 0 0 1em; }
 code, pre, .mono { font-family: var(--mono); }
 code { font-size: .86em; background: var(--accent-soft); padding: .08em .35em; border-radius: 3px; }
-.wrap { max-width: 1120px; margin: 0 auto; padding: 0 20px; }
+.wrap { max-width: 1040px; margin: 0 auto; padding: 0 20px; }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .skip { position: absolute; left: 12px; top: -60px; background: var(--accent); color: var(--on-accent); padding: 8px 14px; z-index: 100; font-family: var(--mono); }
 .skip:focus { top: 8px; }
@@ -88,91 +88,41 @@ code { font-size: .86em; background: var(--accent-soft); padding: .08em .35em; b
 .nav .wrap { display: flex; align-items: center; gap: 18px; height: 52px; }
 .brand { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.35rem; color: var(--ink); text-decoration: none; letter-spacing: -.02em; flex: none; }
 .brand svg { width: 22px; height: 22px; color: var(--accent); }
-.nav-links { display: flex; gap: 4px; margin: 0 0 0 auto; padding: 0; list-style: none; overflow-x: auto; scrollbar-width: none; }
-.nav-links::-webkit-scrollbar { display: none; }
+.nav-links { display: flex; gap: 4px; margin: 0 0 0 auto; padding: 0; list-style: none; }
 .nav-links a { display: block; padding: 6px 10px; font-family: var(--mono); font-size: .78rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); text-decoration: none; white-space: nowrap; border-bottom: 2px solid transparent; }
 .nav-links a:hover, .nav-links a[aria-current] { color: var(--ink); border-bottom-color: var(--accent); }
 .theme { flex: none; display: flex; align-items: center; gap: 6px; background: none; border: 1px solid var(--line); color: var(--ink); border-radius: 999px; padding: 5px 11px; font: 500 .75rem var(--mono); cursor: pointer; }
 .theme:hover { border-color: var(--accent); }
 .theme svg { width: 14px; height: 14px; }
-.nav .m { display: none; }
 
 /* hero */
-.hero { position: relative; overflow: hidden; border-bottom: 1px solid var(--line); }
-.hero::before { content: ""; position: absolute; inset: 0; pointer-events: none;
-  background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
-  background-size: 44px 44px; -webkit-mask-image: radial-gradient(ellipse at 60% 40%, #000 10%, transparent 72%); mask-image: radial-gradient(ellipse at 60% 40%, #000 10%, transparent 72%); }
+.hero { position: relative; overflow: hidden; }
 .glow { position: absolute; inset: -20% -10% -10%; pointer-events: none;
-  background: radial-gradient(640px circle at var(--gx, 78%) var(--gy, 38%), rgba(var(--glow), var(--glow-a)), rgba(var(--glow), calc(var(--glow-a) * .35)) 38%, transparent 70%); }
-.statusline { background: var(--ink); color: var(--bg); font: 500 .8rem/1.3 var(--mono); position: relative; }
-.statusline .wrap { display: flex; justify-content: space-between; gap: 6px 24px; flex-wrap: wrap; padding-top: 6px; padding-bottom: 6px; }
-.statusline b { font-weight: 600; font-variant-numeric: tabular-nums; }
-.hero-grid { position: relative; display: grid; grid-template-columns: minmax(0, 1.6fr) minmax(0, .6fr); gap: 32px; align-items: center; padding-top: clamp(40px, 8vw, 96px); padding-bottom: clamp(48px, 8vw, 100px); }
-.eyebrow { font: 500 .78rem var(--mono); text-transform: uppercase; letter-spacing: .14em; color: var(--accent); margin: 0 0 22px; }
-.hero h1 { font-size: clamp(2.5rem, 7.2vw, 5.8rem); font-weight: 800; line-height: .98; letter-spacing: -.03em; margin: 0 0 28px; }
-.hero h1 span { display: block; }
-.hero .l1 { color: var(--muted); font-weight: 400; font-style: italic; }
-.hero .grue { color: var(--accent); display: inline; }
-.lede { font-size: clamp(1.1rem, 2.2vw, 1.4rem); line-height: 1.5; max-width: 38em; margin: 0 0 26px; }
+  background: radial-gradient(560px circle at var(--gx, 82%) var(--gy, 45%), rgba(var(--glow), var(--glow-a)), rgba(var(--glow), calc(var(--glow-a) * .35)) 38%, transparent 70%); }
+.hero-grid { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) 150px; gap: 32px; align-items: center; padding-top: clamp(40px, 7vw, 80px); padding-bottom: clamp(28px, 5vw, 48px); }
+.hero h1 { font-size: clamp(2.3rem, 6vw, 4.4rem); font-weight: 800; line-height: 1; letter-spacing: -.03em; margin: 0 0 22px; max-width: 14em; }
+.hero h1 em { color: var(--accent); font-style: normal; }
+.lede { font-size: clamp(1.08rem, 2vw, 1.3rem); line-height: 1.5; max-width: 34em; margin: 0 0 22px; }
 .cmds { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px 26px; font-family: var(--mono); font-size: .95rem; }
 .cmds a { color: var(--ink); text-decoration: none; border-bottom: 1px dashed var(--accent); padding: 2px 0; }
 .cmds a::before { content: "> "; color: var(--accent); }
 .cmds a:hover { color: var(--accent); }
-.lantern { width: 100%; max-width: 250px; justify-self: center; color: var(--accent); filter: drop-shadow(0 0 28px rgba(var(--glow), .45)); }
+.lantern { width: 100%; justify-self: center; color: var(--accent); filter: drop-shadow(0 0 28px rgba(var(--glow), .45)); }
 .lantern .flame { fill: var(--accent-hi); }
 
 /* sections */
-.sec { padding: clamp(56px, 9vw, 104px) 0 0; }
-.sec-head { border-top: 3px double var(--ink); padding-top: 14px; margin-bottom: 36px; display: grid; grid-template-columns: auto 1fr; gap: 6px 22px; align-items: baseline; }
-.folio { font: 500 .74rem var(--mono); text-transform: uppercase; letter-spacing: .14em; color: var(--muted); grid-column: 1 / -1; }
-.sec h2 { font-size: clamp(2rem, 4.8vw, 3.4rem); font-weight: 800; letter-spacing: -.025em; grid-column: 1 / -1; }
-.sec-intro { font-size: 1.12rem; max-width: 42em; margin: -12px 0 32px; }
+.sec { padding: clamp(44px, 7vw, 80px) 0 0; }
+.sec-head { border-top: 3px double var(--ink); padding-top: 14px; margin-bottom: 10px; }
+.sec h2 { font-size: clamp(1.8rem, 4vw, 2.7rem); font-weight: 800; letter-spacing: -.025em; }
+.sec-intro { font-size: 1.08rem; max-width: 40em; margin: 0 0 26px; }
+.foot { font: 400 .78rem/1.5 var(--mono); color: var(--muted); margin: 12px 0 0; max-width: 60em; }
 
-/* why */
-.why-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: clamp(24px, 5vw, 64px); align-items: start; }
-.pull { font-size: clamp(1.7rem, 3.6vw, 2.6rem); font-weight: 600; line-height: 1.12; letter-spacing: -.02em; margin: 0; }
-.pull em { color: var(--accent); }
-.three { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; margin-top: 40px; border: 1px solid var(--ink); background: var(--panel); }
-.three > div { padding: 20px 22px; border-right: 1px solid var(--line); }
-.three > div:last-child { border-right: 0; }
-.three .n { font: 500 .78rem var(--mono); color: var(--accent); letter-spacing: .1em; }
-.three h3 { font-size: 1.25rem; margin: 6px 0 8px; }
-.three p { margin: 0; font-size: .98rem; color: var(--muted); }
-.contrast { display: grid; grid-template-columns: 1fr 1fr; gap: 0; margin-top: 28px; font-family: var(--mono); font-size: .88rem; }
-.contrast > div { padding: 14px 18px; border: 1px dashed var(--line); }
-.contrast b { display: block; font-family: var(--serif); font-size: 2rem; font-weight: 800; letter-spacing: -.02em; color: var(--accent); line-height: 1.1; }
-
-/* how */
-.flow { display: grid; grid-template-columns: minmax(0, 1fr) minmax(90px, .45fr) minmax(0, 1fr); gap: 0; align-items: stretch; }
-.node { border: 1px solid var(--ink); background: var(--panel); padding: 22px; position: relative; }
-.node .tag { position: absolute; top: -11px; left: 14px; background: var(--bg); padding: 0 8px; font: 500 .72rem var(--mono); text-transform: uppercase; letter-spacing: .12em; color: var(--accent); }
-.node h3 { font-size: 1.7rem; margin-bottom: 6px; }
-.node p { font-size: .97rem; color: var(--muted); margin-bottom: 14px; }
-.chips { display: flex; flex-wrap: wrap; gap: 6px; padding: 0; margin: 0; list-style: none; }
-.chips li { font: 500 .74rem var(--mono); border: 1px solid var(--line); padding: 2px 8px; border-radius: 2px; background: var(--bg); }
-.wire { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 22px; font: 500 .72rem var(--mono); color: var(--muted); text-align: center; padding: 0 8px; }
-.wire span { display: block; width: 100%; }
-.wire span::after { content: ""; display: block; height: 0; border-top: 1px solid var(--accent); margin-top: 4px; position: relative; }
-.wire b { color: var(--accent); font-style: normal; }
-.wire i { font-style: normal; }
-.wire .obs .ar::after { content: "\2192"; } .wire .cmd2 .ar::after { content: "\2190"; }
-.qs { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 34px; }
-.code { border: 1px solid var(--ink); background: var(--panel); min-width: 0; }
-.code-h { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 7px 8px 7px 14px; border-bottom: 1px solid var(--line); font: 500 .74rem var(--mono); text-transform: uppercase; letter-spacing: .1em; color: var(--muted); background: var(--bg2); }
-.code-h button { font: 500 .72rem var(--mono); background: transparent; color: var(--ink); border: 1px solid var(--line); border-radius: 2px; padding: 3px 10px; cursor: pointer; text-transform: uppercase; letter-spacing: .06em; }
-.code-h button:hover { border-color: var(--accent); color: var(--accent); }
-.code pre { margin: 0; padding: 14px; overflow-x: auto; font-size: .83rem; line-height: 1.65; tab-size: 2; white-space: pre-wrap; overflow-wrap: anywhere; }
-.code .c { color: var(--muted); }
-
-/* benchmark */
-.bm-meta { display: flex; flex-wrap: wrap; gap: 6px 26px; font: 500 .82rem var(--mono); color: var(--muted); margin: 0 0 6px; }
-.bm-meta b { color: var(--ink); }
-.bm-setup { max-width: 46em; margin: 0 0 30px; }
-.bm-block { margin-top: 44px; }
-.bm-block > h3 { font-size: 1.5rem; margin-bottom: 4px; }
-.bm-block > p.note { color: var(--muted); font-size: .95rem; margin: 0 0 18px; max-width: 46em; }
-.rank { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--ink); }
-.rank li { display: grid; grid-template-columns: 2rem minmax(0, 14.5rem) minmax(0, 1fr) minmax(0, 19.5rem); gap: 6px 16px; align-items: center; padding: 11px 0; border-bottom: 1px solid var(--line); }
+/* leaderboard */
+.rank { list-style: none; margin: 0; padding: 0; }
+.rank li, .rank-h { display: grid; grid-template-columns: 1.8rem minmax(0, 13.5rem) minmax(0, 1fr) minmax(0, 11rem) 3.6rem; gap: 6px 18px; align-items: center; }
+.rank li { padding: 10px 0; border-bottom: 1px solid var(--line); }
+.rank-h { font: 500 .7rem var(--mono); text-transform: uppercase; letter-spacing: .08em; color: var(--muted); padding: 0 0 6px; border-bottom: 1px solid var(--ink); }
+.rank-h .r, .rank .usd { text-align: right; }
 .rank .n { font: 600 .9rem var(--mono); color: var(--muted); }
 .mname { all: unset; cursor: pointer; font-weight: 600; font-size: 1.05rem; line-height: 1.2; overflow-wrap: anywhere; }
 .mname:hover .m, .mname:focus-visible .m { color: var(--accent); text-decoration: underline; }
@@ -182,70 +132,50 @@ code { font-size: .86em; background: var(--accent-soft); padding: .08em .35em; b
 .bar i { position: absolute; inset: 0 auto 0 0; background: var(--accent); }
 .bar b { position: absolute; top: 50%; transform: translateY(-50%); font: 600 .78rem var(--mono); color: var(--ink); margin-left: 8px; }
 .bar b.in { transform: translate(calc(-100% - 16px), -50%); color: var(--on-accent); }
-.stats { display: flex; flex-wrap: wrap; gap: 2px 14px; font: 400 .76rem/1.5 var(--mono); color: var(--muted); }
-.stats b { font-weight: 500; color: var(--ink); }
-.strip { margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--ink); }
-.strip li { display: grid; grid-template-columns: minmax(0, 14.5rem) minmax(0, 1fr) 6.5rem; gap: 4px 16px; align-items: center; padding: 8px 0; border-bottom: 1px solid var(--line); }
+.usd { font: 500 .8rem var(--mono); color: var(--muted); }
 .track { position: relative; height: 22px; background-image: linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: 20% 100%; border-right: 1px solid var(--line); }
 .track::after { content: ""; position: absolute; left: 0; right: 0; top: 50%; border-top: 1px solid var(--line); }
 .dot { position: absolute; top: 50%; width: 11px; height: 11px; margin: -5.5px 0 0 -5.5px; border-radius: 50%; background: var(--accent); border: 2px solid var(--bg); z-index: 1; }
 .rng { position: absolute; top: 50%; height: 4px; margin-top: -2px; background: var(--accent); opacity: .4; z-index: 0; }
-.axis { display: grid; grid-template-columns: minmax(0, 14.5rem) minmax(0, 1fr) 6.5rem; gap: 16px; font: 400 .7rem var(--mono); color: var(--muted); padding-top: 4px; }
+
+/* control group */
+.ctrl { margin-top: 44px; display: grid; grid-template-columns: minmax(0, 18rem) minmax(0, 1fr); gap: 18px 40px; align-items: start; }
+.ctrl h3 { font-size: 1.45rem; margin-bottom: 8px; }
+.ctrl p { margin: 0; font-size: 1rem; }
+.plot { list-style: none; margin: 0; padding: 0; }
+.plot li { display: grid; grid-template-columns: 7.5rem minmax(0, 1fr) 4.5rem; gap: 14px; align-items: center; padding: 12px 0; border-bottom: 1px solid var(--line); }
+.plot li:first-child { border-top: 1px solid var(--ink); }
+.plot .g { font-weight: 600; line-height: 1.15; }
+.plot .g small { display: block; font: 400 .7rem var(--mono); color: var(--muted); }
+.plot .pv { font: 600 .82rem var(--mono); text-align: right; }
+.plot .track { height: 26px; }
+.axis { display: grid; grid-template-columns: 7.5rem minmax(0, 1fr) 4.5rem; gap: 14px; font: 400 .7rem var(--mono); color: var(--muted); padding-top: 4px; }
 .axis div { display: flex; justify-content: space-between; }
-.sval { font: 500 .8rem var(--mono); text-align: right; }
-.tbl { overflow-x: auto; border: 1px solid var(--ink); background: var(--panel); }
-table { border-collapse: collapse; width: 100%; font-size: .9rem; }
-th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; }
-th { font: 500 .72rem var(--mono); text-transform: uppercase; letter-spacing: .07em; color: var(--muted); background: var(--bg2); }
-tr:last-child td { border-bottom: 0; }
-td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; font-family: var(--mono); font-size: .84rem; }
-td.heat { background: color-mix(in srgb, var(--accent) calc(var(--v) * .42%), transparent); }
-tr.spread td { font-family: var(--mono); font-size: .8rem; color: var(--muted); background: var(--bg2); }
-td.mdl { min-width: 14rem; max-width: 22rem; white-space: normal; overflow-wrap: anywhere; }
-tbody tr.click { cursor: pointer; }
-tbody tr.click:hover, tbody tr.sel { background: var(--accent-soft); }
-.finds { margin: 0; padding: 0; list-style: none; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; border: 1px solid var(--ink); background: var(--panel); counter-reset: f; }
-.finds li { counter-increment: f; padding: 20px 22px 20px 56px; position: relative; border-bottom: 1px solid var(--line); font-size: .98rem; }
-.finds li::before { content: counter(f); position: absolute; left: 20px; top: 16px; font: 800 1.9rem/1 var(--serif); color: var(--accent); }
-.finds li:nth-child(odd) { border-right: 1px solid var(--line); }
-.finds li:nth-last-child(-n+2):nth-child(odd), .finds li:last-child { border-bottom: 0; }
-.finds b { font-weight: 600; }
-.more { margin-top: 22px; font-family: var(--mono); font-size: .9rem; }
 
-/* games */
-.games { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 18px; }
-.game { border: 1px solid var(--line); background: var(--panel); padding: 20px 20px 16px; display: flex; flex-direction: column; position: relative; }
-.game.orig { border: 1px solid var(--accent); box-shadow: 4px 4px 0 var(--accent-soft), inset 0 3px 0 var(--accent); padding-top: 24px; }
-.game.off { opacity: .6; }
-.game h3 { font-size: 1.4rem; }
-.game .by { font: 400 .78rem var(--mono); color: var(--muted); margin: 5px 0 10px; }
-.game .desc { font-size: .95rem; margin-bottom: 14px; flex: 1; }
-.facts { display: flex; flex-wrap: wrap; gap: 4px 20px; margin: 0 0 12px; font: 400 .78rem var(--mono); }
-.facts dt { color: var(--muted); display: inline; }
-.facts dd { margin: 0 0 0 4px; display: inline; font-weight: 500; }
-.badges { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 12px; }
-.badge { font: 500 .7rem var(--mono); padding: 2px 8px; border: 1px solid var(--line); color: var(--muted); border-radius: 2px; text-transform: lowercase; }
-.badge.o { background: var(--accent); color: var(--on-accent); border-color: var(--accent); text-transform: uppercase; letter-spacing: .06em; }
-.badge.r { color: var(--bad); border-color: var(--bad); }
-.linkish { align-self: flex-start; background: none; border: 0; padding: 0; color: var(--accent); font: 500 .8rem var(--mono); cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
-.legend { font: 400 .8rem var(--mono); color: var(--muted); margin: 14px 0 0; }
-.add { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 28px; }
-.add > div { min-width: 0; }
-.add h4 { font-size: 1.25rem; margin: 0 0 6px; }
-.add p { font-size: .95rem; color: var(--muted); }
-.add .code { margin-bottom: 12px; }
-.sub { font-size: 1.7rem; font-weight: 800; margin: 56px 0 4px; letter-spacing: -.02em; }
-.pr { margin-top: 18px; padding: 14px 18px; border: 1px dashed var(--accent); font-size: .98rem; }
+/* asides */
+.asides { list-style: none; margin: 40px 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border-top: 1px solid var(--line); }
+.asides li { padding: 16px 20px 0 0; font-size: .97rem; color: var(--muted); }
+.asides li + li { padding-left: 20px; border-left: 1px solid var(--line); }
+.more { margin-top: 26px; font-family: var(--mono); font-size: .88rem; }
 
-/* leaderboard */
+/* runs */
 .live { display: inline-flex; align-items: center; gap: 8px; font: 500 .8rem var(--mono); border: 1px solid var(--line); padding: 4px 12px; border-radius: 999px; }
 .live i { width: 8px; height: 8px; border-radius: 50%; background: var(--good); display: inline-block; }
 .bar-row { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; margin-bottom: 8px; font: 400 .82rem var(--mono); }
 select, button.plain { font: 500 .82rem var(--mono); color: var(--ink); background: var(--panel); border: 1px solid var(--ink); border-radius: 2px; padding: 6px 10px; max-width: min(100%, 24rem); }
 button.plain { cursor: pointer; }
 button.plain:hover { border-color: var(--accent); color: var(--accent); }
-.lb h3 { font-size: 1.35rem; margin: 30px 0 8px; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.lb h3 { font-size: 1.3rem; margin: 28px 0 8px; display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
 .lb h3 small { font: 400 .78rem var(--mono); color: var(--muted); }
+.tbl { overflow-x: auto; border: 1px solid var(--ink); background: var(--panel); }
+table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+th { font: 500 .72rem var(--mono); text-transform: uppercase; letter-spacing: .07em; color: var(--muted); background: var(--bg2); }
+tr:last-child td { border-bottom: 0; }
+td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; font-family: var(--mono); font-size: .84rem; }
+td.mdl { min-width: 14rem; max-width: 22rem; white-space: normal; overflow-wrap: anywhere; }
+tbody tr.click { cursor: pointer; }
+tbody tr.click:hover, tbody tr.sel { background: var(--accent-soft); }
 .pill { display: inline-block; padding: 1px 8px; border-radius: 2px; font: 500 .72rem var(--mono); border: 1px solid var(--line); color: var(--muted); }
 .pill.won { color: var(--good); border-color: var(--good); }
 .pill.died, .pill.crashed { color: var(--bad); border-color: var(--bad); }
@@ -262,37 +192,33 @@ button.plain:hover { border-color: var(--accent); color: var(--accent); }
 .meta { color: var(--muted); font: 400 .74rem var(--mono); margin-top: 2px; }
 
 /* play */
-.tiers { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; border: 1px solid var(--ink); background: var(--panel); }
-.tiers > div { padding: 22px; border-right: 1px solid var(--line); }
-.tiers > div:last-child { border-right: 0; }
-.tiers .k { font: 500 .74rem var(--mono); text-transform: uppercase; letter-spacing: .12em; color: var(--accent); }
-.tiers h3 { font-size: 1.5rem; margin: 6px 0 8px; }
-.tiers p { font-size: .95rem; color: var(--muted); margin: 0 0 10px; }
-.tiers p:last-child { margin: 0; }
-.api-cols { display: grid; grid-template-columns: 1.25fr 1fr; gap: 20px; margin-top: 28px; align-items: start; }
-.api-cols > div { min-width: 0; }
-.ep { width: 100%; font-size: .78rem; }
-.ep td { font-family: var(--mono); padding: 6px 10px; white-space: normal; }
-.ep .pub { color: var(--good); } .ep .key { color: var(--warn); }
+.play { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr); gap: 20px 40px; align-items: start; }
+.play p { max-width: 32em; }
+.shelf { list-style: none; margin: 18px 0 0; padding: 0; font: 400 .85rem var(--mono); }
+.shelf li { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; border-bottom: 1px dashed var(--line); }
+.shelf .o { color: var(--accent); }
+.shelf .r { color: var(--muted); }
+.code { border: 1px solid var(--ink); background: var(--panel); min-width: 0; }
+.code + .code { margin-top: 16px; }
+.code-h { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 7px 8px 7px 14px; border-bottom: 1px solid var(--line); font: 500 .74rem var(--mono); text-transform: uppercase; letter-spacing: .1em; color: var(--muted); background: var(--bg2); }
+.code-h button { font: 500 .72rem var(--mono); background: transparent; color: var(--ink); border: 1px solid var(--line); border-radius: 2px; padding: 3px 10px; cursor: pointer; text-transform: uppercase; letter-spacing: .06em; }
+.code-h button:hover { border-color: var(--accent); color: var(--accent); }
+.code pre { margin: 0; padding: 14px; overflow-x: auto; font-size: .82rem; line-height: 1.65; white-space: pre-wrap; overflow-wrap: anywhere; }
+.code .c { color: var(--muted); }
 
 /* footer */
-footer { margin-top: clamp(64px, 10vw, 120px); border-top: 3px double var(--ink); padding: 28px 0 56px; font-size: .92rem; color: var(--muted); }
-footer .wrap { display: grid; grid-template-columns: 1.2fr 1fr; gap: 24px; }
-footer p { margin: 0 0 .6em; }
-footer ul { list-style: none; margin: 0; padding: 0; font-family: var(--mono); font-size: .85rem; }
-footer li { margin-bottom: 6px; }
-.fine { font-family: var(--mono); font-size: .76rem; }
+footer { margin-top: clamp(56px, 9vw, 100px); border-top: 3px double var(--ink); padding: 22px 0 48px; font-size: .9rem; color: var(--muted); }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px 24px; }
+footer p { margin: 0; }
+footer ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px 18px; font-family: var(--mono); font-size: .82rem; }
 
-/* entrance: the one big moment */
-@keyframes rise { from { opacity: 0; transform: translateY(12px); filter: blur(7px); } to { opacity: 1; transform: none; filter: none; } }
+/* entrance */
+@keyframes rise { from { opacity: 0; transform: translateY(10px); filter: blur(6px); } to { opacity: 1; transform: none; filter: none; } }
 @keyframes lit { from { opacity: 0; transform: scale(.5); } to { opacity: 1; transform: scale(1); } }
-@keyframes ember { from { color: var(--ink); text-shadow: none; } to { color: var(--accent); text-shadow: 0 0 .45em rgba(var(--glow), .55); } }
-.hero .l1 { animation: rise .9s .15s both; }
-.hero .l2 { animation: rise 1s 1.05s both; }
-.hero .grue { animation: ember .9s 2s both; }
-.hero .glow { animation: lit 2.4s .55s ease-out both; }
-.hero .lantern { animation: rise 1.2s 1.2s both; }
-.hero .rv { animation: rise .8s calc(1.6s + var(--i, 0) * .14s) both; }
+.hero h1 { animation: rise .9s .1s both; }
+.hero .glow { animation: lit 2s .3s ease-out both; }
+.hero .lantern { animation: rise 1s .6s both; }
+.hero .rv { animation: rise .7s calc(.5s + var(--i, 0) * .12s) both; }
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation: none !important; transition: none !important; }
@@ -300,40 +226,29 @@ footer li { margin-bottom: 6px; }
 
 /* responsive */
 @media (max-width: 860px) {
-  .hero-grid, .why-grid, .qs, .add, .api-cols, footer .wrap { grid-template-columns: minmax(0, 1fr); }
-  .lantern { max-width: 110px; grid-row: 1; justify-self: start; }
-  .three, .tiers { grid-template-columns: minmax(0, 1fr); }
-  .three > div, .tiers > div { border-right: 0; border-bottom: 1px solid var(--line); }
-  .three > div:last-child, .tiers > div:last-child { border-bottom: 0; }
-  .flow { grid-template-columns: minmax(0, 1fr); }
-  .wire { flex-direction: row; padding: 22px 0; justify-content: space-around; }
-  .wire span { width: auto; }
-  .wire span::after { display: none; }
-  .wire .obs .ar::after { content: "\2193"; } .wire .cmd2 .ar::after { content: "\2191"; }
-  .rank li { grid-template-columns: 1.8rem minmax(0, 1fr); }
-  .rank .bar, .rank .stats { grid-column: 2; }
-  .strip li { grid-template-columns: minmax(0, 1fr) 6.5rem; }
-  .strip .track { grid-column: 1 / -1; grid-row: 2; }
-  .axis { grid-template-columns: minmax(0, 1fr); } .axis > :first-child, .axis > :last-child { display: none; }
-  .finds { grid-template-columns: minmax(0, 1fr); }
-  .finds li:nth-child(odd) { border-right: 0; }
-  .finds li:nth-last-child(2):nth-child(odd) { border-bottom: 1px solid var(--line); }
+  .play, .ctrl { grid-template-columns: minmax(0, 1fr); }
+  .rank-h { display: none; }
+  .rank li { grid-template-columns: 1.8rem minmax(0, 1fr) 3.6rem; }
+  .rank .bar { grid-column: 2 / -1; grid-row: 2; }
+  .rank .track { grid-column: 2 / -1; grid-row: 3; }
+  .rank .usd { grid-column: 3; grid-row: 1; }
+  .asides { grid-template-columns: minmax(0, 1fr); }
+  .asides li + li { padding-left: 0; border-left: 0; }
 }
 @media (max-width: 560px) {
   body { font-size: 16.5px; }
   .wrap { padding: 0 16px; }
   .nav .wrap { gap: 10px; }
-  .theme span, .nav .d, .brand .bt { display: none; }
-  .nav .m { display: inline; }
-  .nav-links { margin-left: 0; flex: 1; justify-content: space-between; }
-  .nav-links a { padding: 6px 5px; font-size: .72rem; letter-spacing: .03em; }
-  .contrast { grid-template-columns: minmax(0, 1fr); }
-  .games { grid-template-columns: minmax(0, 1fr); }
+  .theme span, .brand .bt { display: none; }
+  .nav-links { margin-left: 0; flex: 1; justify-content: space-around; }
+  .nav-links a { padding: 6px 5px; font-size: .74rem; }
+  .hero-grid { grid-template-columns: minmax(0, 1fr) 64px; gap: 16px; align-items: start; }
+  .plot li, .axis { grid-template-columns: 5.5rem minmax(0, 1fr) 3.8rem; gap: 10px; }
 }
 </style>
 </head>
 <body>
-<a class="skip" href="#why">Skip to content</a>
+<a class="skip" href="#leaderboard">Skip to content</a>
 
 <nav class="nav" aria-label="Sections">
   <div class="wrap">
@@ -342,11 +257,8 @@ footer li { margin-bottom: 6px; }
       <span class="bt">Grue</span>
     </a>
     <ul class="nav-links">
-      <li><a href="#why">Why</a></li>
-      <li><a href="#how">How</a></li>
-      <li><a href="#benchmark"><span class="d">Benchmark</span><span class="m">Data</span></a></li>
-      <li><a href="#games">Games</a></li>
-      <li><a href="#results"><span class="d">Results</span><span class="m">Runs</span></a></li>
+      <li><a href="#leaderboard">Leaderboard</a></li>
+      <li><a href="#runs">Runs</a></li>
       <li><a href="#play">Play</a></li>
     </ul>
     <button class="theme" id="theme" type="button" aria-label="Switch colour theme">
@@ -358,21 +270,14 @@ footer li { margin-bottom: 6px; }
 
 <header class="hero" id="top">
   <div class="glow" id="glow" aria-hidden="true"></div>
-  <div class="statusline rv" style="--i:0">
-    <div class="wrap" role="status" aria-label="Live counts">
-      <span>grue.party &nbsp;|&nbsp; Live</span>
-      <span><b id="t-sess">-</b> sessions &middot; <b id="t-games">-</b> games &middot; <b id="t-runs">-</b> benchmark runs</span>
-    </div>
-  </div>
   <div class="wrap hero-grid">
     <div>
-      <p class="eyebrow rv" style="--i:1">An interactive-fiction benchmark for LLMs</p>
-      <h1><span class="l1">It is pitch black.</span><span class="l2">You are likely to be eaten by a <em class="grue">grue.</em></span></h1>
-      <p class="lede rv" style="--i:2">Grue is a game server that runs real text adventures and scores every turn, so language models can be compared on how well they explore, remember and obey a parser.</p>
-      <ul class="cmds rv" style="--i:3">
-        <li><a href="#benchmark">read the november results</a></li>
-        <li><a href="#games">examine the games</a></li>
-        <li><a href="#play">get a key</a></li>
+      <h1>It is pitch black. You are likely to be eaten by a <em>grue.</em></h1>
+      <p class="lede rv" style="--i:1">Grue is a benchmark that has language models play text adventures and scores every turn. Nine of them played two games written for the occasion. Zork, but they haven&rsquo;t read it.</p>
+      <ul class="cmds rv" style="--i:2">
+        <li><a href="#leaderboard">see the scores</a></li>
+        <li><a href="#runs">read the transcripts</a></li>
+        <li><a href="#play">plug in a model</a></li>
       </ul>
     </div>
     <svg class="lantern" viewBox="0 0 200 270" role="img" aria-label="A brass lantern, lit" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
@@ -390,131 +295,20 @@ footer li { margin-bottom: 6px; }
 
 <main id="main">
 
-<!-- 2 WHY -->
-<section class="sec" id="why" aria-labelledby="why-h">
+<section class="sec" id="leaderboard" aria-labelledby="lb-h">
   <div class="wrap">
-    <div class="sec-head"><span class="folio">No. 01 &mdash; Why this exists</span><h2 id="why-h">A benchmark that can&rsquo;t be memorized</h2></div>
-    <div class="why-grid">
-      <p class="pull">Zork is in the training data. <em>Skerrin Light isn&rsquo;t.</em></p>
-      <div>
-        <p>Agents are judged more and more on long, open-ended work: explore an unknown world, remember what you found, and act through an interface that punishes sloppiness. A text adventure packs all three into a few hundred turns, with a score that moves only when you do the right thing.</p>
-        <p>The classics have a catch. Walkthroughs for Zork are all over the web, so a high score may be recall instead of play. Grue ships <strong>original games</strong> that no model has seen, and marks the well-known ones so you can tell the difference.</p>
-      </div>
-    </div>
-    <div class="three">
-      <div><span class="n">01</span><h3>Long-horizon exploration</h3><p>No map is given. Rooms, keys and dead ends must be found, then revisited at the right moment.</p></div>
-      <div><span class="n">02</span><h3>Memory</h3><p>The clue in turn 12 opens the door in turn 90. Context windows and scratchpads get tested for real.</p></div>
-      <div><span class="n">03</span><h3>Parser discipline</h3><p>One short imperative command per turn. Extra prose, chained verbs and invented nouns all count against you.</p></div>
-    </div>
-    <div class="contrast">
-      <div><b>11&ndash;15%</b>Six budget models on Zork I. The memorized classic squeezes everyone together.</div>
-      <div><b>2&ndash;100%</b>Nine models on Skerrin Light, an original. Here the spread is real.</div>
-    </div>
+    <div class="sec-head"><h2 id="lb-h">Scores</h2></div>
+    <p class="sec-intro">Nine models played two original games. They are ranked by the share of points earned.</p>
+    <div id="bm"><div class="box"><div class="empty">Lighting the lamp.</div></div></div>
   </div>
 </section>
 
-<!-- 3 HOW -->
-<section class="sec" id="how" aria-labelledby="how-h">
-  <div class="wrap">
-    <div class="sec-head"><span class="folio">No. 02 &mdash; How it works</span><h2 id="how-h">A server, a client, one JSON protocol</h2></div>
-    <div class="flow">
-      <div class="node">
-        <span class="tag">Server</span>
-        <h3>Grue</h3>
-        <p>Runs real story files, parses every reply for location and score, ends games cleanly, and keeps a transcript and result for each session.</p>
-        <ul class="chips"><li>Z-machine</li><li>Glulx</li><li>native engine</li><li>REST</li><li>WebSocket</li></ul>
-      </div>
-      <div class="wire" aria-hidden="true"><span class="obs"><b>observation <i class="ar"></i></b><br>text, score, location</span><span class="cmd2"><b><i class="ar"></i> command</b><br>one line</span></div>
-      <div class="node">
-        <span class="tag">Client</span>
-        <h3>Brass Lantern</h3>
-        <p>Turns each observation into a prompt, reads one command out of the model&rsquo;s reply, and tracks cost, tokens and parse failures.</p>
-        <ul class="chips"><li>OpenRouter</li><li>OpenAI</li><li>Anthropic</li><li>Gemini</li><li>Ollama</li></ul>
-      </div>
-    </div>
-    <div class="qs">
-      <div class="code">
-        <div class="code-h"><span>Grue: run a server</span><button type="button" data-copy="qs1">Copy</button></div>
-<pre id="qs1">git clone https://github.com/herzigma/grue &amp;&amp; cd grue
-npm install &amp;&amp; npm run setup   <span class="c"># downloads the games</span>
-npm start                     <span class="c"># http://localhost:8081</span></pre>
-      </div>
-      <div class="code">
-        <div class="code-h"><span>Brass Lantern: play with a model</span><button type="button" data-copy="qs2">Copy</button></div>
-<pre id="qs2">git clone https://github.com/herzigma/brass-lantern &amp;&amp; cd brass-lantern
-pip install -e . &amp;&amp; cp .env.example .env   <span class="c"># then add a model key</span>
-brass-lantern play --game skerrin-light --model openrouter:openai/gpt-6.1-sol</pre>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- 4 BENCHMARK -->
-<section class="sec" id="benchmark" aria-labelledby="bm-h">
-  <div class="wrap">
-    <div class="sec-head"><span class="folio">No. 03 &mdash; Featured benchmark</span><h2 id="bm-h">November 2026</h2></div>
-    <div id="bm"><div class="box"><div class="empty">Loading the benchmark data...</div></div></div>
-    <p class="more"><a href="https://github.com/herzigma/brass-lantern/blob/main/docs/results/2026-11-13.md">Read the full write-up on GitHub &rarr;</a></p>
-  </div>
-</section>
-
-<!-- 5 GAMES -->
-<section class="sec" id="games" aria-labelledby="games-h">
-  <div class="wrap">
-    <div class="sec-head"><span class="folio">No. 04 &mdash; The games</span><h2 id="games-h">What&rsquo;s on the shelf</h2></div>
-    <div class="games" id="gamelist"><div class="box"><div class="empty">Loading the catalog...</div></div></div>
-    <p class="legend"><span class="badge o">original</span> written for Grue, never published, free of memorization &nbsp; <span class="badge r">memorization risk</span> famous enough that models may recall the walkthrough</p>
-
-    <h3 class="sub">Add your own game</h3>
-    <p class="dim" style="margin:0">Pull requests are welcome. Two paths:</p>
-    <div class="add">
-      <div>
-        <h4>1. Write a native game in JavaScript</h4>
-        <p>A plain ES module: rooms, objects, puzzle hooks, scoring. The built-in engine supplies the parser, light and darkness, locks and undo. No compiler needed. <a href="https://github.com/herzigma/grue/blob/main/lib/native/AUTHORING.md">Read the authoring guide</a>.</p>
-        <div class="code">
-          <div class="code-h"><span>games/original/mini.js</span><button type="button" data-copy="ex1">Copy</button></div>
-<pre id="ex1">export default {
-  title: 'Mini', author: 'You', maxScore: 1,
-  start: 'cellar',
-  rooms: {
-    cellar: { name: 'Cellar', desc: 'A damp cellar. A key lies here.' },
-  },
-  objects: {
-    key: { name: 'rusty key', syn: ['key'], loc: 'cellar',
-      after: { take: (g) =&gt; { g.award('key', 1); g.win('Free!'); } } },
-  },
-};</pre>
-        </div>
-      </div>
-      <div>
-        <h4>2. Add a Z-machine or Glulx file</h4>
-        <p>Pick a story file from the <a href="https://www.ifarchive.org/">IF Archive</a>, add an entry to <code>games/games.json</code>, and run <code>npm run setup</code>. Grue checks the sha256. <a href="https://github.com/herzigma/grue#games-and-adding-more">See the README section</a>.</p>
-        <div class="code">
-          <div class="code-h"><span>games/games.json</span><button type="button" data-copy="ex2">Copy</button></div>
-<pre id="ex2">{
-  "id": "lost-pig",
-  "title": "Lost Pig",
-  "format": "zcode",
-  "filename": "LostPig.z8",
-  "url": "https://www.ifarchive.org/if-archive/games/zcode/LostPig.z8",
-  "max_score": 7,
-  "difficulty": "easy",
-  "suggested_turn_limit": 300
-}</pre>
-        </div>
-      </div>
-    </div>
-    <p class="pr">Writing an original game is the most useful contribution. A game that can&rsquo;t be in anyone&rsquo;s training data is worth ten that can.</p>
-  </div>
-</section>
-
-<!-- 6 RESULTS -->
-<section class="sec" id="results" aria-labelledby="res-h">
+<section class="sec" id="runs" aria-labelledby="runs-h">
   <div class="wrap lb">
-    <div class="sec-head"><span class="folio">No. 05 &mdash; Leaderboard &amp; transcripts</span><h2 id="res-h">Every run, every turn</h2></div>
-    <p class="sec-intro">Each finished session is stored with its score card and full transcript. Pick a row and read how the model got there, including where it got stuck.</p>
+    <div class="sec-head"><h2 id="runs-h">Runs</h2></div>
+    <p class="sec-intro">Every finished run, turn by turn, filterable by game and model.</p>
     <div class="bar-row">
-      <span class="live" title="Session details are private; only the count is public."><i aria-hidden="true"></i><span id="live-n">-</span>&nbsp;live sessions</span>
+      <span class="live" title="Session details are private; only the count is public."><i aria-hidden="true"></i><span id="live-n">-</span>&nbsp;playing now</span>
       <label for="gamefilter" class="dim">Game</label>
       <select id="gamefilter"><option value="">All games</option></select>
       <label for="modelfilter" class="dim">Model</label>
@@ -522,64 +316,34 @@ brass-lantern play --game skerrin-light --model openrouter:openai/gpt-6.1-sol</p
       <button type="button" class="plain" id="clearf" hidden>Clear filters</button>
       <span class="dim" id="resultcount"></span>
     </div>
-    <div id="leaderboard"><div class="box"><div class="empty">Loading results...</div></div></div>
-    <h3 style="margin-top:44px">Transcript</h3>
-    <div id="transcript" style="margin-top:10px"><div class="box"><div class="empty">Select a result above to read its transcript.</div></div></div>
+    <div id="results"><div class="box"><div class="empty">Lighting the lamp.</div></div></div>
+    <h3 style="margin-top:40px">Transcript</h3>
+    <div id="transcript" style="margin-top:10px"><div class="box"><div class="empty">No run selected. Select a run to read it.</div></div></div>
   </div>
 </section>
 
-<!-- 7 PLAY -->
 <section class="sec" id="play" aria-labelledby="play-h">
   <div class="wrap">
-    <div class="sec-head"><span class="folio">No. 06 &mdash; Play / API access</span><h2 id="play-h">Browse freely. Playing needs a key.</h2></div>
-    <div class="tiers">
-      <div><span class="k">Read</span><h3>Public</h3><p>Games, results and transcripts need no key. Everything on this page, and the same data over the API, is open to anyone.</p></div>
-      <div><span class="k">Play</span><h3>API key</h3><p>Starting a session and sending commands needs a key, because each session runs an interpreter on this server. To get one, <a href="https://github.com/herzigma/grue/issues">open an issue on GitHub</a>.</p></div>
-      <div><span class="k">Self-host</span><h3>Free, no key</h3><p>Run your own Grue in three commands (see <a href="#how">How it works</a>). Locally there are no keys to manage and no limits but your own machine.</p></div>
-    </div>
-    <div class="api-cols">
-      <div class="code">
-        <div class="code-h"><span>curl</span><button type="button" data-copy="curl">Copy</button></div>
-<pre id="curl"><span class="c"># public, no key</span>
-curl -s https://grue.party/api/games
-curl -s https://grue.party/api/results
-
-<span class="c"># playing: key required</span>
-curl -s -X POST https://grue.party/api/sessions \
-  -H "Authorization: Bearer YOUR_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"game":"lantern-lane","meta":{"model":"my-model"}}'
-
-<span class="c"># $ID is the session_id in the first reply</span>
-curl -s -X POST https://grue.party/api/sessions/$ID/commands \
-  -H "Authorization: Bearer YOUR_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"command":"look"}'
-
-curl -s -X DELETE https://grue.party/api/sessions/$ID \
-  -H "Authorization: Bearer YOUR_KEY"</pre>
+    <div class="sec-head"><h2 id="play-h">Plug in your model</h2></div>
+    <div class="play">
+      <div>
+        <p>Games, results, and transcripts are public. Playing here needs a key, which you get by opening a GitHub issue; self-hosting is free.</p>
+        <p>An original game is the most useful thing you can send, and no model has read it.</p>
+        <ul class="shelf" id="shelf" aria-label="Games on this server"></ul>
       </div>
       <div>
         <div class="code">
-          <div class="code-h"><span>Brass Lantern .env</span><button type="button" data-copy="env">Copy</button></div>
-<pre id="env">GRUE_URL=https://grue.party
-GRUE_API_KEY=YOUR_KEY
-OPENROUTER_API_KEY=...</pre>
+          <div class="code-h"><span>Brass Lantern: plug in a model</span><button type="button" data-copy="qs2">Copy</button></div>
+<pre id="qs2">git clone https://github.com/herzigma/brass-lantern &amp;&amp; cd brass-lantern
+pip install -e . &amp;&amp; cp .env.example .env   <span class="c"># add a model key</span>
+brass-lantern play --game skerrin-light --model openrouter:openai/gpt-6.1-sol</pre>
         </div>
-        <div class="tbl" style="margin-top:16px">
-          <table class="ep"><caption class="sr">Which endpoints need a key</caption>
-            <thead><tr><th>Endpoint</th><th>Access</th></tr></thead>
-            <tbody>
-              <tr><td>GET /health</td><td class="pub">public</td></tr>
-              <tr><td>GET /api/games</td><td class="pub">public</td></tr>
-              <tr><td>GET /api/results[/:id[/transcript]]</td><td class="pub">public</td></tr>
-              <tr><td>POST /api/sessions</td><td class="key">key</td></tr>
-              <tr><td>POST /api/sessions/:id/commands</td><td class="key">key</td></tr>
-              <tr><td>DELETE /api/sessions/:id</td><td class="key">key</td></tr>
-            </tbody>
-          </table>
+        <div class="code">
+          <div class="code-h"><span>Grue: run your own server</span><button type="button" data-copy="qs1">Copy</button></div>
+<pre id="qs1">git clone https://github.com/herzigma/grue &amp;&amp; cd grue
+npm install &amp;&amp; npm run setup &amp;&amp; npm start   <span class="c"># localhost:8081</span></pre>
         </div>
-        <p class="dim" style="margin-top:14px;font-size:.92rem">Full contract: <a href="https://github.com/herzigma/grue/blob/main/docs/PROTOCOL.md">PROTOCOL.md</a>. There is also a WebSocket JSON API at <code>/ws/v1</code>.</p>
+        <p class="foot">The API is plain JSON over HTTP: <a href="https://github.com/herzigma/grue/blob/main/docs/PROTOCOL.md">PROTOCOL.md</a>.</p>
       </div>
     </div>
   </div>
@@ -588,19 +352,16 @@ OPENROUTER_API_KEY=...</pre>
 
 <footer>
   <div class="wrap">
-    <div>
-      <p><strong style="color:var(--ink)">Grue</strong> is open source under the MIT license.</p>
-      <p class="fine">Original games &copy; 2026 Joshua Herzig-Marx. Zork I courtesy of Microsoft (MIT, historicalsource). IF Archive games are freeware by their authors.</p>
-    </div>
+    <p>Grue and Brass Lantern are MIT licensed, on GitHub. Built by <a href="https://jhm.lol">jhm.lol</a>.</p>
     <ul>
-      <li><a href="https://github.com/herzigma/grue">github.com/herzigma/grue</a> <span class="dim">(server)</span></li>
-      <li><a href="https://github.com/herzigma/brass-lantern">github.com/herzigma/brass-lantern</a> <span class="dim">(client)</span></li>
-      <li><a href="https://github.com/herzigma/grue/issues">request an API key</a></li>
+      <li><a href="https://github.com/herzigma/grue">grue</a></li>
+      <li><a href="https://github.com/herzigma/brass-lantern">brass-lantern</a></li>
+      <li><a href="https://github.com/herzigma/grue/issues">request a key</a></li>
     </ul>
   </div>
 </footer>
 
-<noscript><div class="wrap"><p class="empty">This page loads its games and results with JavaScript. The data is also available at <code>/api/games</code> and <code>/api/results</code>.</p></div></noscript>
+<noscript><div class="wrap"><p class="empty">This page loads its data with JavaScript. The same data is at <code>/api/games</code> and <code>/api/results</code>.</p></div></noscript>
 
 <script>
 (() => {
@@ -609,6 +370,15 @@ OPENROUTER_API_KEY=...</pre>
   const state = { games: [], results: [], selected: null, game: '', model: '', open: new Set(), failed: { games: false, results: false } };
   const root = document.documentElement;
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const COPY = {
+    empty_filters: 'You can\'t see any such run here.',
+    empty_none: 'No runs have finished yet.',
+    unavailable: 'The scoreboard is dark. Try again shortly.',
+    setup: 'November 2026. Nine models via OpenRouter, $7.86 in total, default Brass Lantern agent (30-turn memory, no notes, temperature 0.7, low reasoning effort, 150-turn limit). Budget models played Skerrin Light three times, the rest once; each dot is one run.',
+    ctrl_h: 'Control group',
+    ctrl_p: 'On Zork I, six budget models scored between 11 and 15 percent, which looks like a tie. On Skerrin Light, which none of them had seen, the same six scored between 2 and 63. A perfect transcript is now published below, so ask again in a year.',
+    asides: ['Gemini 3.5 Flash Lite scored 23, 30, and 41 on the same game.', 'DeepSeek V4 Flash kept writing the game\'s replies for it. Sixty-four percent of its commands were invalid.', 'GLM 5.3 Flash played four games for four cents.'],
+  };
 
   // Tiny DOM builder: all text goes through text nodes, never innerHTML.
   function h(tag, attrs, ...kids) {
@@ -640,6 +410,7 @@ OPENROUTER_API_KEY=...</pre>
   const fmtScore = (s, max) => (s === null || s === undefined ? '-' : (max ? s + ' / ' + max : String(s)));
   const num = (v, d = 1) => { v = Number(v); return Number.isInteger(v) ? String(v) : v.toFixed(d); };
   const usd = (v) => '$' + Number(v).toFixed(2);
+  const pct = (v) => Math.max(0, Math.min(100, Number(v) || 0));
   const modelKey = (m) => String(m || 'unknown').replace(/^openrouter:/, '');
   const who = (meta) => { meta = meta || {}; return modelKey(meta.model || meta.agent); };
   const collection = (r) => r.collection || (r.meta && r.meta.collection) || '';
@@ -650,6 +421,13 @@ OPENROUTER_API_KEY=...</pre>
   function modelName(m) {
     const i = m.indexOf('/');
     return i < 0 ? [h('span', { class: 'm' }, m)] : [h('span', { class: 'v' }, m.slice(0, i + 1)), h('span', { class: 'm' }, m.slice(i + 1))];
+  }
+  // Dots on a 0-100 track, with a faint band from lowest to highest.
+  function dots(values, label) {
+    const lo = Math.min(...values), hi = Math.max(...values);
+    return h('div', { class: 'track', role: 'img', 'aria-label': label },
+      lo !== hi && h('span', { class: 'rng', style: 'left:' + pct(lo) + '%;width:' + (pct(hi) - pct(lo)) + '%' }),
+      values.map((v) => h('span', { class: 'dot', style: 'left:' + pct(v) + '%' })));
   }
 
   // -- Theme ----------------------------------------------------------------
@@ -668,7 +446,7 @@ OPENROUTER_API_KEY=...</pre>
   });
   paintTheme();
 
-  // Lantern follows the pointer over the hero (no constant animation).
+  // The lantern's glow follows the pointer over the hero.
   if (!reduce && matchMedia('(pointer: fine)').matches) {
     const hero = $('top'), glow = $('glow');
     let raf = 0, px = 0, py = 0;
@@ -706,142 +484,66 @@ OPENROUTER_API_KEY=...</pre>
     document.querySelectorAll('main section').forEach((s) => io.observe(s));
   }
 
-  // -- Featured benchmark ---------------------------------------------------
-  const DEFAULT_FINDINGS = [
-    'The original games discriminate. Every working model wins Lantern Lane, but Skerrin Light spreads scores from 1 to 50.',
-    'Zork I compresses everything into 11-15%. Its early points are the ones every walkthrough lists, so it is a poor signal.',
-    'Variance is real. One model scored 23, 30 and 41 on three runs of the same game, so use several runs before ranking neighbours.',
-    'Format discipline is part of the test. A model that writes the game\'s reply for it, or skips the command line, loses turns.',
-  ];
-
+  // -- Leaderboard (featured benchmark) -------------------------------------
   function filterToModel(m) {
     state.model = m; state.game = '';
-    $('gamefilter').value = ''; syncModelSelect(); renderLeaderboard();
-    scrollTo($('results'));
+    $('gamefilter').value = ''; syncModelSelect(); renderRuns();
+    scrollTo($('runs'));
   }
 
   function renderFeatured(f) {
-    const box = $('bm');
-    const orig = Array.isArray(f.originals) ? f.originals : [];
+    const orig = Array.isArray(f.originals) ? [...f.originals].sort((a, b) => b.score_pct - a.score_pct) : [];
     const budget = Array.isArray(f.budget_all_games) ? f.budget_all_games : [];
     const runs = f.skerrin_runs || {};
     const parts = [];
-    parts.push(h('p', { class: 'bm-meta' },
-      f.date && h('span', {}, 'Run on ', h('b', {}, fmtDate(f.date + 'T12:00:00').split(',').slice(0, 2).join(','))),
-      orig.length && h('span', {}, h('b', {}, orig.length), ' models'),
-      f.spend_usd != null && h('span', {}, h('b', {}, usd(f.spend_usd)), ' total spend')));
-    if (f.setup) parts.push(h('p', { class: 'bm-setup' }, f.setup));
 
     if (orig.length) {
-      const sorted = [...orig].sort((a, b) => b.score_pct - a.score_pct);
-      parts.push(h('div', { class: 'bm-block' },
-        h('h3', {}, 'Original games, all models'),
-        h('p', { class: 'note' }, 'Overall score on Lantern Lane and Skerrin Light, the two games no model has seen. Click a model to see its runs below.'),
-        h('ol', { class: 'rank' }, sorted.map((r, i) => h('li', {},
+      parts.push(h('div', { class: 'rank-h', 'aria-hidden': 'true' },
+        h('span'), h('span', {}, 'Model'), h('span', {}, 'Both originals'), h('span', {}, 'Skerrin Light runs'), h('span', { class: 'r' }, 'Cost')));
+      parts.push(h('ol', { class: 'rank', 'aria-label': 'Models ranked by score on the original games' }, orig.map((r, i) => {
+        const rs = (Array.isArray(runs[r.model]) && runs[r.model].length ? runs[r.model] : [r.skerrin_light]).filter((v) => v != null);
+        return h('li', {},
           h('span', { class: 'n' }, i + 1),
-          h('button', { class: 'mname', type: 'button', title: 'Show this model in the leaderboard', onclick: () => filterToModel(r.model) }, modelName(r.model)),
+          h('button', { class: 'mname', type: 'button', title: 'Show this model\'s runs', onclick: () => filterToModel(r.model) }, modelName(r.model)),
           h('div', { class: 'bar', role: 'img', 'aria-label': num(r.score_pct) + ' percent' },
-            h('i', { style: 'width:' + Math.max(0, Math.min(100, r.score_pct)) + '%' }),
-            h('b', { class: r.score_pct >= 22 ? 'in' : '', style: 'left:' + Math.max(0, Math.min(100, r.score_pct)) + '%' }, num(r.score_pct) + '%')),
-          h('div', { class: 'stats' },
-            h('span', {}, 'win ', h('b', {}, Math.round((r.win_rate || 0) * 100) + '%')),
-            h('span', {}, h('b', {}, r.runs), ' runs'),
-            r.lantern_lane != null && h('span', {}, 'LL ', h('b', {}, r.lantern_lane + '/10')),
-            r.skerrin_light != null && h('span', {}, 'SL ', h('b', {}, num(r.skerrin_light) + '/50')),
-            r.cost_usd != null && h('span', {}, h('b', {}, usd(r.cost_usd))))))),
-        h('p', { class: 'legend' }, 'LL = Lantern Lane (10 points). SL = Skerrin Light (50 points), mean of its runs.')));
-
-      // Skerrin Light spread
-      const rows = sorted.filter((r) => r.skerrin_light != null).map((r) => {
-        const rs = Array.isArray(runs[r.model]) && runs[r.model].length ? runs[r.model] : [r.skerrin_light];
-        return { model: r.model, rs, mean: rs.reduce((a, b) => a + b, 0) / rs.length };
-      }).sort((a, b) => b.mean - a.mean);
-      if (rows.length) {
-        parts.push(h('div', { class: 'bm-block' },
-          h('h3', {}, 'The Skerrin Light spread'),
-          h('p', { class: 'note' }, 'Each dot is one run, out of 50 points. The shaded line spans a model\'s best and worst run.'),
-          h('ul', { class: 'strip' }, rows.map((r) => {
-            const lo = Math.min(...r.rs), hi = Math.max(...r.rs);
-            return h('li', {},
-              h('span', { class: 'mname' }, modelName(r.model)),
-              h('div', { class: 'track', 'aria-hidden': 'true' },
-                lo !== hi && h('span', { class: 'rng', style: 'left:' + lo * 2 + '%;width:' + (hi - lo) * 2 + '%' }),
-                r.rs.map((v) => h('span', { class: 'dot', style: 'left:' + Math.min(100, v * 2) + '%' }))),
-              h('span', { class: 'sval' }, num(r.mean) + (lo !== hi ? ' (' + lo + '-' + hi + ')' : '')));
-          })),
-          h('div', { class: 'axis', 'aria-hidden': 'true' }, h('span'), h('div', {}, [0, 10, 20, 30, 40, 50].map((n) => h('span', {}, n))), h('span'))));
-      }
+            h('i', { style: 'width:' + pct(r.score_pct) + '%' }),
+            h('b', { class: r.score_pct >= 22 ? 'in' : '', style: 'left:' + pct(r.score_pct) + '%' }, num(r.score_pct) + '%')),
+          rs.length ? dots(rs.map((v) => v * 2), 'Skerrin Light: ' + rs.join(', ') + ' out of 50') : h('span'),
+          h('span', { class: 'usd' }, r.cost_usd != null ? usd(r.cost_usd) : ''));
+      })));
+      parts.push(h('p', { class: 'foot' }, COPY.setup, ' ', h('a', { href: f.writeup_url || 'https://github.com/herzigma/brass-lantern' }, 'Full write-up'), '.'));
     }
 
-    if (budget.length) {
-      const order = ['lantern-lane', 'lost-pig', 'skerrin-light', 'zork1'];
-      const keys = [...new Set(budget.flatMap((r) => Object.keys(r.games || {})))].sort((a, b) => {
-        const ia = order.indexOf(a), ib = order.indexOf(b);
-        return (ia < 0 ? 99 : ia) - (ib < 0 ? 99 : ib);
-      });
-      const label = (k) => ({ 'lantern-lane': 'Lantern Lane', 'lost-pig': 'Lost Pig', 'skerrin-light': 'Skerrin Light', zork1: 'Zork I' }[k] || gameTitle(k));
-      const spread = (k) => { const v = budget.map((r) => (r.games || {})[k]).filter((x) => x != null); return v.length ? Math.max(...v) - Math.min(...v) : null; };
-      const sortedB = [...budget].sort((a, b) => b.overall_pct - a.overall_pct);
-      parts.push(h('div', { class: 'bm-block' },
-        h('h3', {}, 'Same budget models, four games'),
-        h('p', { class: 'note' }, 'Percent of each game\'s maximum score. Compare the spread in the last row: a game that cannot tell models apart is not much of a benchmark.'),
-        h('div', { class: 'tbl' }, h('table', {},
-          h('caption', { class: 'sr' }, 'Budget models across all four games'),
-          h('thead', {}, h('tr', {}, h('th', { scope: 'col' }, 'Model'), keys.map((k) => h('th', { scope: 'col', class: 'num' }, label(k))), h('th', { scope: 'col', class: 'num' }, 'Overall'))),
-          h('tbody', {},
-            sortedB.map((r) => h('tr', {},
-              h('td', {}, modelName(modelKey(r.model)).map((n) => n)),
-              keys.map((k) => { const v = (r.games || {})[k]; return h('td', { class: 'num heat', style: '--v:' + (v || 0) }, v == null ? '-' : num(v, 0) + '%'); }),
-              h('td', { class: 'num' }, num(r.overall_pct) + '%'))),
-            h('tr', { class: 'spread' }, h('td', {}, 'Spread, best minus worst'),
-              keys.map((k) => h('td', { class: 'num' }, spread(k) == null ? '-' : spread(k) + ' pts')), h('td', {}))))
-        )));
+    // Control group: the same budget models on a memorized classic vs an original.
+    const pair = [['zork1', 'Zork I', 'classic'], ['skerrin-light', 'Skerrin Light', 'original']]
+      .map(([k, name, kind]) => ({ name, kind, v: budget.map((r) => (r.games || {})[k]).filter((x) => x != null) }))
+      .filter((p) => p.v.length);
+    if (pair.length === 2) {
+      parts.push(h('div', { class: 'ctrl' },
+        h('div', {}, h('h3', {}, COPY.ctrl_h), h('p', {}, COPY.ctrl_p)),
+        h('div', {},
+          h('ul', { class: 'plot' }, pair.map((p) => h('li', {},
+            h('span', { class: 'g' }, p.name, h('small', {}, p.kind)),
+            dots(p.v, p.name + ': ' + p.v.join(', ') + ' percent'),
+            h('span', { class: 'pv' }, Math.min(...p.v) + '-' + Math.max(...p.v) + '%')))),
+          h('div', { class: 'axis', 'aria-hidden': 'true' }, h('span'), h('div', {}, [0, 20, 40, 60, 80, 100].map((n) => h('span', {}, n))), h('span')))));
     }
 
-    const finds = (Array.isArray(f.findings) && f.findings.length ? f.findings : DEFAULT_FINDINGS).slice(0, 5);
-    parts.push(h('div', { class: 'bm-block' }, h('h3', { style: 'margin-bottom:16px' }, 'What we learned'),
-      h('ol', { class: 'finds' }, finds.map((t) => {
-        t = String(t).replace(/\*\*/g, '');
-        const m = t.match(/^(.+?[.!?])(\s+[\s\S]*)?$/);
-        return h('li', {}, m && m[2] ? [h('b', {}, m[1]), m[2]] : t);
-      }))));
-    box.replaceChildren(...parts);
+    parts.push(h('ul', { class: 'asides' }, COPY.asides.map((t) => h('li', {}, t))));
+    $('bm').replaceChildren(...parts);
   }
 
-  // -- Games ----------------------------------------------------------------
-  const FORMAT = { native: 'native engine', zcode: 'Z-machine', glulx: 'Glulx' };
-
-  function renderGames() {
-    const box = $('gamelist');
-    if (!state.games.length) {
-      box.replaceChildren(empty(state.failed.games ? 'The game catalog is not available from this server right now.' : 'No games found.'));
-    } else {
-      const rank = (g) => (g.tags.includes('original') ? 0 : 1);
-      const list = [...state.games].sort((a, b) => rank(a) - rank(b));
-      box.replaceChildren(...list.map((g) => {
-        const isOrig = g.tags.includes('original'), risk = g.tags.includes('memorization-risk');
-        const n = state.results.filter((r) => r.game_id === g.id).length;
-        return h('article', { class: 'game' + (isOrig ? ' orig' : '') + (g.available === false ? ' off' : '') },
-          h('h3', {}, g.title),
-          h('p', { class: 'by' }, g.author ? 'by ' + g.author : ''),
-          h('p', { class: 'desc' }, g.description || ''),
-          h('div', { class: 'badges' },
-            isOrig && h('span', { class: 'badge o' }, 'original'),
-            risk && h('span', { class: 'badge r' }, 'memorization risk'),
-            g.available === false && h('span', { class: 'badge' }, 'not installed'),
-            g.tags.filter((t) => t !== 'original' && t !== 'memorization-risk').map((t) => h('span', { class: 'badge' }, t))),
-          h('dl', { class: 'facts' },
-            h('div', {}, h('dt', {}, 'difficulty'), h('dd', {}, g.difficulty || '-')),
-            h('div', {}, h('dt', {}, 'max score'), h('dd', {}, g.max_score == null ? 'none' : g.max_score)),
-            h('div', {}, h('dt', {}, 'format'), h('dd', {}, FORMAT[g.format] || g.format))),
-          n ? h('button', { class: 'linkish', type: 'button', onclick: () => { state.game = g.id; state.model = ''; syncSelects(); renderLeaderboard(); scrollTo($('results')); } },
-            'See ' + n + ' result' + (n === 1 ? '' : 's')) : h('span', { class: 'dim mono' }, 'no results yet'));
-      }));
-    }
-    syncSelects();
+  // -- Game shelf -----------------------------------------------------------
+  function renderShelf() {
+    const rank = (g) => (g.tags.includes('original') ? 0 : 1);
+    $('shelf').replaceChildren(...[...state.games].filter((g) => g.available !== false).sort((a, b) => rank(a) - rank(b)).map((g) => {
+      const orig = g.tags.includes('original'), risk = g.tags.includes('memorization-risk');
+      return h('li', {}, h('span', {}, g.title.replace(/:.*/, '')),
+        h('span', { class: orig ? 'o' : 'r' }, orig ? 'original' : risk ? 'in the training data' : 'published'));
+    }));
   }
 
-  // -- Leaderboard ----------------------------------------------------------
+  // -- Runs -----------------------------------------------------------------
   function syncSelects() {
     const gs = $('gamefilter');
     const ids = state.games.map((g) => g.id);
@@ -869,41 +571,37 @@ OPENROUTER_API_KEY=...</pre>
   };
 
   function resultsTable(rows, gameId) {
-    const limit = 12, open = state.open.has(gameId), shown = open ? rows : rows.slice(0, limit);
+    const limit = 10, open = state.open.has(gameId), shown = open ? rows : rows.slice(0, limit);
     const cols = [
       ['#', true, (r) => rows.indexOf(r) + 1],
-      ['Model / agent', false, (r) => [who(r.meta), collection(r) && h('span', { class: 'pill coll', title: 'Featured benchmark run' }, collection(r))]],
+      ['Model', false, (r) => [who(r.meta), collection(r) && h('span', { class: 'pill coll', title: 'Featured benchmark run' }, collection(r))]],
       ['Score', true, (r) => fmtScore(r.score, r.max_score)],
-      ['Peak', true, (r) => (r.max_score_reached == null ? '-' : r.max_score_reached)],
       ['Turns', true, (r) => r.turn],
       ['Invalid', true, (r) => r.invalid_commands],
-      ['Rooms', true, (r) => r.unique_locations],
       ['Ending', false, (r) => pill(r.ending, r.ending)],
-      ['Date', false, (r) => fmtDate(r.ended_at)],
       ['', false, (r) => h('button', { class: 'plain', type: 'button', 'aria-label': 'Read transcript: ' + who(r.meta) + ', ' + gameTitle(r.game_id), onclick: (e) => { e.stopPropagation(); openTranscript(r); } }, 'Read')],
     ];
     const t = h('div', { class: 'tbl' }, h('table', {},
-      h('caption', { class: 'sr' }, 'Results for ' + gameTitle(gameId)),
+      h('caption', { class: 'sr' }, 'Runs of ' + gameTitle(gameId)),
       h('thead', {}, h('tr', {}, cols.map((c) => h('th', { scope: 'col', class: c[1] ? 'num' : '' }, c[0])))),
-      h('tbody', {}, shown.map((r) => h('tr', { class: 'click' + (state.selected === r.session_id ? ' sel' : ''), onclick: () => openTranscript(r) },
+      h('tbody', {}, shown.map((r) => h('tr', { class: 'click' + (state.selected === r.session_id ? ' sel' : ''), title: fmtDate(r.ended_at), onclick: () => openTranscript(r) },
         cols.map((c, i) => h('td', { class: c[1] ? 'num' : i === 1 ? 'mdl' : '' }, c[2](r))))))));
     const out = [t];
     if (rows.length > limit) {
-      out.push(h('p', { style: 'margin:8px 0 0' }, h('button', { class: 'plain', type: 'button', onclick: () => { open ? state.open.delete(gameId) : state.open.add(gameId); renderLeaderboard(); } },
+      out.push(h('p', { style: 'margin:8px 0 0' }, h('button', { class: 'plain', type: 'button', onclick: () => { open ? state.open.delete(gameId) : state.open.add(gameId); renderRuns(); } },
         open ? 'Show top ' + limit : 'Show all ' + rows.length)));
     }
     return out;
   }
 
-  function renderLeaderboard() {
+  function renderRuns() {
     const results = state.results.filter((r) => (!state.game || r.game_id === state.game) && (!state.model || who(r.meta) === state.model));
-    $('resultcount').textContent = state.results.length ? results.length + ' result' + (results.length === 1 ? '' : 's') : '';
+    $('resultcount').textContent = state.results.length ? results.length + ' run' + (results.length === 1 ? '' : 's') : '';
     $('clearf').hidden = !(state.game || state.model);
-    const box = $('leaderboard');
+    const box = $('results');
     box.replaceChildren();
     if (!results.length) {
-      box.append(empty(state.failed.results ? 'Results are not available from this server right now.'
-        : state.results.length ? 'No results match these filters.' : 'No finished sessions yet.'));
+      box.append(empty(state.failed.results ? COPY.unavailable : state.results.length ? COPY.empty_filters : COPY.empty_none));
       return;
     }
     const groups = new Map();
@@ -919,11 +617,11 @@ OPENROUTER_API_KEY=...</pre>
   // -- Transcript -----------------------------------------------------------
   async function openTranscript(result) {
     state.selected = result.session_id;
-    renderLeaderboard();
+    renderRuns();
     const box = $('transcript');
     box.replaceChildren(empty('Loading...'));
     const data = await getJSON('/api/results/' + encodeURIComponent(result.session_id) + '/transcript');
-    if (!data || !Array.isArray(data.entries)) { box.replaceChildren(empty('This transcript is not available right now.')); return; }
+    if (!data || !Array.isArray(data.entries)) { box.replaceChildren(empty(COPY.unavailable)); return; }
     const body = h('div', { class: 't-body', tabindex: '0', role: 'region', 'aria-label': 'Transcript' });
     for (const e of data.entries) {
       if (e.type === 'command') {
@@ -949,21 +647,15 @@ OPENROUTER_API_KEY=...</pre>
   }
 
   // -- Loading --------------------------------------------------------------
-  function ticker() {
-    $('t-games').textContent = state.games.length || '-';
-    $('t-runs').textContent = state.failed.results ? '-' : state.results.length;
-  }
-
   async function refreshResults() {
     const [health, results] = await Promise.all([getJSON('/health'), getJSON('/api/results?limit=500')]);
-    $('live-n').textContent = $('t-sess').textContent = health && health.active_sessions != null ? health.active_sessions : '-';
+    $('live-n').textContent = health && health.active_sessions != null ? health.active_sessions : '-';
     state.failed.results = !(results && Array.isArray(results.results));
     const sig = state.failed.results ? 'x' : results.results.map((r) => r.session_id).join();
     if (sig === state.sig) return; // nothing new: keep the DOM (and keyboard focus) as is
     state.sig = sig;
     if (!state.failed.results) state.results = results.results;
-    ticker(); syncModelSelect(); renderLeaderboard();
-    if (state.games.length) renderGames();
+    syncModelSelect(); renderRuns();
   }
 
   async function init() {
@@ -971,15 +663,14 @@ OPENROUTER_API_KEY=...</pre>
     state.failed.games = !(games && Array.isArray(games.games));
     state.games = state.failed.games ? [] : games.games.map((g) => ({ ...g, tags: g.tags || [] }));
     if (featured && typeof featured === 'object') renderFeatured(featured);
-    else $('bm').replaceChildren(empty('The benchmark data is not available right now. The full write-up is linked below.'));
-    renderGames();
+    else $('bm').replaceChildren(empty(COPY.unavailable));
+    renderShelf(); syncSelects();
     await refreshResults();
-    renderGames();
   }
 
-  $('gamefilter').addEventListener('change', (e) => { state.game = e.target.value; renderLeaderboard(); });
-  $('modelfilter').addEventListener('change', (e) => { state.model = e.target.value; renderLeaderboard(); });
-  $('clearf').addEventListener('click', () => { state.game = ''; state.model = ''; syncSelects(); renderLeaderboard(); });
+  $('gamefilter').addEventListener('change', (e) => { state.game = e.target.value; renderRuns(); });
+  $('modelfilter').addEventListener('change', (e) => { state.model = e.target.value; renderRuns(); });
+  $('clearf').addEventListener('click', () => { state.game = ''; state.model = ''; syncSelects(); renderRuns(); });
   init();
   setInterval(() => { if (!document.hidden) refreshResults(); }, 15000);
 })();
