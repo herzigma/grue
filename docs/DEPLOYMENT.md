@@ -46,6 +46,9 @@ QA works the same way with `GRUE_URL=https://grue-qa.up.railway.app` and a QA ke
 
 ## QA auto-deploy: one-time setup
 
+Done on 2026-11-13: the Railway GitHub App has access to the account's repositories.
+
+
 Railway only deploys on push when its GitHub App can see the repository. On GitHub, go to Settings, then
 Applications, then **Railway**, and under Repository access add `herzigma/grue`. Once that is done, check that
 in production the service's branch trigger is off (or production is pinned to a commit), so pushes deploy only QA.
