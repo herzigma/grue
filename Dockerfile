@@ -17,7 +17,7 @@ ENV HOST=0.0.0.0 \
     HTTP_PORT=8081 \
     RESULTS_DIR=/data/results \
     REPLAYS_DIR=/data/replays
-VOLUME ["/data"]
+# Results and replays live under /data: mount a volume there (docker run -v, or a Railway/Render volume).
 EXPOSE 8081
 
 HEALTHCHECK --interval=30s --timeout=5s CMD node -e "fetch('http://127.0.0.1:'+(process.env.PORT||process.env.HTTP_PORT||8081)+'/health').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"
