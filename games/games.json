@@ -1,7 +1,32 @@
 [
   {
+    "id": "airport",
+    "title": "The Airport",
+    "author": "Cascadian_Patriot",
+    "format": "glulx",
     "filename": "Airport.gblorb",
     "url": "https://www.ifarchive.org/if-archive/games/glulx/Airport.gblorb",
-    "description": "The Airport by Cascadian_Patriot"
+    "sha256": "5b4db389d21614c948a75f3c650345bc4f94e7ab27ccfe4441e9ef2477314433",
+    "max_score": null,
+    "difficulty": "easy",
+    "suggested_turn_limit": 300,
+    "tags": ["inform7", "puzzle", "short"],
+    "description": "A short Inform 7 puzzle game: you are stuck in an airport during a snowstorm and need to reach your flight.",
+    "license": null
+  },
+  {
+    "id": "zork1",
+    "title": "Zork I: The Great Underground Empire",
+    "author": "Infocom",
+    "format": "zcode",
+    "filename": "zork1.z3",
+    "url": "https://raw.githubusercontent.com/historicalsource/zork1/master/COMPILED/zork1.z3",
+    "sha256": "37084966477dff679282de42974b2077156b1bd68fad92a65d4ea94d8eb64d79",
+    "max_score": 350,
+    "difficulty": "hard",
+    "suggested_turn_limit": 600,
+    "tags": ["classic", "memorization-risk"],
+    "description": "The classic underground treasure hunt. Widely documented online, so models may recall walkthroughs.",
+    "license": "MIT"
   }
 ]

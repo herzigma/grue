@@ -1,160 +1,212 @@
 # Grue
 
-> *It is pitch black. You are likely to be eaten by a grue.*
+Grue is a game server for interactive fiction (text adventures), built so that LLM agents can play them
+and be compared. It runs real story files (Glulx, Z-machine, TADS, Hugo, ADRIFT) through the
+[emglken](https://github.com/curiousdannii/emglken) interpreters and exposes each game as a session you can
+drive over a simple JSON API. Every session is scored, logged and ranked.
 
-Grue is a backend service that allows AI agents (or human developers) to connect and play interactive fiction games through a raw text socket. It acts as a headless game master — spinning up isolated Glulx interpreters for each session and piping the narrative text to connected clients.
+> It is pitch black. You are likely to be eaten by a grue.
 
-## Prerequisites
+Grue is the server half of a benchmark. The client half, **Brass Lantern**, plays the games with LLMs.
+The contract between them is [docs/PROTOCOL.md](docs/PROTOCOL.md).
 
-- **Node.js** 18+
-- **dumb-glulxe** — A command-line Glulx interpreter compiled with CheapGlk. This is the headless interpreter that runs the game files.
+What you get:
 
-### Installing dumb-glulxe
-
-You need a copy of `glulxe` compiled with the CheapGlk library:
-
-1. Clone [glulxe](https://github.com/erkyrath/glulxe) and [cheapglk](https://github.com/erkyrath/cheapglk)
-2. Build CheapGlk: `cd cheapglk && make`
-3. Build Glulxe with CheapGlk: `cd glulxe && make GLKINCLUDEDIR=../cheapglk GLKLIBDIR=../cheapglk GLKMAKEFILE=Make.cheapglk`
-4. The resulting `glulxe` binary is your interpreter
-
-Set the `INTERPRETER_BIN` environment variable (or edit `config.js`) to point to the binary.
+- **REST API** and **WebSocket JSON API** for programs and harnesses (primary interfaces).
+- **Legacy text interface** (`nc localhost 8080`, or a plain WebSocket) for humans and simple agents.
+- **Parsed observations**: status line, location, score, move count, game-over detection.
+- **Per-session records**: replay transcript (JSONL) and a result (score, peak score, turns, invalid
+  commands, rooms visited, ending) written to disk.
+- **Dashboard** at `/`: game catalog, live sessions, leaderboard by game, transcript viewer.
+- Concurrent isolated sessions, idle timeouts, turn limits, optional API keys. Node built-ins plus `ws`.
 
 ## Quickstart
 
+Requires Node.js 20 or newer.
+
 ```bash
-# Clone and install
-git clone <repo-url> grue
-cd grue
 npm install
-
-# Download game files from the IF Archive
-npm run setup
-
-# Start the server
-node index.js
-
-# In another terminal, connect:
-nc localhost 8080
+npm run setup     # downloads the games listed in games/games.json (checksum-verified)
+npm start         # HTTP + WebSocket on :8081, legacy text on :8080
 ```
 
-### Special Macros
+Open http://localhost:8081 for the dashboard, then play a game:
 
-If the game enters a single-character input mode (like a Help menu), the server will automatically detect it and append a `[System: The game is waiting for a key press...]` warning.
+```bash
+# list games
+curl -s localhost:8081/api/games
 
-When in this mode, sending standard words (`exit`) will result in character-by-character processing, causing rapid menu redraws. You can use the following special macros to emulate special keypresses:
+# start a session (returns the first observation, including session_id)
+curl -s -X POST localhost:8081/api/sessions -H 'Content-Type: application/json' \
+  -d '{"game":"zork1","max_turns":200,"meta":{"model":"my-model","agent":"curl"}}'
 
-- `\up`, `\down`, `\left`, `\right` (Arrow keys)
-- `\enter`, `\return`
-- `\space`
-- `\esc`, `\escape`
+# send commands
+curl -s -X POST localhost:8081/api/sessions/$ID/commands -H 'Content-Type: application/json' \
+  -d '{"command":"open mailbox"}'
 
-You can also send a single character (e.g. `q` to quit the menu, `1` for option 1).
+# end it early and get the result
+curl -s -X DELETE localhost:8081/api/sessions/$ID
+```
 
----
+Or just `nc localhost 8080`, pick a game by number, and type commands.
+
+Run the tests with `npm test` (about 20 seconds; game-dependent tests skip if the files are not installed).
+
+## Interfaces
+
+All three share the same sessions, replays and results.
+
+| Interface | Address | For |
+|---|---|---|
+| REST | `http://localhost:8081/api/...` | harnesses, `curl` |
+| WebSocket JSON | `ws://localhost:8081/ws/v1` | streaming clients |
+| Legacy text | `nc localhost 8080`, `ws://localhost:8081/` (any path but `/ws/v1`) | humans, simple agents |
+
+### REST
+
+| Method and path | Purpose |
+|---|---|
+| `GET /health`, `GET /metrics` | liveness; plain-text counters |
+| `GET /api/games`, `GET /api/games/:id` | catalog |
+| `POST /api/sessions` | `{"game","max_turns","meta"}` -> 201 Observation (turn 0) |
+| `POST /api/sessions/:id/commands` | `{"command"}` -> Observation |
+| `GET /api/sessions/:id`, `GET /api/sessions` | session state; active sessions |
+| `DELETE /api/sessions/:id` | end (`aborted`) and return the Result |
+| `GET /api/results?game=&limit=`, `GET /api/results/:id`, `GET /api/results/:id/transcript` | finished runs |
+| `GET /` | dashboard |
+
+An Observation looks like this:
+
+```json
+{
+  "session_id": "6f1c...", "game_id": "zork1", "turn": 3,
+  "text": "West of House\nYou are standing in an open field...",
+  "status_line": "West of House      Score: 0   Moves: 3",
+  "location": "West of House", "score": 0, "max_score": 350, "moves": 3,
+  "input_type": "line", "game_over": false, "ending": null, "notice": null
+}
+```
+
+`input_type` is `"char"` when the game wants a single keypress (menus, "press any key"); then `command` is
+read as one key (`return`, `space`, `escape`, `up`, `down`, a letter...). Endings are `won`, `died`, `ended`,
+`turn_limit`, `quit`, `timeout`, `crashed` or `aborted`. The full field list, error codes and parsing rules are in
+[docs/PROTOCOL.md](docs/PROTOCOL.md).
+
+### WebSocket JSON
+
+Connect to `/ws/v1` and send `{"type":"list_games"}`, `{"type":"start","game":"zork1","meta":{}}`,
+`{"type":"command","command":"look"}` or `{"type":"end"}`. Replies are `games`, `observation`, `result` and
+`error` messages. One session per socket; closing the socket aborts it.
+
+### Authentication
+
+Set `GRUE_API_KEYS=key1,key2` and every `/api/*` and `/ws/v1` request needs `Authorization: Bearer <key>`
+(WebSocket clients that cannot set headers may use `?api_key=`). The dashboard asks for the key when needed.
+The legacy text interface cannot authenticate, so it is turned off when keys are set unless you also set
+`LEGACY_ENABLED=true`.
+
+## Configuration
+
+Environment variables (or a `.env` file; see `.env.example`):
+
+| Variable | Default | Meaning |
+|---|---|---|
+| `HOST` | `0.0.0.0` | bind address (use `127.0.0.1` to keep it local) |
+| `HTTP_PORT` | `8081` | REST, dashboard, WebSocket (`WS_PORT` still works) |
+| `TCP_PORT` | `8080` | legacy text over TCP |
+| `LEGACY_ENABLED` | `true` (`false` if keys set) | serve the legacy text interface |
+| `GRUE_API_KEYS` | empty | comma-separated bearer keys; empty means no auth |
+| `MAX_SESSIONS` | `16` | concurrent sessions; more get `429` |
+| `IDLE_TIMEOUT_MS` | `600000` | no command for this long ends the session with `timeout` |
+| `COMMAND_TIMEOUT_MS` | `10000` | max wait for the game to answer one command |
+| `DEFAULT_MAX_TURNS` | `1000` | turn limit when neither request nor catalog gives one |
+| `MAX_COMMAND_LENGTH` | `256` | longest accepted command |
+| `GAMES_DIR` / `REPLAYS_DIR` / `RESULTS_DIR` | `games/`, `replays/`, `results/` | data directories |
+
+Each interpreter is a separate Node process; budget some memory per concurrent session.
+
+## Games and adding more
+
+The catalog is `games/games.json` merged with whatever story files are on disk. Grue looks in `games/`
+and `games/original/` for `.ulx .gblorb .z3 .z4 .z5 .z8 .zblorb .hex .taf .gam .t3`. A file with no manifest
+entry is still listed, with an id made from the filename and empty metadata.
+
+Manifest entry (all fields except `filename` optional):
+
+```json
+{
+  "id": "zork1",
+  "title": "Zork I: The Great Underground Empire",
+  "author": "Infocom",
+  "format": "zcode",
+  "filename": "zork1.z3",
+  "url": "https://raw.githubusercontent.com/historicalsource/zork1/master/COMPILED/zork1.z3",
+  "sha256": "3708...",
+  "max_score": 350,
+  "difficulty": "hard",
+  "suggested_turn_limit": 600,
+  "tags": ["classic", "memorization-risk"],
+  "description": "The classic underground treasure hunt.",
+  "license": "MIT"
+}
+```
+
+`npm run setup` downloads every entry that has a `url` (skipping files already present), and verifies `sha256`
+when given. Downloaded binaries are git-ignored; files under `games/original/` are meant to be committed.
+
+**Add a game from the IF Archive:** add a manifest entry with `id`, `filename` and `url` (add `sha256` from
+`sha256sum` after the first download), then run `npm run setup`.
+
+**Add a novel game** (recommended for benchmarking, since classics are in training data):
+
+1. Write it in Inform 7, Inform 6, TADS or similar and compile to a story file Grue can run
+   (`.ulx`/`.gblorb` for Glulx, `.z5`/`.z8` for the Z-machine).
+2. Put the file in `games/original/` and add a manifest entry (no `url`) with a unique `id`, `max_score`,
+   `difficulty` and a `suggested_turn_limit` roughly 2-3x the shortest winning walkthrough.
+3. To get good scores and endings: give the game a status line with score and turns (the default Inform
+   one works), award points as the player progresses, and finish with the standard
+   `*** You have won ***` banner so the ending is classified as `won`.
+4. Play it once through `npm start` and `nc localhost 8080` to check the transcript reads well.
 
 ## Architecture
 
 ```
-┌──────────────┐     TCP :8080     ┌─────────────────┐
-│  AI Agent /  │────────────────── │                 │     ┌──────────────────┐
-│  Developer   │                   │   Grue Server   │────▸│  dumb-glulxe     │
-│              │────────────────── │                 │     │  (child process) │
-└──────────────┘     WS :8081      └─────────────────┘     └──────────────────┘
-                                          │
-                                     ┌────┴─────┐
-                                     │ replays/ │
-                                     │ saves/   │
-                                     └──────────┘
+index.js                  startServer(options): HTTP + WebSocket upgrade routing + TCP; run directly to listen
+config.js                 environment-driven defaults
+lib/interpreterSession.js one emglken process in RemGlk JSON mode; send(command) -> Turn
+lib/parse.js              status line, score, ending and invalid-command heuristics (pure functions)
+lib/gameSession.js        one play-through: observations, score/ending logic, limits, replay, result
+lib/sessionManager.js     session registry (MAX_SESSIONS, lookup, shutdown) and result store
+lib/gameLibrary.js        manifest + disk scan -> catalog
+lib/httpApi.js            REST routes, auth, dashboard
+lib/wsJson.js             /ws/v1 handler
+lib/legacy.js             line-based text interface for TCP and WebSocket
+lib/replayLogger.js       JSONL transcripts      lib/metrics.js   counters for /metrics
+public/index.html         dashboard (single file, no build step)
+scripts/download-games.js `npm run setup`
+tests/                    node --test suites
 ```
 
-Each client connection gets its own isolated interpreter process. The server handles:
+How a command flows: the transport hands a string to `GameSession.command()`, which queues it and calls
+`InterpreterSession.send()`. That writes a RemGlk `line` (or `char`) event to the child process and waits until
+the interpreter's next update asks for input again. Buffer-window text becomes the observation `text`; the grid
+window is the status line. `parse.js` extracts location and score from it, and the session decides whether the
+game has ended. The interpreter runs in the story file's directory with a bare filename, because emglken's
+virtual filesystem cannot open absolute Windows paths.
 
-- **Output buffering** — Detects the `>` input prompt before flushing text to the client
-- **Difficulty modes** — Hard (raw text) or Easy (template-scaffolded with hints)
-- **Session timeouts** — 5-minute idle auto-save and disconnect
-- **Replay logging** — JSONL transcripts of every session
-- **Metrics** — concurrent sessions, invalid command rate
+Interpreters are killed when a session ends, when the server shuts down, and, as a last resort, when the
+server process exits.
 
-## Configuration
+## Known limitations
 
-All settings can be overridden via environment variables:
-
-| Variable | Default | Description |
-|---|---|---|
-| `TCP_PORT` | `8080` | TCP server port |
-| `WS_PORT` | `8081` | WebSocket server port |
-| `GAMES_DIR` | `./games` | Directory containing game files |
-| `REPLAYS_DIR` | `./replays` | Directory for session transcripts |
-| `SAVES_DIR` | `./saves` | Directory for auto-saved game states |
-| `INTERPRETER_BIN` | `glulxe` | Path to the interpreter binary |
-| `IDLE_TIMEOUT_MS` | `300000` | Idle timeout before auto-save (ms) |
-| `DEFAULT_MODE` | `hard` | Default difficulty: `hard` or `easy` |
-| `MAX_COMMAND_LENGTH` | `100` | Commands longer than this are flagged as invalid |
-
-## Easy Mode Templates
-
-In Easy Mode, the server wraps each turn's output with a configurable template before sending it to the client. Templates use [Nunjucks](https://mozilla.github.io/nunjucks/) syntax and are stored in `templates/`.
-
-### Available variables in templates:
-- `{{ output }}` — The raw game output for this turn
-- `{{ turnNumber }}` — The current turn number
-
-### Creating a custom template
-
-Create a `.njk` file in `templates/`:
-
-```
-{{ output }}
-
---- MY CUSTOM HINTS ---
-Turn {{ turnNumber }}
-Remember to check your inventory frequently!
-> 
-```
-
-When connecting, select `easy` mode and then enter your template name (without the `.njk` extension).
-
-## Replay Logs
-
-Every session generates a JSONL transcript in `replays/`. Each line is a JSON object:
-
-```jsonl
-{"ts":"2024-01-15T10:30:00.000Z","type":"start","gameId":"1","clientId":"abc-123"}
-{"ts":"2024-01-15T10:30:01.000Z","type":"output","text":"West of House\nYou are standing in an open field..."}
-{"ts":"2024-01-15T10:30:05.000Z","type":"command","text":"go north"}
-{"ts":"2024-01-15T10:30:06.000Z","type":"output","text":"North of House\nYou are facing the north side..."}
-{"ts":"2024-01-15T10:30:45.000Z","type":"end"}
-```
-
-## HTTP Endpoints
-
-The WebSocket port also serves two HTTP endpoints:
-
-- `GET /health` — Returns `{ "status": "ok", "activeSessions": N }`
-- `GET /metrics` — Returns a plain-text metrics report
-
-## Agent Integration
-
-See [CLAUDE.md](./CLAUDE.md) for instructions on connecting an AI agent to Grue.
-
-## Adding Games
-
-Games are managed through a manifest file at `games/games.json`. To add a game:
-
-1. Find a `.gblorb` or `.ulx` file on the [IF Archive](https://ifarchive.org/indexes/if-archive/games/glulx/)
-2. Add an entry to `games/games.json`:
-   ```json
-   {
-     "filename": "MyGame.gblorb",
-     "url": "https://www.ifarchive.org/if-archive/games/glulx/MyGame.gblorb",
-     "description": "My Game by Some Author"
-   }
-   ```
-3. Run `npm run setup` to download it
-
-You can also place `.gblorb` or `.ulx` files directly into the `games/` directory — Grue scans it automatically on startup.
+- Save, restore and transcript files are not supported (the prompt is cancelled and the game is told so).
+  Use `undo` where a game offers it.
+- Timers and graphics are not advertised, so games relying on them degrade or refuse to run.
+- Score, location and ending detection are heuristics tuned for Inform and Infocom conventions; unusual games
+  may report `null` for some fields.
+- Results are stored as one JSON file per session and scanned on read: fine for thousands of runs, not millions.
 
 ## License
 
-MIT
+MIT. emglken (GPL-2.0 and others) is used as a separate dependency; Zork I is MIT-licensed by its publisher
+and downloaded, not bundled.

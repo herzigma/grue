@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Grue</title>
+<style>
+  :root {
+    --bg: #f6f5f1; --panel: #ffffff; --ink: #1c1b19; --muted: #6b6860; --line: #e2dfd6;
+    --accent: #8a4b08; --accent-soft: #f3e6d3; --good: #1f7a3d; --bad: #a3322b; --warn: #8a6d08;
+    --mono: ui-monospace, "Cascadia Mono", "SF Mono", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #151413; --panel: #1f1e1c; --ink: #ece9e1; --muted: #9a968b; --line: #34322e;
+      --accent: #e0a35a; --accent-soft: #3a2d1c; --good: #5fc27d; --bad: #e0716a; --warn: #d6b44d;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--bg); color: var(--ink);
+    font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  }
+  header, main { max-width: 1100px; margin: 0 auto; padding: 0 20px; }
+  header { display: flex; align-items: baseline; gap: 14px; padding-top: 28px; padding-bottom: 6px; flex-wrap: wrap; }
+  h1 { margin: 0; font-size: 28px; letter-spacing: 0.02em; }
+  header .tag { color: var(--muted); }
+  header .spacer { flex: 1; }
+  h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--muted); margin: 32px 0 10px; }
+  h3 { font-size: 16px; margin: 20px 0 8px; }
+  h3 small { color: var(--muted); font-weight: normal; margin-left: 6px; }
+  .card { background: var(--panel); border: 1px solid var(--line); border-radius: 10px; overflow-x: auto; }
+  table { border-collapse: collapse; width: 100%; }
+  th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  th { font-size: 12px; color: var(--muted); font-weight: 600; background: color-mix(in srgb, var(--panel) 85%, var(--line)); }
+  tr:last-child td { border-bottom: 0; }
+  td.num, th.num { text-align: right; font-variant-numeric: tabular-nums; }
+  td.wrap { white-space: normal; min-width: 220px; color: var(--muted); }
+  tbody tr.click { cursor: pointer; }
+  tbody tr.click:hover, tbody tr.sel { background: var(--accent-soft); }
+  .empty { padding: 18px 14px; color: var(--muted); }
+  .pill { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 12px; border: 1px solid var(--line); color: var(--muted); }
+  .pill.won { color: var(--good); border-color: var(--good); }
+  .pill.died, .pill.crashed { color: var(--bad); border-color: var(--bad); }
+  .pill.timeout, .pill.turn_limit, .pill.aborted { color: var(--warn); border-color: var(--warn); }
+  .tags .pill { margin-right: 4px; }
+  .dim { color: var(--muted); }
+  button, select, input {
+    font: inherit; color: var(--ink); background: var(--panel); border: 1px solid var(--line);
+    border-radius: 6px; padding: 4px 10px;
+  }
+  button { cursor: pointer; }
+  button:hover { border-color: var(--accent); }
+  .row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin-bottom: 8px; }
+  #auth { display: none; background: var(--accent-soft); border: 1px solid var(--accent); border-radius: 10px; padding: 10px 14px; margin-top: 14px; }
+  #auth.show { display: block; }
+  #transcript { margin-bottom: 60px; }
+  .t-head { padding: 12px 16px; border-bottom: 1px solid var(--line); display: flex; gap: 16px; flex-wrap: wrap; align-items: baseline; }
+  .t-body { padding: 8px 16px 16px; max-height: 70vh; overflow-y: auto; }
+  .turn { margin: 14px 0 0; }
+  .cmd { font-family: var(--mono); color: var(--accent); font-weight: 600; }
+  .cmd::before { content: "> "; }
+  .out { font-family: var(--mono); font-size: 13.5px; white-space: pre-wrap; margin: 4px 0 0; }
+  .meta { color: var(--muted); font-size: 12px; margin-top: 2px; }
+  footer { max-width: 1100px; margin: 0 auto; padding: 0 20px 40px; color: var(--muted); font-size: 13px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Grue</h1>
+  <span class="tag">interactive fiction for AI agents</span>
+  <span class="spacer"></span>
+  <span class="dim" id="version"></span>
+  <button id="refresh" title="Refresh now">Refresh</button>
+</header>
+
+<main>
+  <div id="auth">
+    This server requires an API key.
+    <input id="key" type="password" placeholder="API key" autocomplete="off">
+    <button id="savekey">Use key</button>
+  </div>
+
+  <h2>Games</h2>
+  <div class="card" id="games"></div>
+
+  <h2>Active sessions</h2>
+  <div class="card" id="sessions"></div>
+
+  <h2>Leaderboard</h2>
+  <div class="row">
+    <label for="gamefilter" class="dim">Game</label>
+    <select id="gamefilter"><option value="">All games</option></select>
+    <span class="dim" id="resultcount"></span>
+  </div>
+  <div id="leaderboard"></div>
+
+  <h2>Transcript</h2>
+  <div id="transcript"><div class="card"><div class="empty">Select a result above to read its transcript.</div></div></div>
+</main>
+<footer>Click a leaderboard row to open its transcript. Updates every 5 seconds.</footer>
+
+<script>
+(() => {
+  'use strict';
+
+  const $ = (id) => document.getElementById(id);
+  const state = { games: [], results: [], selected: null };
+
+  // Tiny DOM builder: all text goes through textContent, never innerHTML.
+  function h(tag, attrs, ...kids) {
+    const el = document.createElement(tag);
+    for (const [k, v] of Object.entries(attrs || {})) {
+      if (k === 'class') el.className = v;
+      else if (k.startsWith('on')) el.addEventListener(k.slice(2), v);
+      else if (v !== null && v !== undefined && v !== false) el.setAttribute(k, v);
+    }
+    for (const kid of kids.flat()) {
+      if (kid === null || kid === undefined || kid === false) continue;
+      el.append(kid instanceof Node ? kid : document.createTextNode(String(kid)));
+    }
+    return el;
+  }
+
+  const getKey = () => { try { return sessionStorage.getItem('grueKey') || ''; } catch { return ''; } };
+
+  async function api(path) {
+    const key = getKey();
+    const res = await fetch(path, key ? { headers: { Authorization: 'Bearer ' + key } } : undefined);
+    if (res.status === 401) {
+      $('auth').classList.add('show');
+      throw new Error('unauthorized');
+    }
+    $('auth').classList.remove('show');
+    if (!res.ok) throw new Error(path + ' -> ' + res.status);
+    return res.json();
+  }
+
+  const fmtDate = (iso) => {
+    if (!iso) return '';
+    const d = new Date(iso);
+    return isNaN(d) ? '' : d.toLocaleString([], { dateStyle: 'medium', timeStyle: 'short' });
+  };
+  const fmtScore = (score, max) => (score === null || score === undefined ? '-' : (max ? score + ' / ' + max : String(score)));
+  const who = (meta) => {
+    meta = meta || {};
+    return meta.model || meta.agent || 'unknown';
+  };
+  const gameTitle = (id) => (state.games.find((g) => g.id === id) || {}).title || id;
+  const pill = (text, cls) => h('span', { class: 'pill ' + (cls || '') }, text);
+
+  function table(cols, rows, opts) {
+    if (!rows.length) return h('div', { class: 'card' }, h('div', { class: 'empty' }, opts.empty));
+    const head = h('tr', {}, cols.map((c) => h('th', { class: c.num ? 'num' : '' }, c.label)));
+    const body = rows.map((row) => {
+      const tr = h('tr', {
+        class: opts.onclick ? 'click' + (opts.isSelected && opts.isSelected(row) ? ' sel' : '') : '',
+        onclick: opts.onclick ? () => opts.onclick(row) : null,
+      }, cols.map((c) => h('td', { class: (c.num ? 'num ' : '') + (c.wrap ? 'wrap' : '') }, c.render(row))));
+      return tr;
+    });
+    return h('div', { class: 'card' }, h('table', {}, h('thead', {}, head), h('tbody', {}, body)));
+  }
+
+  // -- Games ----------------------------------------------------------------
+
+  function renderGames() {
+    $('games').replaceWith(Object.assign(table([
+      { label: 'Title', render: (g) => g.title },
+      { label: 'Author', render: (g) => g.author || '' },
+      { label: 'Format', render: (g) => g.format },
+      { label: 'Max score', num: true, render: (g) => (g.max_score === null ? '-' : g.max_score) },
+      { label: 'Difficulty', render: (g) => g.difficulty || '' },
+      { label: 'Tags', render: (g) => h('span', { class: 'tags' }, g.tags.map((t) => pill(t))) },
+      { label: 'Status', render: (g) => (g.available ? pill('available', 'won') : pill('not installed')) },
+    ], state.games, { empty: 'No games found. Run "npm run setup".' }), { id: 'games' }));
+
+    const sel = $('gamefilter');
+    const current = sel.value;
+    const ids = state.games.map((g) => g.id);
+    const have = [...sel.options].slice(1).map((o) => o.value);
+    if (ids.join() !== have.join()) {
+      while (sel.options.length > 1) sel.remove(1);
+      for (const g of state.games) sel.append(h('option', { value: g.id }, g.title));
+      sel.value = ids.includes(current) ? current : '';
+    }
+  }
+
+  // -- Sessions -------------------------------------------------------------
+
+  function renderSessions(list) {
+    $('sessions').replaceWith(Object.assign(table([
+      { label: 'Game', render: (s) => gameTitle(s.game_id) },
+      { label: 'Model / agent', render: (s) => who(s.meta) },
+      { label: 'Turn', num: true, render: (s) => s.turn + ' / ' + s.max_turns },
+      { label: 'Score', num: true, render: (s) => fmtScore(s.score, s.max_score) },
+      { label: 'Started', render: (s) => fmtDate(s.started_at) },
+    ], list, { empty: 'No sessions running.' }), { id: 'sessions' }));
+  }
+
+  // -- Leaderboard ----------------------------------------------------------
+
+  function byBest(a, b) {
+    const sa = a.score === null ? -Infinity : a.score;
+    const sb = b.score === null ? -Infinity : b.score;
+    return sb - sa || a.turn - b.turn || String(b.ended_at).localeCompare(String(a.ended_at));
+  }
+
+  function renderLeaderboard() {
+    const filter = $('gamefilter').value;
+    const results = state.results.filter((r) => !filter || r.game_id === filter);
+    $('resultcount').textContent = results.length + ' result' + (results.length === 1 ? '' : 's');
+    const box = $('leaderboard');
+    box.replaceChildren();
+    if (!results.length) {
+      box.append(h('div', { class: 'card' }, h('div', { class: 'empty' }, 'No finished sessions yet.')));
+      return;
+    }
+    const groups = new Map();
+    for (const r of results) {
+      if (!groups.has(r.game_id)) groups.set(r.game_id, []);
+      groups.get(r.game_id).push(r);
+    }
+    for (const [gameId, rows] of groups) {
+      rows.sort(byBest);
+      box.append(h('h3', {}, gameTitle(gameId), h('small', {}, rows.length + ' run' + (rows.length === 1 ? '' : 's'))));
+      box.append(table([
+        { label: '#', num: true, render: (r) => rows.indexOf(r) + 1 },
+        { label: 'Model / agent', render: (r) => who(r.meta) },
+        { label: 'Score', num: true, render: (r) => fmtScore(r.score, r.max_score) },
+        { label: 'Peak', num: true, render: (r) => (r.max_score_reached === null ? '-' : r.max_score_reached) },
+        { label: 'Turns', num: true, render: (r) => r.turn },
+        { label: 'Invalid', num: true, render: (r) => r.invalid_commands },
+        { label: 'Rooms', num: true, render: (r) => r.unique_locations },
+        { label: 'Ending', render: (r) => pill(r.ending, r.ending) },
+        { label: 'Date', render: (r) => fmtDate(r.ended_at) },
+      ], rows, {
+        onclick: (r) => openTranscript(r),
+        isSelected: (r) => state.selected === r.session_id,
+        empty: '',
+      }));
+    }
+  }
+
+  // -- Transcript -----------------------------------------------------------
+
+  async function openTranscript(result) {
+    state.selected = result.session_id;
+    renderLeaderboard();
+    const box = $('transcript');
+    box.replaceChildren(h('div', { class: 'card' }, h('div', { class: 'empty' }, 'Loading...')));
+    let entries;
+    try {
+      entries = (await api('/api/results/' + encodeURIComponent(result.session_id) + '/transcript')).entries;
+    } catch (err) {
+      box.replaceChildren(h('div', { class: 'card' }, h('div', { class: 'empty' }, 'Transcript unavailable (' + err.message + ').')));
+      return;
+    }
+    const body = h('div', { class: 't-body' });
+    for (const e of entries) {
+      if (e.type === 'command') {
+        body.append(h('div', { class: 'turn' }, h('div', { class: 'cmd' }, e.text || '(blank line)')));
+      } else if (e.type === 'output') {
+        const parts = [h('pre', { class: 'out' }, e.text || '(no text)')];
+        const bits = [];
+        if (e.status_line) bits.push(e.status_line.replace(/\s{2,}/g, '  '));
+        if (e.score !== null && e.score !== undefined && !e.status_line) bits.push('score ' + e.score);
+        if (bits.length) parts.push(h('div', { class: 'meta' }, bits.join(' | ')));
+        body.append(h('div', { class: e.turn === 0 ? 'turn' : '' }, parts));
+      } else if (e.type === 'end') {
+        body.append(h('div', { class: 'turn' }, pill('ended: ' + e.ending, e.ending), ' ',
+          h('span', { class: 'dim' }, 'turn ' + e.turn + (e.score === null ? '' : ', score ' + e.score))));
+      }
+    }
+    const head = h('div', { class: 't-head' },
+      h('strong', {}, gameTitle(result.game_id)),
+      h('span', {}, who(result.meta)),
+      h('span', {}, 'score ' + fmtScore(result.score, result.max_score)),
+      h('span', {}, result.turn + ' turns'),
+      pill(result.ending, result.ending),
+      h('span', { class: 'dim' }, fmtDate(result.ended_at)));
+    box.replaceChildren(h('div', { class: 'card' }, head, body));
+    box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // -- Loading --------------------------------------------------------------
+
+  async function refresh() {
+    try {
+      const [games, sessions, results] = await Promise.all([
+        api('/api/games'), api('/api/sessions'), api('/api/results?limit=500'),
+      ]);
+      state.games = games.games;
+      state.results = results.results;
+      renderGames();
+      renderSessions(sessions.sessions);
+      renderLeaderboard();
+    } catch (err) {
+      if (err.message !== 'unauthorized') console.error(err);
+    }
+  }
+
+  fetch('/health').then((r) => r.json()).then((j) => { $('version').textContent = 'v' + j.version; }).catch(() => {});
+  $('refresh').addEventListener('click', refresh);
+  $('gamefilter').addEventListener('change', renderLeaderboard);
+  $('savekey').addEventListener('click', () => {
+    try { sessionStorage.setItem('grueKey', $('key').value.trim()); } catch { /* private mode */ }
+    refresh();
+  });
+  refresh();
+  setInterval(() => { if (!document.hidden) refresh(); }, 5000);
+})();
+</script>
+</body>
+</html>

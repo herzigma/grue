@@ -1,115 +1,158 @@
 /**
- * Grue — Interactive Fiction Server for AI Agents
+ * Grue -- interactive fiction server for AI agents.
  *
- * Entry point. Loads config, scans the game library, and starts
- * both TCP and WebSocket servers.
+ *   node index.js            run the server (config from env / .env, see config.js)
+ *   import { startServer }   embed it (the test suite does this on ephemeral ports)
  */
 
-import net from 'net';
 import http from 'http';
+import net from 'net';
+import { pathToFileURL } from 'url';
 import { WebSocketServer } from 'ws';
 
-import config from './config.js';
-import { scanGameLibrary, formatGameList } from './lib/gameLibrary.js';
-import { SessionManager } from './lib/sessionManager.js';
+import defaults from './config.js';
+import { GameLibrary } from './lib/gameLibrary.js';
+import { SessionManager, ResultStore } from './lib/sessionManager.js';
 import { Metrics } from './lib/metrics.js';
-import { handleTcpConnection } from './lib/tcpHandler.js';
-import { handleWsConnection } from './lib/wsHandler.js';
-import { initTemplates } from './lib/easyMode.js';
+import { createHttpHandler, isAuthorized, VERSION } from './lib/httpApi.js';
+import { handleWsJson } from './lib/wsJson.js';
+import { createLegacyConnection } from './lib/legacy.js';
 
-// ── Startup ──
+const MAX_TCP_LINE = 8192;
 
-console.log('');
-console.log('  ╔══════════════════════════════════════╗');
-console.log('  ║          G R U E   S E R V E R       ║');
-console.log('  ╚══════════════════════════════════════╝');
-console.log('');
+/**
+ * Start Grue. Any key of config.js can be overridden in `options`; pass `HTTP_PORT: 0` /
+ * `TCP_PORT: 0` for ephemeral ports (`TCP_PORT: null` disables the TCP listener).
+ * @returns {Promise<{httpPort: number, tcpPort: number|null, manager: SessionManager, close: () => Promise<void>}>}
+ */
+export async function startServer(options = {}) {
+  const cfg = { ...defaults, ...options };
+  const log = cfg.QUIET ? () => {} : (...a) => console.log(...a);
 
-// Initialize template engine
-initTemplates();
+  const library = new GameLibrary(cfg.GAMES_DIR);
+  const metrics = new Metrics();
+  const results = new ResultStore(cfg);
+  const manager = new SessionManager({ cfg, library, metrics, results });
+  const ctx = { cfg, library, manager, metrics, results };
 
-// Scan game library
-const games = scanGameLibrary(config.GAMES_DIR);
-if (games.length === 0) {
-  console.warn('[Startup] No games found. Add .ulx or .gblorb files to the games/ directory.');
+  // -- HTTP + WebSocket ------------------------------------------------------
+
+  const httpServer = http.createServer(createHttpHandler(ctx));
+  const wsOptions = { noServer: true, maxPayload: 64 * 1024 };
+  const wssJson = new WebSocketServer(wsOptions);
+  const wssLegacy = new WebSocketServer(wsOptions);
+
+  wssJson.on('connection', (ws) => handleWsJson(ws, ctx));
+  wssLegacy.on('connection', (ws) => {
+    const conn = createLegacyConnection(
+      ctx,
+      { write: (t) => ws.readyState === ws.OPEN && ws.send(t), close: () => ws.close() },
+      'ws',
+    );
+    ws.on('message', (data) => conn.onLine(data.toString('utf8').replace(/\r?\n$/, '')));
+    ws.on('close', () => conn.onClose());
+    ws.on('error', () => {});
+  });
+
+  httpServer.on('upgrade', (req, socket, head) => {
+    const reject = (status, text) => {
+      socket.end(`HTTP/1.1 ${status} ${text}\r\nConnection: close\r\nContent-Length: 0\r\n\r\n`);
+    };
+    let url;
+    try { url = new URL(req.url, 'http://localhost'); } catch { return reject(400, 'Bad Request'); }
+    const p = url.pathname.replace(/\/+$/, '');
+    if (p === '/ws/v1') {
+      const token = url.searchParams.get('api_key');
+      if (!isAuthorized(cfg, req.headers, token)) return reject(401, 'Unauthorized');
+      return wssJson.handleUpgrade(req, socket, head, (ws) => wssJson.emit('connection', ws, req));
+    }
+    if (cfg.LEGACY_ENABLED) {
+      return wssLegacy.handleUpgrade(req, socket, head, (ws) => wssLegacy.emit('connection', ws, req));
+    }
+    return reject(404, 'Not Found');
+  });
+
+  // -- Legacy TCP ------------------------------------------------------------
+
+  const tcpSockets = new Set();
+  let tcpServer = null;
+  if (cfg.LEGACY_ENABLED && cfg.TCP_PORT !== null) {
+    tcpServer = net.createServer((socket) => {
+      tcpSockets.add(socket);
+      socket.setEncoding('utf8');
+      socket.setNoDelay(true);
+      const conn = createLegacyConnection(
+        ctx,
+        { write: (t) => { if (!socket.destroyed) socket.write(t); }, close: () => socket.end() },
+        'tcp',
+      );
+      let buf = '';
+      socket.on('data', (chunk) => {
+        buf += chunk;
+        let nl;
+        while ((nl = buf.indexOf('\n')) !== -1) {
+          conn.onLine(buf.slice(0, nl).replace(/\r$/, ''));
+          buf = buf.slice(nl + 1);
+        }
+        if (buf.length > MAX_TCP_LINE) buf = ''; // runaway line without newline: drop it
+      });
+      socket.on('error', () => {});
+      socket.on('close', () => { tcpSockets.delete(socket); conn.onClose(); });
+    });
+  }
+
+  const listen = (server, port) => new Promise((resolve, reject) => {
+    server.once('error', reject);
+    server.listen(port, cfg.HOST, () => { server.off('error', reject); resolve(server.address().port); });
+  });
+
+  const httpPort = await listen(httpServer, cfg.HTTP_PORT);
+  let tcpPort = null;
+  try {
+    if (tcpServer) tcpPort = await listen(tcpServer, cfg.TCP_PORT);
+  } catch (err) {
+    httpServer.close();
+    throw err;
+  }
+
+  const games = library.list();
+  log(`[Grue] v${VERSION} -- ${games.filter((g) => g.available).length}/${games.length} game(s) available`);
+  log(`[Grue] HTTP/WS  http://localhost:${httpPort}  (dashboard, /api, /ws/v1)`);
+  if (tcpPort !== null) log(`[Grue] Text     nc localhost ${tcpPort}`);
+  if (cfg.API_KEYS.length) log(`[Grue] API auth enabled (${cfg.API_KEYS.length} key(s)); legacy text ${cfg.LEGACY_ENABLED ? 'ENABLED (unauthenticated)' : 'disabled'}`);
+
+  let closing = null;
+  async function close() {
+    if (closing) return closing;
+    closing = (async () => {
+      manager.endAll('aborted'); // kills every interpreter and writes the results
+      for (const ws of [...wssJson.clients, ...wssLegacy.clients]) ws.terminate();
+      for (const s of tcpSockets) s.destroy();
+      await Promise.all([
+        new Promise((r) => (tcpServer ? tcpServer.close(() => r()) : r())),
+        new Promise((r) => { httpServer.close(() => r()); httpServer.closeAllConnections(); }),
+      ]);
+    })();
+    return closing;
+  }
+
+  return { httpPort, tcpPort, manager, ctx, close };
 }
-console.log(formatGameList(games));
 
-// Create shared services
-const metrics = new Metrics();
-const sessionManager = new SessionManager(metrics);
-const ctx = { games, sessionManager, metrics };
+// -- Run directly --------------------------------------------------------------
 
-// ── TCP Server ──
-
-const tcpServer = net.createServer((socket) => {
-  handleTcpConnection(socket, ctx);
-});
-
-tcpServer.listen(config.TCP_PORT, () => {
-  console.log(`[TCP] Listening on port ${config.TCP_PORT}`);
-  console.log(`[TCP] Connect with: nc localhost ${config.TCP_PORT}`);
-});
-
-// ── WebSocket Server ──
-
-const httpServer = http.createServer((req, res) => {
-  // Simple health check endpoint
-  if (req.url === '/health') {
-    res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ status: 'ok', activeSessions: metrics.activeSessions }));
-    return;
-  }
-
-  // Metrics endpoint
-  if (req.url === '/metrics') {
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end(metrics.getReport());
-    return;
-  }
-
-  res.writeHead(404);
-  res.end('Not found. Connect via WebSocket or use /health or /metrics.');
-});
-
-const wss = new WebSocketServer({ server: httpServer });
-
-wss.on('connection', (ws) => {
-  handleWsConnection(ws, ctx);
-});
-
-httpServer.listen(config.WS_PORT, () => {
-  console.log(`[WS]  Listening on port ${config.WS_PORT}`);
-  console.log(`[WS]  Health check: http://localhost:${config.WS_PORT}/health`);
-  console.log(`[WS]  Metrics:      http://localhost:${config.WS_PORT}/metrics`);
-});
-
-// ── Metrics logging ──
-
-setInterval(() => {
-  if (metrics.activeSessions > 0) {
-    console.log(metrics.getReport());
-  }
-}, config.METRICS_INTERVAL_MS);
-
-// ── Graceful shutdown ──
-
-function shutdown(signal) {
-  console.log(`\n[Shutdown] Received ${signal}. Cleaning up...`);
-  sessionManager.destroyAll();
-  tcpServer.close();
-  httpServer.close();
-  wss.close();
-  console.log('[Shutdown] Done.');
-  process.exit(0);
+const isMain = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
+if (isMain) {
+  startServer().then((server) => {
+    const shutdown = (signal) => {
+      console.log(`\n[Grue] ${signal}: ending ${server.manager.active.size} session(s) and shutting down...`);
+      server.close().finally(() => process.exit(0));
+      setTimeout(() => process.exit(0), 3000).unref();
+    };
+    process.on('SIGINT', () => shutdown('SIGINT'));
+    process.on('SIGTERM', () => shutdown('SIGTERM'));
+  }).catch((err) => {
+    console.error(`[Grue] Failed to start: ${err.message}`);
+    process.exit(1);
+  });
 }
-
-process.on('SIGINT', () => shutdown('SIGINT'));
-process.on('SIGTERM', () => shutdown('SIGTERM'));
-
-console.log('');
-console.log('[Startup] Grue is ready. Waiting for connections...');
-console.log(`[Startup] Interpreter: ${config.INTERPRETER_BIN}`);
-console.log(`[Startup] Idle timeout: ${config.IDLE_TIMEOUT_MS / 1000}s`);
-console.log(`[Startup] Default mode: ${config.DEFAULT_MODE}`);
-console.log('');

@@ -1,24 +1,29 @@
 {
   "name": "grue",
-  "version": "1.0.0",
-  "description": "A backend service for AI agents to play interactive fiction games via raw text sockets",
+  "version": "2.0.0",
+  "description": "Interactive-fiction game server for LLM agents: REST + WebSocket JSON + legacy text, RemGlk-based, with scoring, replays and a leaderboard",
   "type": "module",
   "main": "index.js",
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "start": "node index.js",
-    "setup": "node scripts/download-games.js"
+    "setup": "node scripts/download-games.js",
+    "test": "node --test --test-concurrency=1"
   },
   "keywords": [
     "interactive-fiction",
     "glulx",
+    "z-machine",
     "ai-agent",
+    "benchmark",
     "text-adventure",
     "inform7"
   ],
   "license": "MIT",
   "dependencies": {
     "emglken": "^0.7.0",
-    "nunjucks": "^3.2.4",
     "ws": "^8.16.0"
   }
 }

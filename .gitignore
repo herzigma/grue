@@ -1,11 +1,23 @@
 node_modules/
 replays/
+results/
 saves/
 *.log
+.env
 
-# Game binaries (download via `npm run setup`)
+# Downloaded game binaries (fetch with `npm run setup`).
+# Patterns with a slash are anchored, so games/original/ (committed original games) is NOT matched.
 games/*.gblorb
 games/*.ulx
+games/*.z3
+games/*.z4
+games/*.z5
+games/*.z8
+games/*.zblorb
+games/*.hex
+games/*.taf
+games/*.gam
+games/*.t3
 
 # OS files
 .DS_Store
