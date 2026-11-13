@@ -79,6 +79,9 @@ test('static files: allowed types only, no traversal', async () => {
     assert.equal(res.status, 200);
     assert.match(res.headers.get('content-type'), /application\/json/);
   }
+  const llms = await s.get('/llms.txt');
+  assert.equal(llms.status, 200);
+  assert.match(llms.headers.get('content-type'), /text\/plain/);
   assert.equal((await s.get('/../config.js')).status, 404);
 });
 
