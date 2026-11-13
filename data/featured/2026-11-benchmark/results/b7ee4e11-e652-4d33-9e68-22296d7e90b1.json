@@ -1,0 +1,25 @@
+{
+  "session_id": "b7ee4e11-e652-4d33-9e68-22296d7e90b1",
+  "game_id": "zork1",
+  "started_at": "2026-11-13T03:50:49.072Z",
+  "turn": 150,
+  "max_turns": 150,
+  "score": 54,
+  "max_score": 350,
+  "game_over": true,
+  "ending": "turn_limit",
+  "meta": {
+    "agent": "brass-lantern/0.2.0",
+    "model": "openrouter:anthropic/claude-haiku-5.5",
+    "run_id": "20261112-225048-zork1-openrouter-anthropic-claude-haiku-5.5-c43d",
+    "temperature": 0.7,
+    "bench": "budget",
+    "repeat": 1
+  },
+  "ended_at": "2026-11-13T03:53:54.727Z",
+  "duration_ms": 185655,
+  "invalid_commands": 1,
+  "unique_locations": 26,
+  "max_score_reached": 54,
+  "transcript": "replays/zork1_b7ee4e11-e652-4d33-9e68-22296d7e90b1.jsonl"
+}

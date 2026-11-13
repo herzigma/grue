@@ -1,0 +1,25 @@
+{
+  "session_id": "270c6fe4-f1b3-4f09-adc8-5625ddf92829",
+  "game_id": "skerrin-light",
+  "started_at": "2026-11-13T04:27:49.220Z",
+  "turn": 150,
+  "max_turns": 150,
+  "score": 21,
+  "max_score": 50,
+  "game_over": true,
+  "ending": "turn_limit",
+  "meta": {
+    "agent": "brass-lantern/0.2.0",
+    "model": "openrouter:anthropic/claude-haiku-5.5",
+    "run_id": "20261112-232747-skerrin-light-openrouter-anthropic-claude-haiku-5.5-d326",
+    "temperature": 0.7,
+    "bench": "budget-skerrin-repeats",
+    "repeat": 2
+  },
+  "ended_at": "2026-11-13T04:30:50.130Z",
+  "duration_ms": 180910,
+  "invalid_commands": 1,
+  "unique_locations": 11,
+  "max_score_reached": 21,
+  "transcript": "replays/skerrin-light_270c6fe4-f1b3-4f09-adc8-5625ddf92829.jsonl"
+}

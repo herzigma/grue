@@ -1,0 +1,25 @@
+{
+  "session_id": "b120ac82-9b80-4bd1-8335-4d38b7b4c892",
+  "game_id": "zork1",
+  "started_at": "2026-11-13T03:50:52.813Z",
+  "turn": 150,
+  "max_turns": 150,
+  "score": 40,
+  "max_score": 350,
+  "game_over": true,
+  "ending": "turn_limit",
+  "meta": {
+    "agent": "brass-lantern/0.2.0",
+    "model": "openrouter:google/gemini-3.5-flash-lite",
+    "run_id": "20261112-225052-zork1-openrouter-google-gemini-3.5-flash-lite-9d8c",
+    "temperature": 0.7,
+    "bench": "budget",
+    "repeat": 1
+  },
+  "ended_at": "2026-11-13T03:52:54.336Z",
+  "duration_ms": 121523,
+  "invalid_commands": 7,
+  "unique_locations": 17,
+  "max_score_reached": 40,
+  "transcript": "replays/zork1_b120ac82-9b80-4bd1-8335-4d38b7b4c892.jsonl"
+}

@@ -1,0 +1,303 @@
+{"ts":"2026-11-13T03:52:33.264Z","type":"start","session_id":"039ac8ed-aec7-4c81-9432-728b027de95b","game_id":"zork1","meta":{"agent":"brass-lantern/0.2.0","model":"openrouter:z-ai/glm-5.3-flash","run_id":"20261112-225233-zork1-openrouter-z-ai-glm-5.3-flash-669f","temperature":0.7,"bench":"budget","repeat":1}}
+{"ts":"2026-11-13T03:52:33.930Z","type":"output","turn":0,"text":"ZORK I: The Great Underground Empire\nInfocom interactive fiction - a fantasy story\nCopyright (c) 1981, 1982, 1983, 1984, 1985, 1986 Infocom, Inc. All rights reserved.\nZORK is a registered trademark of Infocom, Inc.\nRelease 119 / Serial number 880429\n\nWest of House\nYou are standing in an open field west of a white house, with a boarded front door.\nThere is a small mailbox here.","status_line":"West of House                                               Score: 0  Moves: 0","score":0}
+{"ts":"2026-11-13T03:52:34.814Z","type":"command","turn":1,"text":"open mailbox"}
+{"ts":"2026-11-13T03:52:34.823Z","type":"output","turn":1,"text":"Opening the small mailbox reveals a leaflet.","status_line":"West of House                                               Score: 0  Moves: 1","score":0}
+{"ts":"2026-11-13T03:52:36.586Z","type":"command","turn":2,"text":"read leaflet"}
+{"ts":"2026-11-13T03:52:36.589Z","type":"output","turn":2,"text":"(Taken)\n\"WELCOME TO ZORK!\n\nZORK is a game of adventure, danger, and low cunning. In it you will explore some of the most amazing territory ever seen by mortals. No computer should be without one!\"","status_line":"West of House                                               Score: 0  Moves: 2","score":0}
+{"ts":"2026-11-13T03:52:37.451Z","type":"command","turn":3,"text":"north"}
+{"ts":"2026-11-13T03:52:37.453Z","type":"output","turn":3,"text":"North of House\nYou are facing the north side of a white house. There is no door here, and all the windows are boarded up. To the north a narrow path winds through the trees.","status_line":"North of House                                              Score: 0  Moves: 3","score":0}
+{"ts":"2026-11-13T03:52:38.121Z","type":"command","turn":4,"text":"east"}
+{"ts":"2026-11-13T03:52:38.123Z","type":"output","turn":4,"text":"Behind House\nYou are behind the white house. A path leads into the forest to the east. In one corner of the house there is a small window which is slightly ajar.","status_line":"Behind House                                                Score: 0  Moves: 4","score":0}
+{"ts":"2026-11-13T03:52:38.822Z","type":"command","turn":5,"text":"open window"}
+{"ts":"2026-11-13T03:52:38.824Z","type":"output","turn":5,"text":"With great effort, you open the window far enough to allow entry.","status_line":"Behind House                                                Score: 0  Moves: 5","score":0}
+{"ts":"2026-11-13T03:52:39.330Z","type":"command","turn":6,"text":"in"}
+{"ts":"2026-11-13T03:52:39.333Z","type":"output","turn":6,"text":"Kitchen\nYou are in the kitchen of the white house. A table seems to have been used recently for the preparation of food. A passage leads to the west and a dark staircase can be seen leading upward. A dark chimney leads down and to the east is a small window which is open.\nA bottle is sitting on the table.\nThe glass bottle contains:\n  A quantity of water\nOn the table is an elongated brown sack, smelling of hot peppers.","status_line":"Kitchen                                                    Score: 10  Moves: 6","score":10}
+{"ts":"2026-11-13T03:52:40.118Z","type":"command","turn":7,"text":"take all"}
+{"ts":"2026-11-13T03:52:40.120Z","type":"output","turn":7,"text":"glass bottle: Taken.\nbrown sack: Taken.","status_line":"Kitchen                                                    Score: 10  Moves: 7","score":10}
+{"ts":"2026-11-13T03:52:40.591Z","type":"command","turn":8,"text":"west"}
+{"ts":"2026-11-13T03:52:40.593Z","type":"output","turn":8,"text":"Living Room\nYou are in the living room. There is a doorway to the east, a wooden door with strange gothic lettering to the west, which appears to be nailed shut, a trophy case, and a large oriental rug in the center of the room.\nAbove the trophy case hangs an elvish sword of great antiquity.\nA battery-powered brass lantern is on the trophy case.","status_line":"Living Room                                                Score: 10  Moves: 8","score":10}
+{"ts":"2026-11-13T03:52:41.195Z","type":"command","turn":9,"text":"take sword"}
+{"ts":"2026-11-13T03:52:41.197Z","type":"output","turn":9,"text":"Taken.","status_line":"Living Room                                                Score: 10  Moves: 9","score":10}
+{"ts":"2026-11-13T03:52:41.802Z","type":"command","turn":10,"text":"take lantern"}
+{"ts":"2026-11-13T03:52:41.804Z","type":"output","turn":10,"text":"Taken.","status_line":"Living Room                                               Score: 10  Moves: 10","score":10}
+{"ts":"2026-11-13T03:52:42.331Z","type":"command","turn":11,"text":"move rug"}
+{"ts":"2026-11-13T03:52:42.333Z","type":"output","turn":11,"text":"With a great effort, the rug is moved to one side of the room, revealing the dusty cover of a closed trap door.","status_line":"Living Room                                               Score: 10  Moves: 11","score":10}
+{"ts":"2026-11-13T03:52:42.821Z","type":"command","turn":12,"text":"open trap door"}
+{"ts":"2026-11-13T03:52:42.823Z","type":"output","turn":12,"text":"The door reluctantly opens to reveal a rickety staircase descending into darkness.","status_line":"Living Room                                               Score: 10  Moves: 12","score":10}
+{"ts":"2026-11-13T03:52:43.483Z","type":"command","turn":13,"text":"turn on lantern"}
+{"ts":"2026-11-13T03:52:43.485Z","type":"output","turn":13,"text":"The brass lantern is now on.","status_line":"Living Room                                               Score: 10  Moves: 13","score":10}
+{"ts":"2026-11-13T03:52:44.200Z","type":"command","turn":14,"text":"down"}
+{"ts":"2026-11-13T03:52:44.202Z","type":"output","turn":14,"text":"The trap door crashes shut, and you hear someone barring it.\n\nCellar\nYou are in a dark and damp cellar with a narrow passageway leading north, and a crawlway to the south. On the west is the bottom of a steep metal ramp which is unclimbable.\nYour sword is glowing with a faint blue glow.","status_line":"Cellar                                                    Score: 35  Moves: 14","score":35}
+{"ts":"2026-11-13T03:52:44.712Z","type":"command","turn":15,"text":"north"}
+{"ts":"2026-11-13T03:52:44.714Z","type":"output","turn":15,"text":"The Troll Room\nThis is a small room with passages to the east and south and a forbidding hole leading west. Bloodstains and deep scratches (perhaps made by an axe) mar the walls.\nA nasty-looking troll, brandishing a bloody axe, blocks all passages out of the room.\nYour sword has begun to glow very brightly.\nThe troll's axe barely misses your ear.","status_line":"The Troll Room                                            Score: 35  Moves: 15","score":35}
+{"ts":"2026-11-13T03:52:45.551Z","type":"command","turn":16,"text":"attack troll with sword"}
+{"ts":"2026-11-13T03:52:45.553Z","type":"output","turn":16,"text":"The troll is momentarily disoriented and can't fight back.\nThe troll slowly regains his feet.","status_line":"The Troll Room                                            Score: 35  Moves: 16","score":35}
+{"ts":"2026-11-13T03:52:46.225Z","type":"command","turn":17,"text":"attack troll with sword"}
+{"ts":"2026-11-13T03:52:46.227Z","type":"output","turn":17,"text":"The haft of your sword knocks out the troll.","status_line":"The Troll Room                                            Score: 35  Moves: 17","score":35}
+{"ts":"2026-11-13T03:52:46.703Z","type":"command","turn":18,"text":"take axe"}
+{"ts":"2026-11-13T03:52:46.704Z","type":"output","turn":18,"text":"Your load is too heavy.","status_line":"The Troll Room                                            Score: 35  Moves: 18","score":35}
+{"ts":"2026-11-13T03:52:47.281Z","type":"command","turn":19,"text":"drop sack"}
+{"ts":"2026-11-13T03:52:47.282Z","type":"output","turn":19,"text":"Dropped.\nThe troll stirs, quickly resuming a fighting stance.","status_line":"The Troll Room                                            Score: 35  Moves: 19","score":35}
+{"ts":"2026-11-13T03:52:47.830Z","type":"command","turn":20,"text":"attack troll with sword"}
+{"ts":"2026-11-13T03:52:47.832Z","type":"output","turn":20,"text":"Your sword crashes down, knocking the troll into dreamland.","status_line":"The Troll Room                                            Score: 35  Moves: 20","score":35}
+{"ts":"2026-11-13T03:52:48.509Z","type":"command","turn":21,"text":"take axe"}
+{"ts":"2026-11-13T03:52:48.510Z","type":"output","turn":21,"text":"Taken.","status_line":"The Troll Room                                            Score: 35  Moves: 21","score":35}
+{"ts":"2026-11-13T03:52:49.032Z","type":"command","turn":22,"text":"west"}
+{"ts":"2026-11-13T03:52:49.033Z","type":"output","turn":22,"text":"Maze\nThis is part of a maze of twisty little passages, all alike.\nYour sword is glowing with a faint blue glow.","status_line":"Maze                                                      Score: 35  Moves: 22","score":35}
+{"ts":"2026-11-13T03:52:50.877Z","type":"command","turn":23,"text":"drop bottle"}
+{"ts":"2026-11-13T03:52:50.879Z","type":"output","turn":23,"text":"Dropped.","status_line":"Maze                                                      Score: 35  Moves: 23","score":35}
+{"ts":"2026-11-13T03:52:51.744Z","type":"command","turn":24,"text":"east"}
+{"ts":"2026-11-13T03:52:51.745Z","type":"output","turn":24,"text":"The Troll Room\nThere is a brown sack here.\nA troll is here.\nYour sword has begun to glow very brightly.\nThe troll, disarmed, cowers in terror, pleading for his life in the guttural tongue of the trolls.","status_line":"The Troll Room                                            Score: 35  Moves: 24","score":35}
+{"ts":"2026-11-13T03:52:52.419Z","type":"command","turn":25,"text":"attack troll with axe"}
+{"ts":"2026-11-13T03:52:52.421Z","type":"output","turn":25,"text":"The unarmed troll cannot defend himself: He dies.\nAlmost as soon as the troll breathes his last breath, a cloud of sinister black fog envelops him, and when the fog lifts, the carcass has disappeared.\nYour sword is no longer glowing.","status_line":"The Troll Room                                            Score: 35  Moves: 25","score":35}
+{"ts":"2026-11-13T03:52:53.151Z","type":"command","turn":26,"text":"east"}
+{"ts":"2026-11-13T03:52:53.153Z","type":"output","turn":26,"text":"East-West Passage\nThis is a narrow east-west passageway. There is a narrow stairway leading down at the north end of the room.","status_line":"East-West Passage                                         Score: 40  Moves: 26","score":40}
+{"ts":"2026-11-13T03:52:53.658Z","type":"command","turn":27,"text":"down"}
+{"ts":"2026-11-13T03:52:53.660Z","type":"output","turn":27,"text":"Chasm\nA chasm runs southwest to northeast and the path follows it. You are on the south side of the chasm, where a crack opens into a passage.","status_line":"Chasm                                                     Score: 40  Moves: 27","score":40}
+{"ts":"2026-11-13T03:52:54.144Z","type":"command","turn":28,"text":"in"}
+{"ts":"2026-11-13T03:52:54.145Z","type":"output","turn":28,"text":"You can't go that way.","status_line":"Chasm                                                     Score: 40  Moves: 28","score":40}
+{"ts":"2026-11-13T03:52:54.758Z","type":"command","turn":29,"text":"ne"}
+{"ts":"2026-11-13T03:52:54.759Z","type":"output","turn":29,"text":"Reservoir South\nYou are in a long room on the south shore of a large lake, far too deep and wide for crossing.\nThere is a path along the stream to the east or west, a steep pathway climbing southwest along the edge of a chasm, and a path leading into a canyon to the southeast.","status_line":"Reservoir South                                           Score: 40  Moves: 29","score":40}
+{"ts":"2026-11-13T03:52:55.270Z","type":"command","turn":30,"text":"east"}
+{"ts":"2026-11-13T03:52:55.272Z","type":"output","turn":30,"text":"Dam\nYou are standing on the top of the Flood Control Dam #3, which was quite a tourist attraction in times far distant. There are paths to the north, south, and west, and a scramble down.\nThe sluice gates on the dam are closed. Behind the dam, there can be seen a wide reservoir. Water is pouring over the top of the now abandoned dam.\nThere is a control panel here, on which a large metal bolt is mounted. Directly above the bolt is a small green plastic bubble.","status_line":"Dam                                                       Score: 40  Moves: 30","score":40}
+{"ts":"2026-11-13T03:52:55.764Z","type":"command","turn":31,"text":"north"}
+{"ts":"2026-11-13T03:52:55.766Z","type":"output","turn":31,"text":"Dam Lobby\nThis room appears to have been the waiting room for groups touring the dam. There are open doorways here to the north and east marked \"Private\", and there is a path leading south over the top of the dam.\nSome guidebooks entitled \"Flood Control Dam #3\" are on the reception desk.\nThere is a matchbook whose cover says \"Visit Beautiful FCD#3\" here.","status_line":"Dam Lobby                                                 Score: 40  Moves: 31","score":40}
+{"ts":"2026-11-13T03:52:56.569Z","type":"command","turn":32,"text":"take all"}
+{"ts":"2026-11-13T03:52:56.571Z","type":"output","turn":32,"text":"tour guidebook: Taken.\nmatchbook: Taken.","status_line":"Dam Lobby                                                 Score: 40  Moves: 32","score":40}
+{"ts":"2026-11-13T03:52:57.490Z","type":"command","turn":33,"text":"north"}
+{"ts":"2026-11-13T03:52:57.492Z","type":"output","turn":33,"text":"Maintenance Room\nThis is what appears to have been the maintenance room for Flood Control Dam #3. Apparently, this room has been ransacked recently, for most of the valuable equipment is gone. On the wall in front of you is a group of buttons colored blue, yellow, brown, and red. There are doorways to the west and south.\nThere is a wrench here.\nThere is an object which looks like a tube of toothpaste here.\nThere is a screwdriver here.\nThere is a group of tool chests here.","status_line":"Maintenance Room                                          Score: 40  Moves: 33","score":40}
+{"ts":"2026-11-13T03:52:58.055Z","type":"command","turn":34,"text":"take all"}
+{"ts":"2026-11-13T03:52:58.057Z","type":"output","turn":34,"text":"wrench: Taken.\ntube: Your load is too heavy.\nscrewdriver: Taken.\ngroup of tool chests: The chests are so rusty and corroded that they crumble when you touch them.","status_line":"Maintenance Room                                          Score: 40  Moves: 34","score":40}
+{"ts":"2026-11-13T03:52:58.773Z","type":"command","turn":35,"text":"take tube"}
+{"ts":"2026-11-13T03:52:58.775Z","type":"output","turn":35,"text":"Your load is too heavy.","status_line":"Maintenance Room                                          Score: 40  Moves: 35","score":40}
+{"ts":"2026-11-13T03:52:59.464Z","type":"command","turn":36,"text":"drop axe"}
+{"ts":"2026-11-13T03:52:59.466Z","type":"output","turn":36,"text":"Dropped.","status_line":"Maintenance Room                                          Score: 40  Moves: 36","score":40}
+{"ts":"2026-11-13T03:52:59.971Z","type":"command","turn":37,"text":"take tube"}
+{"ts":"2026-11-13T03:52:59.973Z","type":"output","turn":37,"text":"Taken.","status_line":"Maintenance Room                                          Score: 40  Moves: 37","score":40}
+{"ts":"2026-11-13T03:53:00.623Z","type":"command","turn":38,"text":"south"}
+{"ts":"2026-11-13T03:53:00.624Z","type":"output","turn":38,"text":"Dam Lobby","status_line":"Dam Lobby                                                 Score: 40  Moves: 38","score":40}
+{"ts":"2026-11-13T03:53:01.254Z","type":"command","turn":39,"text":"south"}
+{"ts":"2026-11-13T03:53:01.256Z","type":"output","turn":39,"text":"Dam","status_line":"Dam                                                       Score: 40  Moves: 39","score":40}
+{"ts":"2026-11-13T03:53:02.255Z","type":"command","turn":40,"text":"turn bolt with wrench"}
+{"ts":"2026-11-13T03:53:02.257Z","type":"output","turn":40,"text":"The bolt won't turn with your best effort.","status_line":"Dam                                                       Score: 40  Moves: 40","score":40}
+{"ts":"2026-11-13T03:53:03.271Z","type":"command","turn":41,"text":"apply gunk to bolt"}
+{"ts":"2026-11-13T03:53:03.273Z","type":"output","turn":41,"text":"You can't see any gunk here!","status_line":"Dam                                                       Score: 40  Moves: 41","score":40}
+{"ts":"2026-11-13T03:53:03.864Z","type":"command","turn":42,"text":"read tube"}
+{"ts":"2026-11-13T03:53:03.866Z","type":"output","turn":42,"text":"---> Frobozz Magic Gunk Company <---\n�  All-Purpose Gunk","status_line":"Dam                                                       Score: 40  Moves: 42","score":40}
+{"ts":"2026-11-13T03:53:04.378Z","type":"command","turn":43,"text":"apply gunk to bolt"}
+{"ts":"2026-11-13T03:53:04.379Z","type":"output","turn":43,"text":"You can't see any gunk here!","status_line":"Dam                                                       Score: 40  Moves: 43","score":40}
+{"ts":"2026-11-13T03:53:04.949Z","type":"command","turn":44,"text":"open tube"}
+{"ts":"2026-11-13T03:53:04.951Z","type":"output","turn":44,"text":"Opening the tube reveals a viscous material.","status_line":"Dam                                                       Score: 40  Moves: 44","score":40}
+{"ts":"2026-11-13T03:53:05.698Z","type":"command","turn":45,"text":"apply gunk to bolt"}
+{"ts":"2026-11-13T03:53:05.700Z","type":"output","turn":45,"text":"The all-purpose gunk isn't a lubricant.","status_line":"Dam                                                       Score: 40  Moves: 45","score":40}
+{"ts":"2026-11-13T03:53:07.046Z","type":"command","turn":46,"text":"put gunk on bolt"}
+{"ts":"2026-11-13T03:53:07.047Z","type":"output","turn":46,"text":"There's no good surface on the bolt.","status_line":"Dam                                                       Score: 40  Moves: 46","score":40}
+{"ts":"2026-11-13T03:53:09.737Z","type":"command","turn":47,"text":"push bubble"}
+{"ts":"2026-11-13T03:53:09.739Z","type":"output","turn":47,"text":"Pushing the green bubble has no effect.","status_line":"Dam                                                       Score: 40  Moves: 47","score":40}
+{"ts":"2026-11-13T03:53:11.712Z","type":"command","turn":48,"text":"oil bolt with tube"}
+{"ts":"2026-11-13T03:53:11.714Z","type":"output","turn":48,"text":"Hmm. It appears the tube contained glue, not oil. Turning the bolt won't get any easier....","status_line":"Dam                                                       Score: 40  Moves: 48","score":40}
+{"ts":"2026-11-13T03:53:12.712Z","type":"command","turn":49,"text":"turn bolt with wrench"}
+{"ts":"2026-11-13T03:53:12.714Z","type":"output","turn":49,"text":"The bolt won't turn with your best effort.","status_line":"Dam                                                       Score: 40  Moves: 49","score":40}
+{"ts":"2026-11-13T03:53:14.180Z","type":"command","turn":50,"text":"turn bolt"}
+{"ts":"2026-11-13T03:53:14.181Z","type":"output","turn":50,"text":"Your bare hands don't appear to be enough.","status_line":"Dam                                                       Score: 40  Moves: 50","score":40}
+{"ts":"2026-11-13T03:53:15.161Z","type":"command","turn":51,"text":"south"}
+{"ts":"2026-11-13T03:53:15.163Z","type":"output","turn":51,"text":"Deep Canyon\nYou are on the south edge of a deep canyon. Passages lead off to the east, northwest and southwest. A stairway leads down. You can hear the sound of flowing water from below.","status_line":"Deep Canyon                                               Score: 40  Moves: 51","score":40}
+{"ts":"2026-11-13T03:53:15.793Z","type":"command","turn":52,"text":"southwest"}
+{"ts":"2026-11-13T03:53:15.795Z","type":"output","turn":52,"text":"North-South Passage\nThis is a high north-south passage, which forks to the northeast.","status_line":"North-South Passage                                       Score: 40  Moves: 52","score":40}
+{"ts":"2026-11-13T03:53:16.361Z","type":"command","turn":53,"text":"northeast"}
+{"ts":"2026-11-13T03:53:16.363Z","type":"output","turn":53,"text":"Deep Canyon","status_line":"Deep Canyon                                               Score: 40  Moves: 53","score":40}
+{"ts":"2026-11-13T03:53:16.926Z","type":"command","turn":54,"text":"down"}
+{"ts":"2026-11-13T03:53:16.928Z","type":"output","turn":54,"text":"Loud Room\nThis is a large room with a ceiling which cannot be detected from the ground. There is a narrow passage from east to west and a stone stairway leading upward. The room is deafeningly loud with an undetermined rushing sound. The sound seems to reverberate from all of the walls, making it difficult even to think.\nOn the ground is a large platinum bar.","status_line":"Loud Room                                                 Score: 40  Moves: 53","score":40}
+{"ts":"2026-11-13T03:53:17.498Z","type":"command","turn":55,"text":"take bar"}
+{"ts":"2026-11-13T03:53:17.500Z","type":"output","turn":55,"text":"bar bar ...","status_line":"Loud Room                                                 Score: 40  Moves: 53","score":40}
+{"ts":"2026-11-13T03:53:18.602Z","type":"command","turn":56,"text":"echo"}
+{"ts":"2026-11-13T03:53:18.604Z","type":"output","turn":56,"text":"The acoustics of the room change subtly.\n\nLoud Room\nOn the ground is a large platinum bar.","status_line":"Loud Room                                                 Score: 40  Moves: 54","score":40}
+{"ts":"2026-11-13T03:53:19.120Z","type":"command","turn":57,"text":"take bar"}
+{"ts":"2026-11-13T03:53:19.122Z","type":"output","turn":57,"text":"Your load is too heavy.","status_line":"Loud Room                                                 Score: 40  Moves: 55","score":40}
+{"ts":"2026-11-13T03:53:19.788Z","type":"command","turn":58,"text":"drop tube"}
+{"ts":"2026-11-13T03:53:19.790Z","type":"output","turn":58,"text":"Dropped.","status_line":"Loud Room                                                 Score: 40  Moves: 56","score":40}
+{"ts":"2026-11-13T03:53:20.429Z","type":"command","turn":59,"text":"take bar"}
+{"ts":"2026-11-13T03:53:20.431Z","type":"output","turn":59,"text":"Taken.","status_line":"Loud Room                                                 Score: 50  Moves: 57","score":50}
+{"ts":"2026-11-13T03:53:21.241Z","type":"command","turn":60,"text":"take tube"}
+{"ts":"2026-11-13T03:53:21.242Z","type":"output","turn":60,"text":"Your load is too heavy.","status_line":"Loud Room                                                 Score: 50  Moves: 58","score":50}
+{"ts":"2026-11-13T03:53:22.310Z","type":"command","turn":61,"text":"up"}
+{"ts":"2026-11-13T03:53:22.312Z","type":"output","turn":61,"text":"Deep Canyon","status_line":"Deep Canyon                                               Score: 50  Moves: 59","score":50}
+{"ts":"2026-11-13T03:53:23.018Z","type":"command","turn":62,"text":"east"}
+{"ts":"2026-11-13T03:53:23.020Z","type":"output","turn":62,"text":"Dam","status_line":"Dam                                                       Score: 50  Moves: 60","score":50}
+{"ts":"2026-11-13T03:53:23.739Z","type":"command","turn":63,"text":"drop bar"}
+{"ts":"2026-11-13T03:53:23.740Z","type":"output","turn":63,"text":"Dropped.","status_line":"Dam                                                       Score: 50  Moves: 61","score":50}
+{"ts":"2026-11-13T03:53:24.279Z","type":"command","turn":64,"text":"take tube"}
+{"ts":"2026-11-13T03:53:24.281Z","type":"output","turn":64,"text":"You can't see any tube here!","status_line":"Dam                                                       Score: 50  Moves: 62","score":50}
+{"ts":"2026-11-13T03:53:24.883Z","type":"command","turn":65,"text":"south"}
+{"ts":"2026-11-13T03:53:24.884Z","type":"output","turn":65,"text":"Deep Canyon","status_line":"Deep Canyon                                               Score: 50  Moves: 63","score":50}
+{"ts":"2026-11-13T03:53:25.775Z","type":"command","turn":66,"text":"take tube"}
+{"ts":"2026-11-13T03:53:25.777Z","type":"output","turn":66,"text":"You can't see any tube here!","status_line":"Deep Canyon                                               Score: 50  Moves: 64","score":50}
+{"ts":"2026-11-13T03:53:26.482Z","type":"command","turn":67,"text":"down"}
+{"ts":"2026-11-13T03:53:26.483Z","type":"output","turn":67,"text":"Loud Room\nThere is an object which looks like a tube of toothpaste here.\nThe tube contains:\n  A viscous material","status_line":"Loud Room                                                 Score: 50  Moves: 65","score":50}
+{"ts":"2026-11-13T03:53:26.987Z","type":"command","turn":68,"text":"take tube"}
+{"ts":"2026-11-13T03:53:26.989Z","type":"output","turn":68,"text":"Taken.","status_line":"Loud Room                                                 Score: 50  Moves: 66","score":50}
+{"ts":"2026-11-13T03:53:27.651Z","type":"command","turn":69,"text":"up"}
+{"ts":"2026-11-13T03:53:27.652Z","type":"output","turn":69,"text":"Deep Canyon","status_line":"Deep Canyon                                               Score: 50  Moves: 67","score":50}
+{"ts":"2026-11-13T03:53:28.181Z","type":"command","turn":70,"text":"east"}
+{"ts":"2026-11-13T03:53:28.182Z","type":"output","turn":70,"text":"Dam\nOn the ground is a large platinum bar.","status_line":"Dam                                                       Score: 50  Moves: 68","score":50}
+{"ts":"2026-11-13T03:53:28.696Z","type":"command","turn":71,"text":"take bar"}
+{"ts":"2026-11-13T03:53:28.697Z","type":"output","turn":71,"text":"Your load is too heavy.","status_line":"Dam                                                       Score: 50  Moves: 69","score":50}
+{"ts":"2026-11-13T03:53:29.457Z","type":"command","turn":72,"text":"inventory"}
+{"ts":"2026-11-13T03:53:29.458Z","type":"output","turn":72,"text":"You are carrying:\n  A tube\n  The tube contains:\n    A viscous material\n  A screwdriver\n  A wrench\n  A matchbook\n  A tour guidebook\n  A brass lantern (providing light)\n  A sword\n  A leaflet","status_line":"Dam                                                       Score: 50  Moves: 70","score":50}
+{"ts":"2026-11-13T03:53:30.148Z","type":"command","turn":73,"text":"drop wrench"}
+{"ts":"2026-11-13T03:53:30.150Z","type":"output","turn":73,"text":"Dropped.","status_line":"Dam                                                       Score: 50  Moves: 71","score":50}
+{"ts":"2026-11-13T03:53:30.677Z","type":"command","turn":74,"text":"take bar"}
+{"ts":"2026-11-13T03:53:30.679Z","type":"output","turn":74,"text":"Taken.","status_line":"Dam                                                       Score: 50  Moves: 72","score":50}
+{"ts":"2026-11-13T03:53:31.809Z","type":"command","turn":75,"text":"down"}
+{"ts":"2026-11-13T03:53:31.811Z","type":"output","turn":75,"text":"Dam Base\nYou are at the base of Flood Control Dam #3, which looms above you and to the north. The river Frigid is flowing by here. Along the river are the White Cliffs which seem to form giant walls stretching from north to south along the shores of the river as it winds its way downstream.\nThere is a folded pile of plastic here which has a small valve attached.","status_line":"Dam Base                                                  Score: 50  Moves: 73","score":50}
+{"ts":"2026-11-13T03:53:32.469Z","type":"command","turn":76,"text":"take pile"}
+{"ts":"2026-11-13T03:53:32.471Z","type":"output","turn":76,"text":"Your load is too heavy.","status_line":"Dam Base                                                  Score: 50  Moves: 74","score":50}
+{"ts":"2026-11-13T03:53:33.115Z","type":"command","turn":77,"text":"drop screwdriver"}
+{"ts":"2026-11-13T03:53:33.116Z","type":"output","turn":77,"text":"Dropped.","status_line":"Dam Base                                                  Score: 50  Moves: 75","score":50}
+{"ts":"2026-11-13T03:53:33.659Z","type":"command","turn":78,"text":"take pile"}
+{"ts":"2026-11-13T03:53:33.660Z","type":"output","turn":78,"text":"Your load is too heavy.","status_line":"Dam Base                                                  Score: 50  Moves: 76","score":50}
+{"ts":"2026-11-13T03:53:34.191Z","type":"command","turn":79,"text":"drop sword"}
+{"ts":"2026-11-13T03:53:34.192Z","type":"output","turn":79,"text":"Dropped.","status_line":"Dam Base                                                  Score: 50  Moves: 77","score":50}
+{"ts":"2026-11-13T03:53:34.743Z","type":"command","turn":80,"text":"take pile"}
+{"ts":"2026-11-13T03:53:34.744Z","type":"output","turn":80,"text":"Taken.","status_line":"Dam Base                                                  Score: 50  Moves: 78","score":50}
+{"ts":"2026-11-13T03:53:35.336Z","type":"command","turn":81,"text":"drop bar"}
+{"ts":"2026-11-13T03:53:35.337Z","type":"output","turn":81,"text":"Dropped.","status_line":"Dam Base                                                  Score: 50  Moves: 79","score":50}
+{"ts":"2026-11-13T03:53:36.258Z","type":"command","turn":82,"text":"take screwdriver"}
+{"ts":"2026-11-13T03:53:36.259Z","type":"output","turn":82,"text":"Taken.","status_line":"Dam Base                                                  Score: 50  Moves: 80","score":50}
+{"ts":"2026-11-13T03:53:37.187Z","type":"command","turn":83,"text":"take sword"}
+{"ts":"2026-11-13T03:53:37.189Z","type":"output","turn":83,"text":"Taken.","status_line":"Dam Base                                                  Score: 50  Moves: 81","score":50}
+{"ts":"2026-11-13T03:53:37.685Z","type":"command","turn":84,"text":"take bar"}
+{"ts":"2026-11-13T03:53:37.687Z","type":"output","turn":84,"text":"Your load is too heavy.","status_line":"Dam Base                                                  Score: 50  Moves: 82","score":50}
+{"ts":"2026-11-13T03:53:38.270Z","type":"command","turn":85,"text":"drop matchbook"}
+{"ts":"2026-11-13T03:53:38.271Z","type":"output","turn":85,"text":"Dropped.","status_line":"Dam Base                                                  Score: 50  Moves: 83","score":50}
+{"ts":"2026-11-13T03:53:38.867Z","type":"command","turn":86,"text":"take bar"}
+{"ts":"2026-11-13T03:53:38.868Z","type":"output","turn":86,"text":"Your load is too heavy.","status_line":"Dam Base                                                  Score: 50  Moves: 84","score":50}
+{"ts":"2026-11-13T03:53:39.421Z","type":"command","turn":87,"text":"drop guidebook"}
+{"ts":"2026-11-13T03:53:39.422Z","type":"output","turn":87,"text":"Dropped.","status_line":"Dam Base                                                  Score: 50  Moves: 85","score":50}
+{"ts":"2026-11-13T03:53:40.893Z","type":"command","turn":88,"text":"take bar"}
+{"ts":"2026-11-13T03:53:40.895Z","type":"output","turn":88,"text":"Your load is too heavy.","status_line":"Dam Base                                                  Score: 50  Moves: 86","score":50}
+{"ts":"2026-11-13T03:53:41.449Z","type":"command","turn":89,"text":"drop leaflet"}
+{"ts":"2026-11-13T03:53:41.451Z","type":"output","turn":89,"text":"Dropped.","status_line":"Dam Base                                                  Score: 50  Moves: 87","score":50}
+{"ts":"2026-11-13T03:53:42.381Z","type":"command","turn":90,"text":"take bar"}
+{"ts":"2026-11-13T03:53:42.382Z","type":"output","turn":90,"text":"Your load is too heavy.","status_line":"Dam Base                                                  Score: 50  Moves: 88","score":50}
+{"ts":"2026-11-13T03:53:44.500Z","type":"command","turn":91,"text":"up"}
+{"ts":"2026-11-13T03:53:44.502Z","type":"output","turn":91,"text":"Dam\nThere is a wrench here.","status_line":"Dam                                                       Score: 50  Moves: 89","score":50}
+{"ts":"2026-11-13T03:53:45.038Z","type":"command","turn":92,"text":"down"}
+{"ts":"2026-11-13T03:53:45.039Z","type":"output","turn":92,"text":"Dam Base\nA small leaflet is on the ground.\nThere is a tour guidebook here.\nThere is a matchbook whose cover says \"Visit Beautiful FCD#3\" here.\nOn the ground is a large platinum bar.","status_line":"Dam Base                                                  Score: 50  Moves: 90","score":50}
+{"ts":"2026-11-13T03:53:45.574Z","type":"command","turn":93,"text":"take matchbook"}
+{"ts":"2026-11-13T03:53:45.576Z","type":"output","turn":93,"text":"Taken.","status_line":"Dam Base                                                  Score: 50  Moves: 91","score":50}
+{"ts":"2026-11-13T03:53:46.198Z","type":"command","turn":94,"text":"take guidebook"}
+{"ts":"2026-11-13T03:53:46.200Z","type":"output","turn":94,"text":"Taken.","status_line":"Dam Base                                                  Score: 50  Moves: 92","score":50}
+{"ts":"2026-11-13T03:53:46.716Z","type":"command","turn":95,"text":"take leaflet"}
+{"ts":"2026-11-13T03:53:46.717Z","type":"output","turn":95,"text":"Taken.","status_line":"Dam Base                                                  Score: 50  Moves: 93","score":50}
+{"ts":"2026-11-13T03:53:47.508Z","type":"command","turn":96,"text":"take bar"}
+{"ts":"2026-11-13T03:53:47.509Z","type":"output","turn":96,"text":"Your load is too heavy.","status_line":"Dam Base                                                  Score: 50  Moves: 94","score":50}
+{"ts":"2026-11-13T03:53:48.163Z","type":"command","turn":97,"text":"n"}
+{"ts":"2026-11-13T03:53:48.165Z","type":"output","turn":97,"text":"Dam\nThere is a wrench here.","status_line":"Dam                                                       Score: 50  Moves: 95","score":50}
+{"ts":"2026-11-13T03:53:48.850Z","type":"command","turn":98,"text":"w"}
+{"ts":"2026-11-13T03:53:48.851Z","type":"output","turn":98,"text":"Reservoir South","status_line":"Reservoir South                                           Score: 50  Moves: 96","score":50}
+{"ts":"2026-11-13T03:53:49.494Z","type":"command","turn":99,"text":"n"}
+{"ts":"2026-11-13T03:53:49.496Z","type":"output","turn":99,"text":"You would drown.","status_line":"Reservoir South                                           Score: 50  Moves: 97","score":50}
+{"ts":"2026-11-13T03:53:50.017Z","type":"command","turn":100,"text":"e"}
+{"ts":"2026-11-13T03:53:50.018Z","type":"output","turn":100,"text":"Dam\nThere is a wrench here.","status_line":"Dam                                                       Score: 50  Moves: 98","score":50}
+{"ts":"2026-11-13T03:53:50.859Z","type":"command","turn":101,"text":"take wrench"}
+{"ts":"2026-11-13T03:53:50.860Z","type":"output","turn":101,"text":"Your load is too heavy.","status_line":"Dam                                                       Score: 50  Moves: 99","score":50}
+{"ts":"2026-11-13T03:53:51.515Z","type":"command","turn":102,"text":"drop tube"}
+{"ts":"2026-11-13T03:53:51.516Z","type":"output","turn":102,"text":"Dropped.","status_line":"Dam                                                      Score: 50  Moves: 100","score":50}
+{"ts":"2026-11-13T03:53:52.009Z","type":"command","turn":103,"text":"take wrench"}
+{"ts":"2026-11-13T03:53:52.011Z","type":"output","turn":103,"text":"Taken.","status_line":"Dam                                                      Score: 50  Moves: 101","score":50}
+{"ts":"2026-11-13T03:53:52.528Z","type":"command","turn":104,"text":"take tube"}
+{"ts":"2026-11-13T03:53:52.529Z","type":"output","turn":104,"text":"Your load is too heavy.","status_line":"Dam                                                      Score: 50  Moves: 102","score":50}
+{"ts":"2026-11-13T03:53:53.158Z","type":"command","turn":105,"text":"drop matchbook"}
+{"ts":"2026-11-13T03:53:53.161Z","type":"output","turn":105,"text":"Dropped.","status_line":"Dam                                                      Score: 50  Moves: 103","score":50}
+{"ts":"2026-11-13T03:53:53.653Z","type":"command","turn":106,"text":"take tube"}
+{"ts":"2026-11-13T03:53:53.655Z","type":"output","turn":106,"text":"Your load is too heavy.","status_line":"Dam                                                      Score: 50  Moves: 104","score":50}
+{"ts":"2026-11-13T03:53:54.407Z","type":"command","turn":107,"text":"drop sword"}
+{"ts":"2026-11-13T03:53:54.409Z","type":"output","turn":107,"text":"Dropped.","status_line":"Dam                                                      Score: 50  Moves: 105","score":50}
+{"ts":"2026-11-13T03:53:55.211Z","type":"command","turn":108,"text":"take tube"}
+{"ts":"2026-11-13T03:53:55.212Z","type":"output","turn":108,"text":"Taken.","status_line":"Dam                                                      Score: 50  Moves: 106","score":50}
+{"ts":"2026-11-13T03:53:55.791Z","type":"command","turn":109,"text":"take sword"}
+{"ts":"2026-11-13T03:53:55.792Z","type":"output","turn":109,"text":"Your load is too heavy.","status_line":"Dam                                                      Score: 50  Moves: 107","score":50}
+{"ts":"2026-11-13T03:53:56.469Z","type":"command","turn":110,"text":"e"}
+{"ts":"2026-11-13T03:53:56.470Z","type":"output","turn":110,"text":"Dam Base\nOn the ground is a large platinum bar.","status_line":"Dam Base                                                 Score: 50  Moves: 108","score":50}
+{"ts":"2026-11-13T03:53:56.987Z","type":"command","turn":111,"text":"take bar"}
+{"ts":"2026-11-13T03:53:56.989Z","type":"output","turn":111,"text":"Taken.","status_line":"Dam Base                                                 Score: 50  Moves: 109","score":50}
+{"ts":"2026-11-13T03:53:57.507Z","type":"command","turn":112,"text":"u"}
+{"ts":"2026-11-13T03:53:57.508Z","type":"output","turn":112,"text":"Dam\nThere is a sword here.\nThere is a matchbook whose cover says \"Visit Beautiful FCD#3\" here.","status_line":"Dam                                                      Score: 50  Moves: 110","score":50}
+{"ts":"2026-11-13T03:53:58.545Z","type":"command","turn":113,"text":"e"}
+{"ts":"2026-11-13T03:53:58.547Z","type":"output","turn":113,"text":"Dam Base","status_line":"Dam Base                                                 Score: 50  Moves: 111","score":50}
+{"ts":"2026-11-13T03:53:59.377Z","type":"command","turn":114,"text":"e"}
+{"ts":"2026-11-13T03:53:59.379Z","type":"output","turn":114,"text":"You can't go that way.","status_line":"Dam Base                                                 Score: 50  Moves: 112","score":50}
+{"ts":"2026-11-13T03:54:01.215Z","type":"command","turn":115,"text":"w"}
+{"ts":"2026-11-13T03:54:01.216Z","type":"output","turn":115,"text":"You can't go that way.","status_line":"Dam Base                                                 Score: 50  Moves: 113","score":50}
+{"ts":"2026-11-13T03:54:01.730Z","type":"command","turn":116,"text":"u"}
+{"ts":"2026-11-13T03:54:01.731Z","type":"output","turn":116,"text":"Dam\nThere is a sword here.\nThere is a matchbook whose cover says \"Visit Beautiful FCD#3\" here.","status_line":"Dam                                                      Score: 50  Moves: 114","score":50}
+{"ts":"2026-11-13T03:54:02.251Z","type":"command","turn":117,"text":"n"}
+{"ts":"2026-11-13T03:54:02.252Z","type":"output","turn":117,"text":"Dam Lobby","status_line":"Dam Lobby                                                Score: 50  Moves: 115","score":50}
+{"ts":"2026-11-13T03:54:02.730Z","type":"command","turn":118,"text":"e"}
+{"ts":"2026-11-13T03:54:02.732Z","type":"output","turn":118,"text":"Maintenance Room\nThere is a bloody axe here.","status_line":"Maintenance Room                                         Score: 50  Moves: 116","score":50}
+{"ts":"2026-11-13T03:54:03.256Z","type":"command","turn":119,"text":"take axe"}
+{"ts":"2026-11-13T03:54:03.257Z","type":"output","turn":119,"text":"Your load is too heavy.","status_line":"Maintenance Room                                         Score: 50  Moves: 117","score":50}
+{"ts":"2026-11-13T03:54:03.815Z","type":"command","turn":120,"text":"drop bar"}
+{"ts":"2026-11-13T03:54:03.816Z","type":"output","turn":120,"text":"Dropped.","status_line":"Maintenance Room                                         Score: 50  Moves: 118","score":50}
+{"ts":"2026-11-13T03:54:04.966Z","type":"command","turn":121,"text":"take axe"}
+{"ts":"2026-11-13T03:54:04.968Z","type":"output","turn":121,"text":"Taken.","status_line":"Maintenance Room                                         Score: 50  Moves: 119","score":50}
+{"ts":"2026-11-13T03:54:05.485Z","type":"command","turn":122,"text":"take bar"}
+{"ts":"2026-11-13T03:54:05.486Z","type":"output","turn":122,"text":"Your load is too heavy.","status_line":"Maintenance Room                                         Score: 50  Moves: 120","score":50}
+{"ts":"2026-11-13T03:54:06.044Z","type":"command","turn":123,"text":"drop tube"}
+{"ts":"2026-11-13T03:54:06.046Z","type":"output","turn":123,"text":"Dropped.","status_line":"Maintenance Room                                         Score: 50  Moves: 121","score":50}
+{"ts":"2026-11-13T03:54:06.565Z","type":"command","turn":124,"text":"take bar"}
+{"ts":"2026-11-13T03:54:06.567Z","type":"output","turn":124,"text":"Your load is too heavy.","status_line":"Maintenance Room                                         Score: 50  Moves: 122","score":50}
+{"ts":"2026-11-13T03:54:08.829Z","type":"command","turn":125,"text":"drop leaflet"}
+{"ts":"2026-11-13T03:54:08.831Z","type":"output","turn":125,"text":"Dropped.","status_line":"Maintenance Room                                         Score: 50  Moves: 123","score":50}
+{"ts":"2026-11-13T03:54:09.471Z","type":"command","turn":126,"text":"take bar"}
+{"ts":"2026-11-13T03:54:09.473Z","type":"output","turn":126,"text":"Your load is too heavy.","status_line":"Maintenance Room                                         Score: 50  Moves: 124","score":50}
+{"ts":"2026-11-13T03:54:10.251Z","type":"command","turn":127,"text":"i"}
+{"ts":"2026-11-13T03:54:10.253Z","type":"output","turn":127,"text":"You are carrying:\n  A bloody axe\n  A wrench\n  A tour guidebook\n  A screwdriver\n  A pile of plastic\n  A brass lantern (providing light)","status_line":"Maintenance Room                                         Score: 50  Moves: 125","score":50}
+{"ts":"2026-11-13T03:54:10.793Z","type":"command","turn":128,"text":"drop guidebook"}
+{"ts":"2026-11-13T03:54:10.795Z","type":"output","turn":128,"text":"Dropped.","status_line":"Maintenance Room                                         Score: 50  Moves: 126","score":50}
+{"ts":"2026-11-13T03:54:11.370Z","type":"command","turn":129,"text":"take bar"}
+{"ts":"2026-11-13T03:54:11.372Z","type":"output","turn":129,"text":"Taken.","status_line":"Maintenance Room                                         Score: 50  Moves: 127","score":50}
+{"ts":"2026-11-13T03:54:12.107Z","type":"command","turn":130,"text":"drop axe"}
+{"ts":"2026-11-13T03:54:12.109Z","type":"output","turn":130,"text":"Dropped.\nSomeone carrying a large bag is casually leaning against one of the walls here. He does not speak, but it is clear from his aspect that the bag will be taken only over his dead body.","status_line":"Maintenance Room                                         Score: 50  Moves: 128","score":50}
+{"ts":"2026-11-13T03:54:13.635Z","type":"command","turn":131,"text":"n"}
+{"ts":"2026-11-13T03:54:13.637Z","type":"output","turn":131,"text":"You can't go that way.\nThe thief just left, still carrying his large bag. You may not have noticed that he robbed you blind first.","status_line":"Maintenance Room                                         Score: 50  Moves: 129","score":50}
+{"ts":"2026-11-13T03:54:14.143Z","type":"command","turn":132,"text":"w"}
+{"ts":"2026-11-13T03:54:14.144Z","type":"output","turn":132,"text":"Dam Lobby","status_line":"Dam Lobby                                                Score: 50  Moves: 130","score":50}
+{"ts":"2026-11-13T03:54:14.657Z","type":"command","turn":133,"text":"s"}
+{"ts":"2026-11-13T03:54:14.658Z","type":"output","turn":133,"text":"Dam\nThere is a sword here.\nThere is a matchbook whose cover says \"Visit Beautiful FCD#3\" here.","status_line":"Dam                                                      Score: 50  Moves: 131","score":50}
+{"ts":"2026-11-13T03:54:15.153Z","type":"command","turn":134,"text":"take sword"}
+{"ts":"2026-11-13T03:54:15.154Z","type":"output","turn":134,"text":"Taken.","status_line":"Dam                                                      Score: 50  Moves: 132","score":50}
+{"ts":"2026-11-13T03:54:15.674Z","type":"command","turn":135,"text":"d"}
+{"ts":"2026-11-13T03:54:15.675Z","type":"output","turn":135,"text":"Dam Base","status_line":"Dam Base                                                 Score: 50  Moves: 133","score":50}
+{"ts":"2026-11-13T03:54:16.210Z","type":"command","turn":136,"text":"d"}
+{"ts":"2026-11-13T03:54:16.211Z","type":"output","turn":136,"text":"You can't go that way.","status_line":"Dam Base                                                 Score: 50  Moves: 134","score":50}
+{"ts":"2026-11-13T03:54:18.234Z","type":"command","turn":137,"text":"n"}
+{"ts":"2026-11-13T03:54:18.235Z","type":"output","turn":137,"text":"Dam\nThere is a matchbook whose cover says \"Visit Beautiful FCD#3\" here.","status_line":"Dam                                                      Score: 50  Moves: 135","score":50}
+{"ts":"2026-11-13T03:54:18.750Z","type":"command","turn":138,"text":"take matchbook"}
+{"ts":"2026-11-13T03:54:18.752Z","type":"output","turn":138,"text":"Taken.","status_line":"Dam                                                      Score: 50  Moves: 136","score":50}
+{"ts":"2026-11-13T03:54:19.272Z","type":"command","turn":139,"text":"d"}
+{"ts":"2026-11-13T03:54:19.274Z","type":"output","turn":139,"text":"Dam Base","status_line":"Dam Base                                                 Score: 50  Moves: 137","score":50}
+{"ts":"2026-11-13T03:54:20.473Z","type":"command","turn":140,"text":"n"}
+{"ts":"2026-11-13T03:54:20.474Z","type":"output","turn":140,"text":"Dam","status_line":"Dam                                                      Score: 50  Moves: 138","score":50}
+{"ts":"2026-11-13T03:54:21.012Z","type":"command","turn":141,"text":"n"}
+{"ts":"2026-11-13T03:54:21.013Z","type":"output","turn":141,"text":"Dam Lobby","status_line":"Dam Lobby                                                Score: 50  Moves: 139","score":50}
+{"ts":"2026-11-13T03:54:21.512Z","type":"command","turn":142,"text":"n"}
+{"ts":"2026-11-13T03:54:21.514Z","type":"output","turn":142,"text":"Maintenance Room\nThere is a bloody axe here.\nThere is a tour guidebook here.\nA small leaflet is on the ground.\nThere is an object which looks like a tube of toothpaste here.\nThe tube contains:\n  A viscous material","status_line":"Maintenance Room                                         Score: 50  Moves: 140","score":50}
+{"ts":"2026-11-13T03:54:23.729Z","type":"command","turn":143,"text":"s"}
+{"ts":"2026-11-13T03:54:23.730Z","type":"output","turn":143,"text":"Dam Lobby","status_line":"Dam Lobby                                                Score: 50  Moves: 141","score":50}
+{"ts":"2026-11-13T03:54:24.289Z","type":"command","turn":144,"text":"s"}
+{"ts":"2026-11-13T03:54:24.290Z","type":"output","turn":144,"text":"Dam","status_line":"Dam                                                      Score: 50  Moves: 142","score":50}
+{"ts":"2026-11-13T03:54:26.103Z","type":"command","turn":145,"text":"d"}
+{"ts":"2026-11-13T03:54:26.105Z","type":"output","turn":145,"text":"Dam Base","status_line":"Dam Base                                                 Score: 50  Moves: 143","score":50}
+{"ts":"2026-11-13T03:54:26.919Z","type":"command","turn":146,"text":"w"}
+{"ts":"2026-11-13T03:54:26.920Z","type":"output","turn":146,"text":"You can't go that way.","status_line":"Dam Base                                                 Score: 50  Moves: 144","score":50}
+{"ts":"2026-11-13T03:54:27.577Z","type":"command","turn":147,"text":"e"}
+{"ts":"2026-11-13T03:54:27.579Z","type":"output","turn":147,"text":"You can't go that way.","status_line":"Dam Base                                                 Score: 50  Moves: 145","score":50}
+{"ts":"2026-11-13T03:54:28.466Z","type":"command","turn":148,"text":"s"}
+{"ts":"2026-11-13T03:54:28.468Z","type":"output","turn":148,"text":"You can't go that way.","status_line":"Dam Base                                                 Score: 50  Moves: 146","score":50}
+{"ts":"2026-11-13T03:54:28.986Z","type":"command","turn":149,"text":"u"}
+{"ts":"2026-11-13T03:54:28.988Z","type":"output","turn":149,"text":"Dam","status_line":"Dam                                                      Score: 50  Moves: 147","score":50}
+{"ts":"2026-11-13T03:54:29.434Z","type":"command","turn":150,"text":"u"}
+{"ts":"2026-11-13T03:54:29.435Z","type":"output","turn":150,"text":"You can't go that way.","status_line":"Dam                                                      Score: 50  Moves: 148","score":50}
+{"ts":"2026-11-13T03:54:29.435Z","type":"end","ending":"turn_limit","score":50,"turn":150}

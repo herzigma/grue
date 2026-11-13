@@ -1,6 +1,6 @@
 node_modules/
-replays/
-results/
+/replays/
+/results/
 saves/
 *.log
 .env

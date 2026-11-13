@@ -1,0 +1,25 @@
+{
+  "session_id": "cdc0c4fb-6a37-49e8-a666-0c64e7e74d45",
+  "game_id": "skerrin-light",
+  "started_at": "2026-11-13T04:27:49.215Z",
+  "turn": 150,
+  "max_turns": 150,
+  "score": 26,
+  "max_score": 50,
+  "game_over": true,
+  "ending": "turn_limit",
+  "meta": {
+    "agent": "brass-lantern/0.2.0",
+    "model": "openrouter:qwen/qwen3.8-flash",
+    "run_id": "20261112-232747-skerrin-light-openrouter-qwen-qwen3.8-flash-bfaa",
+    "temperature": 0.7,
+    "bench": "budget-skerrin-repeats",
+    "repeat": 1
+  },
+  "ended_at": "2026-11-13T04:34:25.358Z",
+  "duration_ms": 396143,
+  "invalid_commands": 5,
+  "unique_locations": 13,
+  "max_score_reached": 26,
+  "transcript": "replays/skerrin-light_cdc0c4fb-6a37-49e8-a666-0c64e7e74d45.jsonl"
+}

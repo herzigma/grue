@@ -1,0 +1,303 @@
+{"ts":"2026-11-13T03:50:49.072Z","type":"start","session_id":"b7ee4e11-e652-4d33-9e68-22296d7e90b1","game_id":"zork1","meta":{"agent":"brass-lantern/0.2.0","model":"openrouter:anthropic/claude-haiku-5.5","run_id":"20261112-225048-zork1-openrouter-anthropic-claude-haiku-5.5-c43d","temperature":0.7,"bench":"budget","repeat":1}}
+{"ts":"2026-11-13T03:50:49.728Z","type":"output","turn":0,"text":"ZORK I: The Great Underground Empire\nInfocom interactive fiction - a fantasy story\nCopyright (c) 1981, 1982, 1983, 1984, 1985, 1986 Infocom, Inc. All rights reserved.\nZORK is a registered trademark of Infocom, Inc.\nRelease 119 / Serial number 880429\n\nWest of House\nYou are standing in an open field west of a white house, with a boarded front door.\nThere is a small mailbox here.","status_line":"West of House                                               Score: 0  Moves: 0","score":0}
+{"ts":"2026-11-13T03:50:52.492Z","type":"command","turn":1,"text":"open mailbox"}
+{"ts":"2026-11-13T03:50:52.502Z","type":"output","turn":1,"text":"Opening the small mailbox reveals a leaflet.","status_line":"West of House                                               Score: 0  Moves: 1","score":0}
+{"ts":"2026-11-13T03:51:15.418Z","type":"command","turn":2,"text":"take leaflet"}
+{"ts":"2026-11-13T03:51:15.420Z","type":"output","turn":2,"text":"Taken.","status_line":"West of House                                               Score: 0  Moves: 2","score":0}
+{"ts":"2026-11-13T03:51:16.092Z","type":"command","turn":3,"text":"read leaflet"}
+{"ts":"2026-11-13T03:51:16.095Z","type":"output","turn":3,"text":"\"WELCOME TO ZORK!\n\nZORK is a game of adventure, danger, and low cunning. In it you will explore some of the most amazing territory ever seen by mortals. No computer should be without one!\"","status_line":"West of House                                               Score: 0  Moves: 3","score":0}
+{"ts":"2026-11-13T03:51:17.971Z","type":"command","turn":4,"text":"east"}
+{"ts":"2026-11-13T03:51:17.973Z","type":"output","turn":4,"text":"The door is boarded and you can't remove the boards.","status_line":"West of House                                               Score: 0  Moves: 4","score":0}
+{"ts":"2026-11-13T03:51:19.636Z","type":"command","turn":5,"text":"north"}
+{"ts":"2026-11-13T03:51:19.639Z","type":"output","turn":5,"text":"North of House\nYou are facing the north side of a white house. There is no door here, and all the windows are boarded up. To the north a narrow path winds through the trees.","status_line":"North of House                                              Score: 0  Moves: 5","score":0}
+{"ts":"2026-11-13T03:51:20.248Z","type":"command","turn":6,"text":"east"}
+{"ts":"2026-11-13T03:51:20.250Z","type":"output","turn":6,"text":"Behind House\nYou are behind the white house. A path leads into the forest to the east. In one corner of the house there is a small window which is slightly ajar.","status_line":"Behind House                                                Score: 0  Moves: 6","score":0}
+{"ts":"2026-11-13T03:51:20.845Z","type":"command","turn":7,"text":"open window"}
+{"ts":"2026-11-13T03:51:20.848Z","type":"output","turn":7,"text":"With great effort, you open the window far enough to allow entry.","status_line":"Behind House                                                Score: 0  Moves: 7","score":0}
+{"ts":"2026-11-13T03:51:21.538Z","type":"command","turn":8,"text":"west"}
+{"ts":"2026-11-13T03:51:21.541Z","type":"output","turn":8,"text":"Kitchen\nYou are in the kitchen of the white house. A table seems to have been used recently for the preparation of food. A passage leads to the west and a dark staircase can be seen leading upward. A dark chimney leads down and to the east is a small window which is open.\nA bottle is sitting on the table.\nThe glass bottle contains:\n  A quantity of water\nOn the table is an elongated brown sack, smelling of hot peppers.","status_line":"Kitchen                                                    Score: 10  Moves: 8","score":10}
+{"ts":"2026-11-13T03:51:22.343Z","type":"command","turn":9,"text":"take sack"}
+{"ts":"2026-11-13T03:51:22.346Z","type":"output","turn":9,"text":"Taken.","status_line":"Kitchen                                                    Score: 10  Moves: 9","score":10}
+{"ts":"2026-11-13T03:51:22.960Z","type":"command","turn":10,"text":"take bottle"}
+{"ts":"2026-11-13T03:51:22.962Z","type":"output","turn":10,"text":"Taken.","status_line":"Kitchen                                                   Score: 10  Moves: 10","score":10}
+{"ts":"2026-11-13T03:51:23.900Z","type":"command","turn":11,"text":"up"}
+{"ts":"2026-11-13T03:51:23.902Z","type":"output","turn":11,"text":"You have moved into a dark place.\nIt is pitch black. You are likely to be eaten by a grue.","status_line":"Attic                                                     Score: 10  Moves: 11","score":10}
+{"ts":"2026-11-13T03:51:26.430Z","type":"command","turn":12,"text":"down"}
+{"ts":"2026-11-13T03:51:26.432Z","type":"output","turn":12,"text":"Kitchen","status_line":"Kitchen                                                   Score: 10  Moves: 12","score":10}
+{"ts":"2026-11-13T03:51:27.252Z","type":"command","turn":13,"text":"west"}
+{"ts":"2026-11-13T03:51:27.254Z","type":"output","turn":13,"text":"Living Room\nYou are in the living room. There is a doorway to the east, a wooden door with strange gothic lettering to the west, which appears to be nailed shut, a trophy case, and a large oriental rug in the center of the room.\nAbove the trophy case hangs an elvish sword of great antiquity.\nA battery-powered brass lantern is on the trophy case.","status_line":"Living Room                                               Score: 10  Moves: 13","score":10}
+{"ts":"2026-11-13T03:51:27.922Z","type":"command","turn":14,"text":"take lantern"}
+{"ts":"2026-11-13T03:51:27.923Z","type":"output","turn":14,"text":"Taken.","status_line":"Living Room                                               Score: 10  Moves: 14","score":10}
+{"ts":"2026-11-13T03:51:28.500Z","type":"command","turn":15,"text":"turn on lantern"}
+{"ts":"2026-11-13T03:51:28.502Z","type":"output","turn":15,"text":"The brass lantern is now on.","status_line":"Living Room                                               Score: 10  Moves: 15","score":10}
+{"ts":"2026-11-13T03:51:29.236Z","type":"command","turn":16,"text":"take sword"}
+{"ts":"2026-11-13T03:51:29.238Z","type":"output","turn":16,"text":"Taken.","status_line":"Living Room                                               Score: 10  Moves: 16","score":10}
+{"ts":"2026-11-13T03:51:30.169Z","type":"command","turn":17,"text":"east"}
+{"ts":"2026-11-13T03:51:30.171Z","type":"output","turn":17,"text":"Kitchen","status_line":"Kitchen                                                   Score: 10  Moves: 17","score":10}
+{"ts":"2026-11-13T03:51:30.969Z","type":"command","turn":18,"text":"up"}
+{"ts":"2026-11-13T03:51:30.971Z","type":"output","turn":18,"text":"Attic\nThis is the attic. The only exit is a stairway leading down.\nA large coil of rope is lying in the corner.\nOn a table is a nasty-looking knife.","status_line":"Attic                                                     Score: 10  Moves: 18","score":10}
+{"ts":"2026-11-13T03:51:31.783Z","type":"command","turn":19,"text":"take rope"}
+{"ts":"2026-11-13T03:51:31.785Z","type":"output","turn":19,"text":"Taken.","status_line":"Attic                                                     Score: 10  Moves: 19","score":10}
+{"ts":"2026-11-13T03:51:32.380Z","type":"command","turn":20,"text":"take knife"}
+{"ts":"2026-11-13T03:51:32.382Z","type":"output","turn":20,"text":"Taken.","status_line":"Attic                                                     Score: 10  Moves: 20","score":10}
+{"ts":"2026-11-13T03:51:33.206Z","type":"command","turn":21,"text":"down"}
+{"ts":"2026-11-13T03:51:33.207Z","type":"output","turn":21,"text":"Kitchen","status_line":"Kitchen                                                   Score: 10  Moves: 21","score":10}
+{"ts":"2026-11-13T03:51:33.850Z","type":"command","turn":22,"text":"west"}
+{"ts":"2026-11-13T03:51:33.852Z","type":"output","turn":22,"text":"Living Room","status_line":"Living Room                                               Score: 10  Moves: 22","score":10}
+{"ts":"2026-11-13T03:51:36.463Z","type":"command","turn":23,"text":"east"}
+{"ts":"2026-11-13T03:51:36.465Z","type":"output","turn":23,"text":"Kitchen","status_line":"Kitchen                                                   Score: 10  Moves: 23","score":10}
+{"ts":"2026-11-13T03:51:37.119Z","type":"command","turn":24,"text":"east"}
+{"ts":"2026-11-13T03:51:37.121Z","type":"output","turn":24,"text":"Behind House","status_line":"Behind House                                              Score: 10  Moves: 24","score":10}
+{"ts":"2026-11-13T03:51:37.741Z","type":"command","turn":25,"text":"east"}
+{"ts":"2026-11-13T03:51:37.742Z","type":"output","turn":25,"text":"Clearing\nYou are in a small clearing in a well marked forest path that extends to the east and west.","status_line":"Clearing                                                  Score: 10  Moves: 25","score":10}
+{"ts":"2026-11-13T03:51:38.606Z","type":"command","turn":26,"text":"east"}
+{"ts":"2026-11-13T03:51:38.608Z","type":"output","turn":26,"text":"Canyon View\nYou are at the top of the Great Canyon on its west wall. From here there is a marvelous view of the canyon and parts of the Frigid River upstream. Across the canyon, the walls of the White Cliffs join the mighty ramparts of the Flathead Mountains to the east. Following the Canyon upstream to the north, Aragain Falls may be seen, complete with rainbow. The mighty Frigid River flows out from a great dark cavern. To the west and south can be seen an immense forest, stretching for miles around. A path leads northwest. It is possible to climb down into the canyon from here.","status_line":"Canyon View                                               Score: 10  Moves: 26","score":10}
+{"ts":"2026-11-13T03:51:39.389Z","type":"command","turn":27,"text":"down"}
+{"ts":"2026-11-13T03:51:39.391Z","type":"output","turn":27,"text":"Rocky Ledge\nYou are on a ledge about halfway up the wall of the river canyon. You can see from here that the main flow from Aragain Falls twists along a passage which it is impossible for you to enter. Below you is the canyon bottom. Above you is more cliff, which appears climbable.","status_line":"Rocky Ledge                                               Score: 10  Moves: 27","score":10}
+{"ts":"2026-11-13T03:51:39.972Z","type":"command","turn":28,"text":"down"}
+{"ts":"2026-11-13T03:51:39.974Z","type":"output","turn":28,"text":"Canyon Bottom\nYou are beneath the walls of the river canyon which may be climbable here. The lesser part of the runoff of Aragain Falls flows by below. To the north is a narrow path.","status_line":"Canyon Bottom                                             Score: 10  Moves: 28","score":10}
+{"ts":"2026-11-13T03:51:40.614Z","type":"command","turn":29,"text":"north"}
+{"ts":"2026-11-13T03:51:40.616Z","type":"output","turn":29,"text":"End of Rainbow\nYou are on a small, rocky beach on the continuation of the Frigid River past the Falls. The beach is narrow due to the presence of the White Cliffs. The river canyon opens here and sunlight shines in from above. A rainbow crosses over the falls to the east and a narrow path continues to the southwest.","status_line":"End of Rainbow                                            Score: 10  Moves: 29","score":10}
+{"ts":"2026-11-13T03:51:43.867Z","type":"command","turn":30,"text":"southwest"}
+{"ts":"2026-11-13T03:51:43.869Z","type":"output","turn":30,"text":"Canyon Bottom","status_line":"Canyon Bottom                                             Score: 10  Moves: 30","score":10}
+{"ts":"2026-11-13T03:51:44.622Z","type":"command","turn":31,"text":"up"}
+{"ts":"2026-11-13T03:51:44.624Z","type":"output","turn":31,"text":"Rocky Ledge","status_line":"Rocky Ledge                                               Score: 10  Moves: 31","score":10}
+{"ts":"2026-11-13T03:51:45.301Z","type":"command","turn":32,"text":"up"}
+{"ts":"2026-11-13T03:51:45.302Z","type":"output","turn":32,"text":"Canyon View","status_line":"Canyon View                                               Score: 10  Moves: 32","score":10}
+{"ts":"2026-11-13T03:51:48.415Z","type":"command","turn":33,"text":"northwest"}
+{"ts":"2026-11-13T03:51:48.417Z","type":"output","turn":33,"text":"Clearing","status_line":"Clearing                                                  Score: 10  Moves: 33","score":10}
+{"ts":"2026-11-13T03:51:49.421Z","type":"command","turn":34,"text":"west"}
+{"ts":"2026-11-13T03:51:49.423Z","type":"output","turn":34,"text":"Behind House","status_line":"Behind House                                              Score: 10  Moves: 34","score":10}
+{"ts":"2026-11-13T03:51:50.954Z","type":"command","turn":35,"text":"west"}
+{"ts":"2026-11-13T03:51:50.956Z","type":"output","turn":35,"text":"Kitchen","status_line":"Kitchen                                                   Score: 10  Moves: 35","score":10}
+{"ts":"2026-11-13T03:51:53.866Z","type":"command","turn":36,"text":"down"}
+{"ts":"2026-11-13T03:51:53.868Z","type":"output","turn":36,"text":"Only Santa Claus climbs down chimneys.","status_line":"Kitchen                                                   Score: 10  Moves: 36","score":10}
+{"ts":"2026-11-13T03:51:54.876Z","type":"command","turn":37,"text":"west"}
+{"ts":"2026-11-13T03:51:54.877Z","type":"output","turn":37,"text":"Living Room","status_line":"Living Room                                               Score: 10  Moves: 37","score":10}
+{"ts":"2026-11-13T03:51:55.788Z","type":"command","turn":38,"text":"move rug"}
+{"ts":"2026-11-13T03:51:55.789Z","type":"output","turn":38,"text":"With a great effort, the rug is moved to one side of the room, revealing the dusty cover of a closed trap door.","status_line":"Living Room                                               Score: 10  Moves: 38","score":10}
+{"ts":"2026-11-13T03:51:56.817Z","type":"command","turn":39,"text":"open trap door"}
+{"ts":"2026-11-13T03:51:56.819Z","type":"output","turn":39,"text":"The door reluctantly opens to reveal a rickety staircase descending into darkness.","status_line":"Living Room                                               Score: 10  Moves: 39","score":10}
+{"ts":"2026-11-13T03:51:57.588Z","type":"command","turn":40,"text":"down"}
+{"ts":"2026-11-13T03:51:57.590Z","type":"output","turn":40,"text":"The trap door crashes shut, and you hear someone barring it.\n\nCellar\nYou are in a dark and damp cellar with a narrow passageway leading north, and a crawlway to the south. On the west is the bottom of a steep metal ramp which is unclimbable.\nYour sword is glowing with a faint blue glow.","status_line":"Cellar                                                    Score: 35  Moves: 40","score":35}
+{"ts":"2026-11-13T03:51:58.369Z","type":"command","turn":41,"text":"north"}
+{"ts":"2026-11-13T03:51:58.371Z","type":"output","turn":41,"text":"The Troll Room\nThis is a small room with passages to the east and south and a forbidding hole leading west. Bloodstains and deep scratches (perhaps made by an axe) mar the walls.\nA nasty-looking troll, brandishing a bloody axe, blocks all passages out of the room.\nYour sword has begun to glow very brightly.","status_line":"The Troll Room                                            Score: 35  Moves: 41","score":35}
+{"ts":"2026-11-13T03:51:59.975Z","type":"command","turn":42,"text":"attack troll with sword"}
+{"ts":"2026-11-13T03:51:59.977Z","type":"output","turn":42,"text":"A good stroke, but it's too slow; the troll dodges.\nThe troll's axe barely misses your ear.","status_line":"The Troll Room                                            Score: 35  Moves: 42","score":35}
+{"ts":"2026-11-13T03:52:00.993Z","type":"command","turn":43,"text":"attack troll with sword"}
+{"ts":"2026-11-13T03:52:00.995Z","type":"output","turn":43,"text":"The troll is battered into unconsciousness.","status_line":"The Troll Room                                            Score: 35  Moves: 43","score":35}
+{"ts":"2026-11-13T03:52:01.735Z","type":"command","turn":44,"text":"east"}
+{"ts":"2026-11-13T03:52:01.737Z","type":"output","turn":44,"text":"East-West Passage\nThis is a narrow east-west passageway. There is a narrow stairway leading down at the north end of the room.\nYour sword is glowing with a faint blue glow.","status_line":"East-West Passage                                         Score: 40  Moves: 44","score":40}
+{"ts":"2026-11-13T03:52:02.432Z","type":"command","turn":45,"text":"north"}
+{"ts":"2026-11-13T03:52:02.434Z","type":"output","turn":45,"text":"Chasm\nA chasm runs southwest to northeast and the path follows it. You are on the south side of the chasm, where a crack opens into a passage.\nYour sword is no longer glowing.","status_line":"Chasm                                                     Score: 40  Moves: 45","score":40}
+{"ts":"2026-11-13T03:52:03.214Z","type":"command","turn":46,"text":"northeast"}
+{"ts":"2026-11-13T03:52:03.216Z","type":"output","turn":46,"text":"Reservoir South\nYou are in a long room on the south shore of a large lake, far too deep and wide for crossing.\nThere is a path along the stream to the east or west, a steep pathway climbing southwest along the edge of a chasm, and a path leading into a canyon to the southeast.","status_line":"Reservoir South                                           Score: 40  Moves: 46","score":40}
+{"ts":"2026-11-13T03:52:03.898Z","type":"command","turn":47,"text":"southeast"}
+{"ts":"2026-11-13T03:52:03.900Z","type":"output","turn":47,"text":"Deep Canyon\nYou are on the south edge of a deep canyon. Passages lead off to the east, northwest and southwest. A stairway leads down. You can hear the sound of flowing water from below.","status_line":"Deep Canyon                                               Score: 40  Moves: 47","score":40}
+{"ts":"2026-11-13T03:52:04.780Z","type":"command","turn":48,"text":"down"}
+{"ts":"2026-11-13T03:52:04.782Z","type":"output","turn":48,"text":"Loud Room\nThis is a large room with a ceiling which cannot be detected from the ground. There is a narrow passage from east to west and a stone stairway leading upward. The room is deafeningly loud with an undetermined rushing sound. The sound seems to reverberate from all of the walls, making it difficult even to think.\nOn the ground is a large platinum bar.","status_line":"Loud Room                                                 Score: 40  Moves: 47","score":40}
+{"ts":"2026-11-13T03:52:05.559Z","type":"command","turn":49,"text":"take platinum bar"}
+{"ts":"2026-11-13T03:52:05.561Z","type":"output","turn":49,"text":"bar bar ...","status_line":"Loud Room                                                 Score: 40  Moves: 47","score":40}
+{"ts":"2026-11-13T03:52:06.524Z","type":"command","turn":50,"text":"take bar"}
+{"ts":"2026-11-13T03:52:06.526Z","type":"output","turn":50,"text":"bar bar ...","status_line":"Loud Room                                                 Score: 40  Moves: 47","score":40}
+{"ts":"2026-11-13T03:52:07.353Z","type":"command","turn":51,"text":"inventory"}
+{"ts":"2026-11-13T03:52:07.354Z","type":"output","turn":51,"text":"inventory inventory ...","status_line":"Loud Room                                                 Score: 40  Moves: 47","score":40}
+{"ts":"2026-11-13T03:52:10.415Z","type":"command","turn":52,"text":"echo"}
+{"ts":"2026-11-13T03:52:10.417Z","type":"output","turn":52,"text":"The acoustics of the room change subtly.\n\nLoud Room\nOn the ground is a large platinum bar.","status_line":"Loud Room                                                 Score: 40  Moves: 48","score":40}
+{"ts":"2026-11-13T03:52:11.375Z","type":"command","turn":53,"text":"take platinum bar"}
+{"ts":"2026-11-13T03:52:11.377Z","type":"output","turn":53,"text":"Your load is too heavy.","status_line":"Loud Room                                                 Score: 40  Moves: 49","score":40}
+{"ts":"2026-11-13T03:52:12.083Z","type":"command","turn":54,"text":"inventory"}
+{"ts":"2026-11-13T03:52:12.085Z","type":"output","turn":54,"text":"You are carrying:\n  A nasty knife\n  A rope\n  A sword\n  A brass lantern (providing light)\n  A glass bottle\n  The glass bottle contains:\n    A quantity of water\n  A brown sack\n  A leaflet","status_line":"Loud Room                                                 Score: 40  Moves: 50","score":40}
+{"ts":"2026-11-13T03:52:13.201Z","type":"command","turn":55,"text":"drop bottle"}
+{"ts":"2026-11-13T03:52:13.203Z","type":"output","turn":55,"text":"Dropped.","status_line":"Loud Room                                                 Score: 40  Moves: 51","score":40}
+{"ts":"2026-11-13T03:52:13.910Z","type":"command","turn":56,"text":"take platinum bar"}
+{"ts":"2026-11-13T03:52:13.912Z","type":"output","turn":56,"text":"Your load is too heavy.","status_line":"Loud Room                                                 Score: 40  Moves: 52","score":40}
+{"ts":"2026-11-13T03:52:16.104Z","type":"command","turn":57,"text":"drop knife"}
+{"ts":"2026-11-13T03:52:16.106Z","type":"output","turn":57,"text":"Dropped.","status_line":"Loud Room                                                 Score: 40  Moves: 53","score":40}
+{"ts":"2026-11-13T03:52:16.992Z","type":"command","turn":58,"text":"take platinum bar"}
+{"ts":"2026-11-13T03:52:16.993Z","type":"output","turn":58,"text":"Taken.","status_line":"Loud Room                                                 Score: 50  Moves: 54","score":50}
+{"ts":"2026-11-13T03:52:17.840Z","type":"command","turn":59,"text":"up"}
+{"ts":"2026-11-13T03:52:17.842Z","type":"output","turn":59,"text":"Deep Canyon","status_line":"Deep Canyon                                               Score: 50  Moves: 55","score":50}
+{"ts":"2026-11-13T03:52:18.640Z","type":"command","turn":60,"text":"east"}
+{"ts":"2026-11-13T03:52:18.642Z","type":"output","turn":60,"text":"Dam\nYou are standing on the top of the Flood Control Dam #3, which was quite a tourist attraction in times far distant. There are paths to the north, south, and west, and a scramble down.\nThe sluice gates on the dam are closed. Behind the dam, there can be seen a wide reservoir. Water is pouring over the top of the now abandoned dam.\nThere is a control panel here, on which a large metal bolt is mounted. Directly above the bolt is a small green plastic bubble.","status_line":"Dam                                                       Score: 50  Moves: 56","score":50}
+{"ts":"2026-11-13T03:52:19.698Z","type":"command","turn":61,"text":"examine bubble"}
+{"ts":"2026-11-13T03:52:19.700Z","type":"output","turn":61,"text":"There's nothing special about the green bubble.","status_line":"Dam                                                       Score: 50  Moves: 57","score":50}
+{"ts":"2026-11-13T03:52:20.471Z","type":"command","turn":62,"text":"examine panel"}
+{"ts":"2026-11-13T03:52:20.472Z","type":"output","turn":62,"text":"There's nothing special about the control panel.","status_line":"Dam                                                       Score: 50  Moves: 58","score":50}
+{"ts":"2026-11-13T03:52:23.910Z","type":"command","turn":63,"text":"west"}
+{"ts":"2026-11-13T03:52:23.911Z","type":"output","turn":63,"text":"Reservoir South","status_line":"Reservoir South                                           Score: 50  Moves: 59","score":50}
+{"ts":"2026-11-13T03:52:24.961Z","type":"command","turn":64,"text":"northeast"}
+{"ts":"2026-11-13T03:52:24.962Z","type":"output","turn":64,"text":"You can't go that way.","status_line":"Reservoir South                                           Score: 50  Moves: 60","score":50}
+{"ts":"2026-11-13T03:52:26.101Z","type":"command","turn":65,"text":"look"}
+{"ts":"2026-11-13T03:52:26.102Z","type":"output","turn":65,"text":"Reservoir South\nYou are in a long room on the south shore of a large lake, far too deep and wide for crossing.\nThere is a path along the stream to the east or west, a steep pathway climbing southwest along the edge of a chasm, and a path leading into a canyon to the southeast.","status_line":"Reservoir South                                           Score: 50  Moves: 61","score":50}
+{"ts":"2026-11-13T03:52:26.975Z","type":"command","turn":66,"text":"southwest"}
+{"ts":"2026-11-13T03:52:26.976Z","type":"output","turn":66,"text":"Chasm","status_line":"Chasm                                                     Score: 50  Moves: 62","score":50}
+{"ts":"2026-11-13T03:52:27.982Z","type":"command","turn":67,"text":"southwest"}
+{"ts":"2026-11-13T03:52:27.984Z","type":"output","turn":67,"text":"East-West Passage\nYour sword is glowing with a faint blue glow.","status_line":"East-West Passage                                         Score: 50  Moves: 63","score":50}
+{"ts":"2026-11-13T03:52:28.782Z","type":"command","turn":68,"text":"west"}
+{"ts":"2026-11-13T03:52:28.783Z","type":"output","turn":68,"text":"The Troll Room\nA nasty-looking troll, brandishing a bloody axe, blocks all passages out of the room.\nYour sword has begun to glow very brightly.","status_line":"The Troll Room                                            Score: 50  Moves: 64","score":50}
+{"ts":"2026-11-13T03:52:29.603Z","type":"command","turn":69,"text":"attack troll with sword"}
+{"ts":"2026-11-13T03:52:29.604Z","type":"output","turn":69,"text":"Your sword misses the troll by an inch.\nThe axe sweeps past as you jump aside.","status_line":"The Troll Room                                            Score: 50  Moves: 65","score":50}
+{"ts":"2026-11-13T03:52:30.745Z","type":"command","turn":70,"text":"attack troll with sword"}
+{"ts":"2026-11-13T03:52:30.747Z","type":"output","turn":70,"text":"The haft of your sword knocks out the troll.","status_line":"The Troll Room                                            Score: 50  Moves: 66","score":50}
+{"ts":"2026-11-13T03:52:31.677Z","type":"command","turn":71,"text":"south"}
+{"ts":"2026-11-13T03:52:31.678Z","type":"output","turn":71,"text":"Cellar\nYour sword is glowing with a faint blue glow.","status_line":"Cellar                                                    Score: 50  Moves: 67","score":50}
+{"ts":"2026-11-13T03:52:32.917Z","type":"command","turn":72,"text":"look"}
+{"ts":"2026-11-13T03:52:32.918Z","type":"output","turn":72,"text":"Cellar\nYou are in a dark and damp cellar with a narrow passageway leading north, and a crawlway to the south. On the west is the bottom of a steep metal ramp which is unclimbable.","status_line":"Cellar                                                    Score: 50  Moves: 68","score":50}
+{"ts":"2026-11-13T03:52:34.033Z","type":"command","turn":73,"text":"north"}
+{"ts":"2026-11-13T03:52:34.035Z","type":"output","turn":73,"text":"The Troll Room\nA nasty-looking troll, brandishing a bloody axe, blocks all passages out of the room.\nYour sword has begun to glow very brightly.","status_line":"The Troll Room                                            Score: 50  Moves: 69","score":50}
+{"ts":"2026-11-13T03:52:34.686Z","type":"command","turn":74,"text":"attack troll with sword"}
+{"ts":"2026-11-13T03:52:34.688Z","type":"output","turn":74,"text":"A good stroke, but it's too slow; the troll dodges.\nThe axe crashes against the rock, throwing sparks!","status_line":"The Troll Room                                            Score: 50  Moves: 70","score":50}
+{"ts":"2026-11-13T03:52:35.551Z","type":"command","turn":75,"text":"attack troll with sword"}
+{"ts":"2026-11-13T03:52:35.553Z","type":"output","turn":75,"text":"The fatal blow strikes the troll square in the heart: He dies.\nAlmost as soon as the troll breathes his last breath, a cloud of sinister black fog envelops him, and when the fog lifts, the carcass has disappeared.\nYour sword is no longer glowing.","status_line":"The Troll Room                                            Score: 50  Moves: 71","score":50}
+{"ts":"2026-11-13T03:52:36.204Z","type":"command","turn":76,"text":"east"}
+{"ts":"2026-11-13T03:52:36.205Z","type":"output","turn":76,"text":"East-West Passage\nSomeone carrying a large bag is casually leaning against one of the walls here. He does not speak, but it is clear from his aspect that the bag will be taken only over his dead body.\nYour sword has begun to glow very brightly.","status_line":"East-West Passage                                         Score: 50  Moves: 72","score":50}
+{"ts":"2026-11-13T03:52:36.993Z","type":"command","turn":77,"text":"attack thief with sword"}
+{"ts":"2026-11-13T03:52:36.995Z","type":"output","turn":77,"text":"The thief is struck on the arm; blood begins to trickle down.\nThe thief rams the haft of his blade into your stomach, leaving you out of breath.","status_line":"East-West Passage                                         Score: 50  Moves: 73","score":50}
+{"ts":"2026-11-13T03:52:37.727Z","type":"command","turn":78,"text":"attack thief with sword"}
+{"ts":"2026-11-13T03:52:37.728Z","type":"output","turn":78,"text":"You are still recovering from that last blow, so your attack is ineffective.\nThe thief comes in from the side, feints, and inserts the blade into your ribs.\nIt appears that that last blow was too much for you. I'm afraid you are dead.\n\n    ****  You have died  ****\n\nNow, let's take a look here... Well, you probably deserve another chance. I can't quite fix you up completely, but you can't have everything.\n\nForest\nThis is a forest, with trees in all directions. To the east, there appears to be sunlight.","status_line":"Forest                                                    Score: 40  Moves: 74","score":40}
+{"ts":"2026-11-13T03:52:38.530Z","type":"command","turn":79,"text":"inventory"}
+{"ts":"2026-11-13T03:52:38.531Z","type":"output","turn":79,"text":"You are empty-handed.","status_line":"Forest                                                    Score: 40  Moves: 75","score":40}
+{"ts":"2026-11-13T03:52:39.523Z","type":"command","turn":80,"text":"look"}
+{"ts":"2026-11-13T03:52:39.524Z","type":"output","turn":80,"text":"Forest\nThis is a forest, with trees in all directions. To the east, there appears to be sunlight.\nA small leaflet is on the ground.","status_line":"Forest                                                    Score: 40  Moves: 76","score":40}
+{"ts":"2026-11-13T03:52:40.215Z","type":"command","turn":81,"text":"take leaflet"}
+{"ts":"2026-11-13T03:52:40.217Z","type":"output","turn":81,"text":"Taken.","status_line":"Forest                                                    Score: 40  Moves: 77","score":40}
+{"ts":"2026-11-13T03:52:41.580Z","type":"command","turn":82,"text":"east"}
+{"ts":"2026-11-13T03:52:41.582Z","type":"output","turn":82,"text":"Forest Path\nThis is a path winding through a dimly lit forest. The path heads north-south here. One particularly large tree with some low branches stands at the edge of the path.\nYou hear in the distance the chirping of a song bird.","status_line":"Forest Path                                               Score: 40  Moves: 78","score":40}
+{"ts":"2026-11-13T03:52:42.934Z","type":"command","turn":83,"text":"examine tree"}
+{"ts":"2026-11-13T03:52:42.935Z","type":"output","turn":83,"text":"There's nothing special about the tree.","status_line":"Forest Path                                               Score: 40  Moves: 79","score":40}
+{"ts":"2026-11-13T03:52:44.520Z","type":"command","turn":84,"text":"climb tree"}
+{"ts":"2026-11-13T03:52:44.522Z","type":"output","turn":84,"text":"Up a Tree\nYou are about 10 feet above the ground nestled among some large branches. The nearest branch above you is above your reach.\nBeside you on the branch is a small bird's nest.\nIn the bird's nest is a large egg encrusted with precious jewels, apparently scavenged by a childless songbird. The egg is covered with fine gold inlay, and ornamented in lapis lazuli and mother-of-pearl. Unlike most eggs, this one is hinged and closed with a delicate looking clasp. The egg appears extremely fragile.","status_line":"Up a Tree                                                 Score: 40  Moves: 80","score":40}
+{"ts":"2026-11-13T03:52:45.325Z","type":"command","turn":85,"text":"take egg"}
+{"ts":"2026-11-13T03:52:45.327Z","type":"output","turn":85,"text":"Taken.","status_line":"Up a Tree                                                 Score: 45  Moves: 81","score":45}
+{"ts":"2026-11-13T03:52:46.003Z","type":"command","turn":86,"text":"down"}
+{"ts":"2026-11-13T03:52:46.005Z","type":"output","turn":86,"text":"Forest Path","status_line":"Forest Path                                               Score: 45  Moves: 82","score":45}
+{"ts":"2026-11-13T03:52:47.023Z","type":"command","turn":87,"text":"north"}
+{"ts":"2026-11-13T03:52:47.025Z","type":"output","turn":87,"text":"Clearing\nYou are in a clearing, with a forest surrounding you on all sides. A path leads south.\nOn the ground is a pile of leaves.","status_line":"Clearing                                                  Score: 45  Moves: 83","score":45}
+{"ts":"2026-11-13T03:52:49.888Z","type":"command","turn":88,"text":"move leaves"}
+{"ts":"2026-11-13T03:52:49.889Z","type":"output","turn":88,"text":"Done.\nIn disturbing the pile of leaves, a grating is revealed.","status_line":"Clearing                                                  Score: 45  Moves: 84","score":45}
+{"ts":"2026-11-13T03:52:50.519Z","type":"command","turn":89,"text":"open grating"}
+{"ts":"2026-11-13T03:52:50.521Z","type":"output","turn":89,"text":"The grating is locked.","status_line":"Clearing                                                  Score: 45  Moves: 85","score":45}
+{"ts":"2026-11-13T03:52:51.286Z","type":"command","turn":90,"text":"examine grating"}
+{"ts":"2026-11-13T03:52:51.288Z","type":"output","turn":90,"text":"The grating is closed.","status_line":"Clearing                                                  Score: 45  Moves: 86","score":45}
+{"ts":"2026-11-13T03:52:52.307Z","type":"command","turn":91,"text":"look"}
+{"ts":"2026-11-13T03:52:52.308Z","type":"output","turn":91,"text":"Clearing\nYou are in a clearing, with a forest surrounding you on all sides. A path leads south.\nThere is a grating securely fastened into the ground.\nOn the ground is a pile of leaves.","status_line":"Clearing                                                  Score: 45  Moves: 87","score":45}
+{"ts":"2026-11-13T03:52:53.077Z","type":"command","turn":92,"text":"south"}
+{"ts":"2026-11-13T03:52:53.079Z","type":"output","turn":92,"text":"Forest Path","status_line":"Forest Path                                               Score: 45  Moves: 88","score":45}
+{"ts":"2026-11-13T03:52:53.955Z","type":"command","turn":93,"text":"south"}
+{"ts":"2026-11-13T03:52:53.956Z","type":"output","turn":93,"text":"North of House","status_line":"North of House                                            Score: 45  Moves: 89","score":45}
+{"ts":"2026-11-13T03:52:54.827Z","type":"command","turn":94,"text":"look"}
+{"ts":"2026-11-13T03:52:54.828Z","type":"output","turn":94,"text":"North of House\nYou are facing the north side of a white house. There is no door here, and all the windows are boarded up. To the north a narrow path winds through the trees.","status_line":"North of House                                            Score: 45  Moves: 90","score":45}
+{"ts":"2026-11-13T03:52:56.067Z","type":"command","turn":95,"text":"east"}
+{"ts":"2026-11-13T03:52:56.069Z","type":"output","turn":95,"text":"Behind House\nThere is a brown sack here.","status_line":"Behind House                                              Score: 45  Moves: 91","score":45}
+{"ts":"2026-11-13T03:52:56.795Z","type":"command","turn":96,"text":"take sack"}
+{"ts":"2026-11-13T03:52:56.796Z","type":"output","turn":96,"text":"Taken.","status_line":"Behind House                                              Score: 45  Moves: 92","score":45}
+{"ts":"2026-11-13T03:52:57.543Z","type":"command","turn":97,"text":"open sack"}
+{"ts":"2026-11-13T03:52:57.544Z","type":"output","turn":97,"text":"Opening the brown sack reveals a clove of garlic, and a lunch.","status_line":"Behind House                                              Score: 45  Moves: 93","score":45}
+{"ts":"2026-11-13T03:52:58.390Z","type":"command","turn":98,"text":"west"}
+{"ts":"2026-11-13T03:52:58.392Z","type":"output","turn":98,"text":"Kitchen","status_line":"Kitchen                                                   Score: 45  Moves: 94","score":45}
+{"ts":"2026-11-13T03:52:59.167Z","type":"command","turn":99,"text":"look"}
+{"ts":"2026-11-13T03:52:59.169Z","type":"output","turn":99,"text":"Kitchen\nYou are in the kitchen of the white house. A table seems to have been used recently for the preparation of food. A passage leads to the west and a dark staircase can be seen leading upward. A dark chimney leads down and to the east is a small window which is open.","status_line":"Kitchen                                                   Score: 45  Moves: 95","score":45}
+{"ts":"2026-11-13T03:53:00.055Z","type":"command","turn":100,"text":"examine table"}
+{"ts":"2026-11-13T03:53:00.056Z","type":"output","turn":100,"text":"The kitchen table is empty.","status_line":"Kitchen                                                   Score: 45  Moves: 96","score":45}
+{"ts":"2026-11-13T03:53:01.195Z","type":"command","turn":101,"text":"west"}
+{"ts":"2026-11-13T03:53:01.197Z","type":"output","turn":101,"text":"Living Room\nThere is a brass lantern (battery-powered) here.","status_line":"Living Room                                               Score: 45  Moves: 97","score":45}
+{"ts":"2026-11-13T03:53:01.904Z","type":"command","turn":102,"text":"take lantern"}
+{"ts":"2026-11-13T03:53:01.905Z","type":"output","turn":102,"text":"Taken.","status_line":"Living Room                                               Score: 45  Moves: 98","score":45}
+{"ts":"2026-11-13T03:53:03.642Z","type":"command","turn":103,"text":"look"}
+{"ts":"2026-11-13T03:53:03.643Z","type":"output","turn":103,"text":"Living Room\nYou are in the living room. There is a doorway to the east, a wooden door with strange gothic lettering to the west, which appears to be nailed shut, a trophy case, and a closed trap door at your feet.","status_line":"Living Room                                               Score: 45  Moves: 99","score":45}
+{"ts":"2026-11-13T03:53:04.311Z","type":"command","turn":104,"text":"put egg in trophy case"}
+{"ts":"2026-11-13T03:53:04.313Z","type":"output","turn":104,"text":"The trophy case isn't open.","status_line":"Living Room                                              Score: 45  Moves: 100","score":45}
+{"ts":"2026-11-13T03:53:04.993Z","type":"command","turn":105,"text":"open trophy case"}
+{"ts":"2026-11-13T03:53:04.995Z","type":"output","turn":105,"text":"Opened.","status_line":"Living Room                                              Score: 45  Moves: 101","score":45}
+{"ts":"2026-11-13T03:53:05.717Z","type":"command","turn":106,"text":"put egg in trophy case"}
+{"ts":"2026-11-13T03:53:05.718Z","type":"output","turn":106,"text":"Done.","status_line":"Living Room                                              Score: 50  Moves: 102","score":50}
+{"ts":"2026-11-13T03:53:06.392Z","type":"command","turn":107,"text":"open trap door"}
+{"ts":"2026-11-13T03:53:06.393Z","type":"output","turn":107,"text":"The door reluctantly opens to reveal a rickety staircase descending into darkness.","status_line":"Living Room                                              Score: 50  Moves: 103","score":50}
+{"ts":"2026-11-13T03:53:07.298Z","type":"command","turn":108,"text":"down"}
+{"ts":"2026-11-13T03:53:07.300Z","type":"output","turn":108,"text":"The trap door crashes shut, and you hear someone barring it.\n\nCellar","status_line":"Cellar                                                   Score: 50  Moves: 104","score":50}
+{"ts":"2026-11-13T03:53:08.219Z","type":"command","turn":109,"text":"turn on lantern"}
+{"ts":"2026-11-13T03:53:08.221Z","type":"output","turn":109,"text":"It is already on.","status_line":"Cellar                                                   Score: 50  Moves: 105","score":50}
+{"ts":"2026-11-13T03:53:08.985Z","type":"command","turn":110,"text":"look"}
+{"ts":"2026-11-13T03:53:08.986Z","type":"output","turn":110,"text":"Cellar\nYou are in a dark and damp cellar with a narrow passageway leading north, and a crawlway to the south. On the west is the bottom of a steep metal ramp which is unclimbable.","status_line":"Cellar                                                   Score: 50  Moves: 106","score":50}
+{"ts":"2026-11-13T03:53:10.237Z","type":"command","turn":111,"text":"north"}
+{"ts":"2026-11-13T03:53:10.238Z","type":"output","turn":111,"text":"The Troll Room\nThere is a bloody axe here.","status_line":"The Troll Room                                           Score: 50  Moves: 107","score":50}
+{"ts":"2026-11-13T03:53:10.938Z","type":"command","turn":112,"text":"take axe"}
+{"ts":"2026-11-13T03:53:10.939Z","type":"output","turn":112,"text":"Taken.","status_line":"The Troll Room                                           Score: 50  Moves: 108","score":50}
+{"ts":"2026-11-13T03:53:11.574Z","type":"command","turn":113,"text":"look"}
+{"ts":"2026-11-13T03:53:11.576Z","type":"output","turn":113,"text":"The Troll Room\nThis is a small room with passages to the east and south and a forbidding hole leading west. Bloodstains and deep scratches (perhaps made by an axe) mar the walls.","status_line":"The Troll Room                                           Score: 50  Moves: 109","score":50}
+{"ts":"2026-11-13T03:53:12.319Z","type":"command","turn":114,"text":"east"}
+{"ts":"2026-11-13T03:53:12.321Z","type":"output","turn":114,"text":"East-West Passage","status_line":"East-West Passage                                        Score: 50  Moves: 110","score":50}
+{"ts":"2026-11-13T03:53:13.325Z","type":"command","turn":115,"text":"west"}
+{"ts":"2026-11-13T03:53:13.327Z","type":"output","turn":115,"text":"The Troll Room","status_line":"The Troll Room                                           Score: 50  Moves: 111","score":50}
+{"ts":"2026-11-13T03:53:14.304Z","type":"command","turn":116,"text":"south"}
+{"ts":"2026-11-13T03:53:14.305Z","type":"output","turn":116,"text":"Cellar","status_line":"Cellar                                                   Score: 50  Moves: 112","score":50}
+{"ts":"2026-11-13T03:53:15.295Z","type":"command","turn":117,"text":"south"}
+{"ts":"2026-11-13T03:53:15.297Z","type":"output","turn":117,"text":"East of Chasm\nYou are on the east edge of a chasm, the bottom of which cannot be seen. A narrow passage goes north, and the path you are on continues to the east.","status_line":"East of Chasm                                            Score: 50  Moves: 113","score":50}
+{"ts":"2026-11-13T03:53:15.989Z","type":"command","turn":118,"text":"east"}
+{"ts":"2026-11-13T03:53:15.991Z","type":"output","turn":118,"text":"Gallery\nThis is an art gallery. Most of the paintings have been stolen by vandals with exceptional taste. The vandals left through either the north or west exits.\nFortunately, there is still one chance for you to be a vandal, for on the far wall is a painting of unparalleled beauty.","status_line":"Gallery                                                  Score: 50  Moves: 114","score":50}
+{"ts":"2026-11-13T03:53:16.885Z","type":"command","turn":119,"text":"take painting"}
+{"ts":"2026-11-13T03:53:16.887Z","type":"output","turn":119,"text":"Taken.","status_line":"Gallery                                                  Score: 54  Moves: 115","score":54}
+{"ts":"2026-11-13T03:53:17.698Z","type":"command","turn":120,"text":"west"}
+{"ts":"2026-11-13T03:53:17.700Z","type":"output","turn":120,"text":"East of Chasm","status_line":"East of Chasm                                            Score: 54  Moves: 116","score":54}
+{"ts":"2026-11-13T03:53:18.377Z","type":"command","turn":121,"text":"west"}
+{"ts":"2026-11-13T03:53:18.378Z","type":"output","turn":121,"text":"You can't go that way.","status_line":"East of Chasm                                            Score: 54  Moves: 117","score":54}
+{"ts":"2026-11-13T03:53:19.512Z","type":"command","turn":122,"text":"north"}
+{"ts":"2026-11-13T03:53:19.513Z","type":"output","turn":122,"text":"Cellar","status_line":"Cellar                                                   Score: 54  Moves: 118","score":54}
+{"ts":"2026-11-13T03:53:20.894Z","type":"command","turn":123,"text":"north"}
+{"ts":"2026-11-13T03:53:20.895Z","type":"output","turn":123,"text":"The Troll Room","status_line":"The Troll Room                                           Score: 54  Moves: 119","score":54}
+{"ts":"2026-11-13T03:53:23.590Z","type":"command","turn":124,"text":"south"}
+{"ts":"2026-11-13T03:53:23.592Z","type":"output","turn":124,"text":"Cellar","status_line":"Cellar                                                   Score: 54  Moves: 120","score":54}
+{"ts":"2026-11-13T03:53:26.537Z","type":"command","turn":125,"text":"open trap door"}
+{"ts":"2026-11-13T03:53:26.538Z","type":"output","turn":125,"text":"The door is locked from above.","status_line":"Cellar                                                   Score: 54  Moves: 121","score":54}
+{"ts":"2026-11-13T03:53:29.733Z","type":"command","turn":126,"text":"north"}
+{"ts":"2026-11-13T03:53:29.735Z","type":"output","turn":126,"text":"The Troll Room","status_line":"The Troll Room                                           Score: 54  Moves: 122","score":54}
+{"ts":"2026-11-13T03:53:31.727Z","type":"command","turn":127,"text":"west"}
+{"ts":"2026-11-13T03:53:31.729Z","type":"output","turn":127,"text":"Maze\nThis is part of a maze of twisty little passages, all alike.","status_line":"Maze                                                     Score: 54  Moves: 123","score":54}
+{"ts":"2026-11-13T03:53:32.824Z","type":"command","turn":128,"text":"look"}
+{"ts":"2026-11-13T03:53:32.825Z","type":"output","turn":128,"text":"Maze\nThis is part of a maze of twisty little passages, all alike.","status_line":"Maze                                                     Score: 54  Moves: 124","score":54}
+{"ts":"2026-11-13T03:53:33.514Z","type":"command","turn":129,"text":"examine maze"}
+{"ts":"2026-11-13T03:53:33.515Z","type":"output","turn":129,"text":"I don't know the word \"maze\".","status_line":"Maze                                                     Score: 54  Moves: 124","score":54}
+{"ts":"2026-11-13T03:53:34.491Z","type":"command","turn":130,"text":"east"}
+{"ts":"2026-11-13T03:53:34.493Z","type":"output","turn":130,"text":"The Troll Room","status_line":"The Troll Room                                           Score: 54  Moves: 125","score":54}
+{"ts":"2026-11-13T03:53:38.662Z","type":"command","turn":131,"text":"west"}
+{"ts":"2026-11-13T03:53:38.664Z","type":"output","turn":131,"text":"Maze\nThis is part of a maze of twisty little passages, all alike.","status_line":"Maze                                                     Score: 54  Moves: 126","score":54}
+{"ts":"2026-11-13T03:53:39.545Z","type":"command","turn":132,"text":"north"}
+{"ts":"2026-11-13T03:53:39.546Z","type":"output","turn":132,"text":"Maze\nThis is part of a maze of twisty little passages, all alike.","status_line":"Maze                                                     Score: 54  Moves: 127","score":54}
+{"ts":"2026-11-13T03:53:40.431Z","type":"command","turn":133,"text":"west"}
+{"ts":"2026-11-13T03:53:40.432Z","type":"output","turn":133,"text":"Maze\nThis is part of a maze of twisty little passages, all alike.","status_line":"Maze                                                     Score: 54  Moves: 128","score":54}
+{"ts":"2026-11-13T03:53:41.116Z","type":"command","turn":134,"text":"south"}
+{"ts":"2026-11-13T03:53:41.117Z","type":"output","turn":134,"text":"You can't go that way.","status_line":"Maze                                                     Score: 54  Moves: 129","score":54}
+{"ts":"2026-11-13T03:53:41.916Z","type":"command","turn":135,"text":"east"}
+{"ts":"2026-11-13T03:53:41.918Z","type":"output","turn":135,"text":"Dead End\nYou have come to a dead end in the maze.","status_line":"Dead End                                                 Score: 54  Moves: 130","score":54}
+{"ts":"2026-11-13T03:53:42.974Z","type":"command","turn":136,"text":"west"}
+{"ts":"2026-11-13T03:53:42.976Z","type":"output","turn":136,"text":"You can't go that way.","status_line":"Dead End                                                 Score: 54  Moves: 131","score":54}
+{"ts":"2026-11-13T03:53:44.246Z","type":"command","turn":137,"text":"north"}
+{"ts":"2026-11-13T03:53:44.248Z","type":"output","turn":137,"text":"You can't go that way.","status_line":"Dead End                                                 Score: 54  Moves: 132","score":54}
+{"ts":"2026-11-13T03:53:45.136Z","type":"command","turn":138,"text":"south"}
+{"ts":"2026-11-13T03:53:45.137Z","type":"output","turn":138,"text":"Maze\nThis is part of a maze of twisty little passages, all alike.","status_line":"Maze                                                     Score: 54  Moves: 133","score":54}
+{"ts":"2026-11-13T03:53:46.119Z","type":"command","turn":139,"text":"north"}
+{"ts":"2026-11-13T03:53:46.121Z","type":"output","turn":139,"text":"Maze\nThis is part of a maze of twisty little passages, all alike.","status_line":"Maze                                                     Score: 54  Moves: 134","score":54}
+{"ts":"2026-11-13T03:53:46.711Z","type":"command","turn":140,"text":"west"}
+{"ts":"2026-11-13T03:53:46.713Z","type":"output","turn":140,"text":"Maze\nThis is part of a maze of twisty little passages, all alike.","status_line":"Maze                                                     Score: 54  Moves: 135","score":54}
+{"ts":"2026-11-13T03:53:47.601Z","type":"command","turn":141,"text":"north"}
+{"ts":"2026-11-13T03:53:47.603Z","type":"output","turn":141,"text":"Maze\nThis is part of a maze of twisty little passages, all alike.","status_line":"Maze                                                     Score: 54  Moves: 136","score":54}
+{"ts":"2026-11-13T03:53:48.267Z","type":"command","turn":142,"text":"west"}
+{"ts":"2026-11-13T03:53:48.269Z","type":"output","turn":142,"text":"Maze\nThis is part of a maze of twisty little passages, all alike.","status_line":"Maze                                                     Score: 54  Moves: 137","score":54}
+{"ts":"2026-11-13T03:53:49.308Z","type":"command","turn":143,"text":"north"}
+{"ts":"2026-11-13T03:53:49.310Z","type":"output","turn":143,"text":"Maze\nThis is part of a maze of twisty little passages, all alike.","status_line":"Maze                                                     Score: 54  Moves: 138","score":54}
+{"ts":"2026-11-13T03:53:50.114Z","type":"command","turn":144,"text":"west"}
+{"ts":"2026-11-13T03:53:50.115Z","type":"output","turn":144,"text":"Maze\nThis is part of a maze of twisty little passages, all alike.","status_line":"Maze                                                     Score: 54  Moves: 139","score":54}
+{"ts":"2026-11-13T03:53:51.264Z","type":"command","turn":145,"text":"north"}
+{"ts":"2026-11-13T03:53:51.265Z","type":"output","turn":145,"text":"Maze\nThis is part of a maze of twisty little passages, all alike.","status_line":"Maze                                                     Score: 54  Moves: 140","score":54}
+{"ts":"2026-11-13T03:53:52.114Z","type":"command","turn":146,"text":"west"}
+{"ts":"2026-11-13T03:53:52.115Z","type":"output","turn":146,"text":"Maze\nThis is part of a maze of twisty little passages, all alike.","status_line":"Maze                                                     Score: 54  Moves: 141","score":54}
+{"ts":"2026-11-13T03:53:52.791Z","type":"command","turn":147,"text":"north"}
+{"ts":"2026-11-13T03:53:52.792Z","type":"output","turn":147,"text":"Maze\nThis is part of a maze of twisty little passages, all alike.","status_line":"Maze                                                     Score: 54  Moves: 142","score":54}
+{"ts":"2026-11-13T03:53:53.488Z","type":"command","turn":148,"text":"west"}
+{"ts":"2026-11-13T03:53:53.490Z","type":"output","turn":148,"text":"Maze\nThis is part of a maze of twisty little passages, all alike.","status_line":"Maze                                                     Score: 54  Moves: 143","score":54}
+{"ts":"2026-11-13T03:53:54.119Z","type":"command","turn":149,"text":"north"}
+{"ts":"2026-11-13T03:53:54.120Z","type":"output","turn":149,"text":"Maze\nThis is part of a maze of twisty little passages, all alike.","status_line":"Maze                                                     Score: 54  Moves: 144","score":54}
+{"ts":"2026-11-13T03:53:54.726Z","type":"command","turn":150,"text":"west"}
+{"ts":"2026-11-13T03:53:54.727Z","type":"output","turn":150,"text":"Maze\nThis is part of a maze of twisty little passages, all alike.","status_line":"Maze                                                     Score: 54  Moves: 145","score":54}
+{"ts":"2026-11-13T03:53:54.727Z","type":"end","ending":"turn_limit","score":54,"turn":150}

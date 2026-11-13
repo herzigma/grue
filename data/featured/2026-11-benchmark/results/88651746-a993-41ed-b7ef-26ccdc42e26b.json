@@ -1,0 +1,25 @@
+{
+  "session_id": "88651746-a993-41ed-b7ef-26ccdc42e26b",
+  "game_id": "lantern-lane",
+  "started_at": "2026-11-13T03:44:42.853Z",
+  "turn": 29,
+  "max_turns": 150,
+  "score": 10,
+  "max_score": 10,
+  "game_over": true,
+  "ending": "won",
+  "meta": {
+    "agent": "brass-lantern/0.2.0",
+    "model": "openrouter:google/gemini-3.5-flash-lite",
+    "run_id": "20261112-224441-lantern-lane-openrouter-google-gemini-3.5-flash-lite-767e",
+    "temperature": 0.7,
+    "bench": "budget",
+    "repeat": 1
+  },
+  "ended_at": "2026-11-13T03:45:22.692Z",
+  "duration_ms": 39839,
+  "invalid_commands": 2,
+  "unique_locations": 6,
+  "max_score_reached": 10,
+  "transcript": "replays/lantern-lane_88651746-a993-41ed-b7ef-26ccdc42e26b.jsonl"
+}
