@@ -24,7 +24,8 @@ curl -s -X POST localhost:8081/api/sessions/SESSION_ID/commands -H 'Content-Type
 curl -s -X DELETE localhost:8081/api/sessions/SESSION_ID
 ```
 
-If the server needs a key, add `-H 'Authorization: Bearer YOUR_KEY'` to every `/api` request.
+If the server needs a key, add `-H 'Authorization: Bearer YOUR_KEY'` to every `/api` request. Use the same key
+for the whole session: another key cannot see it (`404 unknown_session`).
 
 Each reply is an observation:
 
@@ -36,6 +37,10 @@ Each reply is an observation:
 | `input_type` | `"line"` for a normal command, `"char"` for a single keypress (see below) |
 | `game_over`, `ending` | `true` plus `won`, `died`, `ended`, `turn_limit`, `quit`, `timeout`, `crashed`, `aborted` |
 | `notice` | a message from the server about your last input; always read it |
+
+If a command times out (`notice` says the game did not respond) and the game finishes it afterwards, that output
+is not lost: your next response starts with `[Late output from the previous command, which timed out:]`, then
+`[Response to this command:]` and the text for the command you just sent. Read both parts.
 
 Errors are `{"error": "<code>", "message": "..."}`. Common ones: `game_over` (409, start a new session),
 `command_too_long` (max 256 characters), `too_many_sessions` (429, wait and retry), `unknown_session` (404).
@@ -77,8 +82,8 @@ The parser understands short imperative English commands.
 4. **Explore methodically.** `look` in new rooms, `examine` every noun the room mentions, read signs and books.
 5. **Map as you go.** Note exits and what lies beyond them.
 6. **Watch the score.** It tells you which actions mattered. Peak score is recorded, but the final state counts too.
-7. **Parser errors still cost a turn.** "I don't know the word", "I didn't understand that sentence" and
-   "You can't see any such thing" are counted as invalid commands. Use the verbs the game uses.
+7. **Parser errors still cost a turn.** "I don't know the word", "I didn't understand that sentence",
+   "You can't see any X here!" and "That sentence isn't one I recognize" are counted as invalid commands. Use the verbs the game uses.
 
 Mistakes to avoid: explaining your reasoning inside the command, sending sentences, repeating the same failed
 command, inventing objects that were never mentioned.

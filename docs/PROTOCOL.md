@@ -90,7 +90,8 @@ All three share the same sessions, replay logs, results, and metrics.
 
 All bodies are JSON. Errors: non-2xx with `{"error": "<code>", "message": "<human text>"}`.
 If the server is started with `GRUE_API_KEYS` (comma-separated), every `/api/*` request must send
-`Authorization: Bearer <key>`; otherwise 401 `{"error":"unauthorized"}`.
+`Authorization: Bearer <key>`; otherwise 401 `{"error":"unauthorized"}`. With keys configured, a session
+belongs to the key that created it (see section 9, Auth).
 
 | Method & path | Body | Response |
 |---|---|---|
@@ -102,7 +103,7 @@ If the server is started with `GRUE_API_KEYS` (comma-separated), every `/api/*` 
 | `POST /api/sessions/:id/commands` | `{"command":"open mailbox"}` | 200 `Observation` |
 | `GET /api/sessions/:id` | – | `{"session":SessionSummary,"observation":Observation}` (last obs) |
 | `DELETE /api/sessions/:id` | – | 200 `Result` (ends with `ending:"aborted"` if still running) |
-| `GET /api/sessions` | – | `{"sessions":[SessionSummary,...]}` (active only) |
+| `GET /api/sessions` | – | `{"sessions":[SessionSummary,...]}` (active only; with API keys, only the caller's) |
 | `GET /api/results` | query: `game`, `limit` | `{"results":[Result,...]}` newest first |
 | `GET /api/results/:id` | – | `Result` |
 | `GET /api/results/:id/transcript` | – | `{"entries":[ReplayEntry,...]}` |
@@ -176,12 +177,17 @@ socket aborts the session.
   possible M`, `Your score is N (total of M points)` / `... of a possible M`, `scored N points`.
 - **Ending**: game exit → `ended` (or `quit` if the last command was `quit`). Inform-style endings
   `*** You have won ***`, `*** You have died ***`, `*** <other> ***`, Zork-style `**** You have died ****`
-  followed by a RESTART/RESTORE/QUIT question → session ends; ending = `won` if the banner contains
+  closing the turn text (at most a few lines after the banner) and followed by a RESTART/RESTORE/QUIT question
+  → session ends; ending = `won` if the banner contains
   win/won/victory or score == max_score, `died` if it contains died/dead/killed, else `ended`.
   Zork I's death-with-reincarnation (play continues) is **not** an ending.
-- **Invalid command** (parser failure): responses like "I don't know the word", "That's not a verb I
-  recognise", "I didn't understand that sentence", "You can't see any such thing", "I beg your
-  pardon?", "There was no verb in that sentence". Counted in `invalid_commands`.
+- **Invalid command** (parser failure): the response's first line is a known parser-failure message, e.g.
+  "I don't know the word", "That's not a verb I recognise", "I didn't understand that sentence", "You can't see
+  any such thing" / "You can't see any X here!" (Infocom), "That sentence isn't one I recognize", "I beg your
+  pardon?", "There was no verb in that sentence", "There seems to be a noun missing in that sentence", "I only
+  understood you as far as ...". Counted in `invalid_commands`. Only the start of the response counts, so NPC
+  dialogue or prose containing the same words does not, and the parser's questions ("What do you want to
+  take?", "Which do you mean ...?") are not failures.
 
 ## 8. Replay entries (JSONL in `replays/`)
 
@@ -199,7 +205,8 @@ socket aborts the session.
 
 Clarifications made while implementing; none of them change the shapes above.
 
-**HTTP status codes.** `bad_request` 400 (also malformed JSON, 413 for bodies over 64 KB),
+**HTTP status codes.** `bad_request` 400 (also malformed JSON and a JSON body that is not an object, e.g. `null`
+or an array; 413 for bodies over 64 KB, after which the connection is closed),
 `command_too_long` 400, `unauthorized` 401, `unknown_game` 404, `unknown_session` 404 (also used for
 unknown results/transcripts), `game_over` 409, `game_unavailable` 409 (in the catalog but the file is not
 installed), `too_many_sessions` 429, `internal` 500. Wrong method on a known route is 405
@@ -208,7 +215,11 @@ installed), `too_many_sessions` 429, `internal` 500. Wrong method on a known rou
 **Auth.** `GRUE_API_KEYS` protects `/api/*` and `/ws/v1`. `/health`, `/metrics` and `/` stay open. For
 `/ws/v1` the key may be sent as the `Authorization: Bearer` header or, for browsers, as `?api_key=<key>`.
 The legacy text interface has no authentication, so it is disabled when keys are set unless
-`LEGACY_ENABLED=true`.
+`LEGACY_ENABLED=true`. With keys set, sessions are scoped to the key that created them (`/ws/v1` sockets
+included): `GET /api/sessions` lists only the caller's, and commands, `GET` and `DELETE` on another key's
+session are `404 unknown_session`, as if it did not exist. Results and transcripts stay readable by any valid
+key. Sessions made through the legacy interface belong to no key. The server binds `127.0.0.1` unless `HOST`
+says otherwise and warns at startup when bound publicly without keys.
 
 **Commands.** Line commands are flattened before reaching the game: newlines, tabs and control
 characters become spaces, whitespace runs collapse, ends are trimmed. The 256-character limit applies to
@@ -216,7 +227,14 @@ the raw string. If the game's input limit (RemGlk `maxlen`, e.g. 119 for Zork) i
 truncated and `notice` says so. Commands on one session are processed strictly in order, even if sent
 concurrently. If a previous command timed out (`COMMAND_TIMEOUT_MS`) and the game is still busy, the next
 command is not sent: the response carries the late output and a `notice` ("...command was not sent..."), and
-`turn` does not advance.
+`turn` does not advance. If the game finishes the timed-out command after that response was sent, its output is
+not dropped: the next command is sent normally and its `text` starts with
+`[Late output from the previous command, which timed out:]`, the late text, a blank line,
+`[Response to this command:]`, then the command's own text (just the late block if there is none). The late
+text is delivered once, and it feeds score parsing and ending detection (an ending banner in it ends the
+session); invalid-command detection looks only at the command's own text. The same applies if the game exits
+before the late output was collected. A first screen that does not arrive within `START_TIMEOUT_MS` fails the
+start (500 `internal`) instead of returning an empty observation.
 
 **Char mode.** The key names are the RemGlk ones: `return`, `escape`, `up`, `down`, `left`, `right`,
 `pageup`, `pagedown`, `tab`, `delete`, `home`, `end`; `space` sends a space; `backspace` maps to `delete`. When the

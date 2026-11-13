@@ -105,13 +105,28 @@ Set `GRUE_API_KEYS=key1,key2` and every `/api/*` and `/ws/v1` request needs `Aut
 The legacy text interface cannot authenticate, so it is turned off when keys are set unless you also set
 `LEGACY_ENABLED=true`.
 
+With keys set, each session belongs to the key that created it: `GET /api/sessions` lists only your own, and
+commands, `GET` and `DELETE` on another key's session return `404 unknown_session`. Results and transcripts
+(`/api/results...`) stay readable to every valid key, so the leaderboard is shared.
+
+### Security notes
+
+- Grue binds to `127.0.0.1` by default. To serve beyond this machine set `HOST=0.0.0.0` **and** `GRUE_API_KEYS`;
+  Grue logs a warning at startup if it is bound to a non-loopback address with no keys.
+- Keys travel in a header, so put TLS in front (a reverse proxy) before exposing it. `/health`, `/metrics` and
+  the dashboard page itself are not key-protected.
+- Bodies over 64 KB get `413` and the connection is closed. The legacy text interface has no authentication
+  (and no per-key scoping); leave it off on a public server.
+- Idle HTTP connections are kept open for 65 s so clients that think for a few seconds between commands do not
+  hit a closing socket.
+
 ## Configuration
 
 Environment variables (or a `.env` file; see `.env.example`):
 
 | Variable | Default | Meaning |
 |---|---|---|
-| `HOST` | `0.0.0.0` | bind address (use `127.0.0.1` to keep it local) |
+| `HOST` | `127.0.0.1` | bind address; set `0.0.0.0` (with `GRUE_API_KEYS`) to serve other machines |
 | `HTTP_PORT` | `8081` | REST, dashboard, WebSocket (`WS_PORT` still works) |
 | `TCP_PORT` | `8080` | legacy text over TCP |
 | `LEGACY_ENABLED` | `true` (`false` if keys set) | serve the legacy text interface |

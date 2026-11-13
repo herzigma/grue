@@ -14,16 +14,27 @@ import defaults from './config.js';
 import { GameLibrary } from './lib/gameLibrary.js';
 import { SessionManager, ResultStore } from './lib/sessionManager.js';
 import { Metrics } from './lib/metrics.js';
-import { createHttpHandler, isAuthorized, VERSION } from './lib/httpApi.js';
+import { createHttpHandler, authenticate, VERSION } from './lib/httpApi.js';
 import { handleWsJson } from './lib/wsJson.js';
 import { createLegacyConnection } from './lib/legacy.js';
 
 const MAX_TCP_LINE = 8192;
+const KEEP_ALIVE_TIMEOUT_MS = 65_000;
+
+const LOOPBACK_HOST = /^(?:localhost|::1|\[::1\]|127(?:\.\d{1,3}){3})$/i;
+
+/** Startup warning when the server is reachable beyond this machine without API keys; else null. */
+export function exposureWarning(cfg) {
+  if (LOOPBACK_HOST.test(cfg.HOST) || cfg.API_KEYS.length) return null;
+  return `[Grue] WARNING: listening on ${cfg.HOST} with no GRUE_API_KEYS: anyone who can reach this `
+    + 'machine can start sessions and read results. Set GRUE_API_KEYS (comma-separated) before exposing '
+    + 'it, or bind HOST=127.0.0.1.';
+}
 
 /**
  * Start Grue. Any key of config.js can be overridden in `options`; pass `HTTP_PORT: 0` /
  * `TCP_PORT: 0` for ephemeral ports (`TCP_PORT: null` disables the TCP listener).
- * @returns {Promise<{httpPort: number, tcpPort: number|null, manager: SessionManager, close: () => Promise<void>}>}
+ * @returns {Promise<{httpPort: number, tcpPort: number|null, manager: SessionManager, httpServer: http.Server, close: () => Promise<void>}>}
  */
 export async function startServer(options = {}) {
   const cfg = { ...defaults, ...options };
@@ -38,11 +49,15 @@ export async function startServer(options = {}) {
   // -- HTTP + WebSocket ------------------------------------------------------
 
   const httpServer = http.createServer(createHttpHandler(ctx));
+  // Keep idle connections open longer than a client's think time between commands (Node's default
+  // of 5 s closes them mid-request for agents that wait ~5 s), and keep headersTimeout above it.
+  httpServer.keepAliveTimeout = KEEP_ALIVE_TIMEOUT_MS;
+  httpServer.headersTimeout = KEEP_ALIVE_TIMEOUT_MS + 5_000;
   const wsOptions = { noServer: true, maxPayload: 64 * 1024 };
   const wssJson = new WebSocketServer(wsOptions);
   const wssLegacy = new WebSocketServer(wsOptions);
 
-  wssJson.on('connection', (ws) => handleWsJson(ws, ctx));
+  wssJson.on('connection', (ws, req) => handleWsJson(ws, ctx, req.grueOwner ?? null));
   wssLegacy.on('connection', (ws) => {
     const conn = createLegacyConnection(
       ctx,
@@ -63,7 +78,9 @@ export async function startServer(options = {}) {
     const p = url.pathname.replace(/\/+$/, '');
     if (p === '/ws/v1') {
       const token = url.searchParams.get('api_key');
-      if (!isAuthorized(cfg, req.headers, token)) return reject(401, 'Unauthorized');
+      const auth = authenticate(cfg, req.headers, token);
+      if (!auth.ok) return reject(401, 'Unauthorized');
+      req.grueOwner = auth.owner;
       return wssJson.handleUpgrade(req, socket, head, (ws) => wssJson.emit('connection', ws, req));
     }
     if (cfg.LEGACY_ENABLED) {
@@ -115,6 +132,9 @@ export async function startServer(options = {}) {
     throw err;
   }
 
+  const warning = exposureWarning(cfg);
+  if (warning && !cfg.QUIET) console.warn(warning);
+
   const games = library.list();
   log(`[Grue] v${VERSION} -- ${games.filter((g) => g.available).length}/${games.length} game(s) available`);
   log(`[Grue] HTTP/WS  http://localhost:${httpPort}  (dashboard, /api, /ws/v1)`);
@@ -136,7 +156,7 @@ export async function startServer(options = {}) {
     return closing;
   }
 
-  return { httpPort, tcpPort, manager, ctx, close };
+  return { httpPort, tcpPort, manager, ctx, httpServer, close };
 }
 
 // -- Run directly --------------------------------------------------------------

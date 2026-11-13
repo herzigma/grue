@@ -36,8 +36,8 @@ const apiKeys = str('GRUE_API_KEYS', '')
   .filter(Boolean);
 
 const config = {
-  /** Bind address for all listeners. */
-  HOST: str('HOST', '0.0.0.0'),
+  /** Bind address for all listeners. Loopback by default; use 0.0.0.0 (plus GRUE_API_KEYS) to serve beyond this machine. */
+  HOST: str('HOST', '127.0.0.1'),
 
   /** HTTP port: REST API, dashboard, WebSocket JSON (/ws/v1) and legacy WS. WS_PORT is the old name. */
   HTTP_PORT: int('HTTP_PORT', int('WS_PORT', 8081)),

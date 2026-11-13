@@ -160,3 +160,70 @@ test('quit command detection', () => {
   assert.equal(isQuitCommand('quit now'), false);
   assert.equal(isQuitCommand('look'), false);
 });
+
+test('ending banner: chapter banners and prose are not endings', () => {
+  assert.equal(detectEndingBanner('*** Chapter One ***\n\nYou may want to restore your strength'), null);
+  assert.equal(detectEndingBanner('*** Chapter Two ***\n\nYou could restart the engine or quit stalling.'), null);
+  // banner far from the end of the turn, even though a real-looking question closes the text
+  const far = '*** Chapter Four ***\n\n' + Array.from({ length: 8 }, (_, i) => `Line ${i}.`).join('\n')
+    + '\n\nWould you like to RESTART, RESTORE a saved game or QUIT?';
+  assert.equal(detectEndingBanner(far), null);
+  // a chapter banner followed by an ending banner: the ending still counts
+  assert.equal(
+    detectEndingBanner('*** Chapter Five ***\n\nYou fall.\n\n*** You have died ***\n\nWould you like to RESTART, RESTORE a saved game, QUIT or UNDO the last command?').ending,
+    'died',
+  );
+  // Inform 6 prints the score summary between the banner and the question
+  assert.equal(
+    detectEndingBanner('*** You have won ***\n\nIn that game you scored 10 out of a possible 10, in 50 turns.\n\nWould you like to RESTART, RESTORE a saved game or QUIT?').ending,
+    'won',
+  );
+});
+
+test('invalid command detection: real Infocom/Zork I messages', () => {
+  const zork = [
+    'I don\'t know the word "xyzzyx".',
+    "You can't see any sword here!",
+    "That sentence isn't one I recognize.",
+    'There was no verb in that sentence!',
+    'There seems to be a noun missing in that sentence!',
+    'There were too many nouns in that sentence.',
+    'You used the word "n" in a way that I don\'t understand.',
+    'You can\'t use multiple indirect objects with "open".',
+    "It's not clear what you're referring to.",
+    'I beg your pardon?',
+  ];
+  for (const t of zork) assert.equal(isInvalidCommandResponse(t), true, t);
+});
+
+test('invalid command detection: Inform 6/7 and native engine messages', () => {
+  const others = [
+    "I didn't understand that number.",
+    "You can't use multiple objects with that verb.",
+    'I\'m not sure what "it" refers to.',
+    'You seem to have said too little!',
+    'You must name something more substantial.',
+    "I don't understand that.",
+    "You’ll have to say which compass direction to go in.",
+    "That’s not a verb I recognise.",
+    "You'll have to say which compass direction to go in.",
+    "\n  I only understood you as far as wanting to take the lamp.",
+  ];
+  for (const t of others) assert.equal(isInvalidCommandResponse(t), true, t);
+});
+
+test('invalid command detection: questions, prose and mid-text matches are not failures', () => {
+  const fine = [
+    'What do you want to take?',
+    'What do you want to attack the troll with?',
+    'Which do you mean, the red key or the blue key?',
+    'Use compass directions for movement.',
+    '"I beg your pardon, sir," says the guard.',
+    'The guard looks up.\n\n"I beg your pardon, sir," says the guard.',
+    'The guard looks up.\n\nI beg your pardon?',
+    'A sign reads: I don\'t know the word for this place.',
+    'Taken.\n\nYou can\'t see any such thing as a grue here, but you feel uneasy.',
+    'You can\'t go that way.',
+  ];
+  for (const t of fine) assert.equal(isInvalidCommandResponse(t), false, t);
+});
