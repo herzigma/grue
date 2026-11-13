@@ -1,0 +1,7 @@
+* text=auto eol=lf
+*.z3 binary
+*.z5 binary
+*.z8 binary
+*.zblorb binary
+*.gblorb binary
+*.ulx binary

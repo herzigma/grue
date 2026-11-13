@@ -1,5 +1,35 @@
 [
   {
+    "id": "lantern-lane",
+    "title": "Lantern Lane",
+    "author": "Joshua Herzig-Marx",
+    "format": "native",
+    "filename": "original/lantern-lane.js",
+    "max_score": 10,
+    "difficulty": "tutorial",
+    "suggested_turn_limit": 80,
+    "tags": [
+      "original"
+    ],
+    "description": "On Lamp Festival evening a lamplighter's apprentice must find a key, a light and a ladder to relight the great street lamp.",
+    "license": "MIT"
+  },
+  {
+    "id": "skerrin-light",
+    "title": "Skerrin Light",
+    "author": "Joshua Herzig-Marx",
+    "format": "native",
+    "filename": "original/skerrin-light.js",
+    "max_score": 50,
+    "difficulty": "medium",
+    "suggested_turn_limit": 300,
+    "tags": [
+      "original"
+    ],
+    "description": "Explore an abandoned island tide station, combine clues, work its sluice machinery and recover the hidden Harbour Charter before the launch returns.",
+    "license": "MIT"
+  },
+  {
     "id": "airport",
     "title": "The Airport",
     "author": "Cascadian_Patriot",

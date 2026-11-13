@@ -157,7 +157,23 @@ when given. Downloaded binaries are git-ignored; files under `games/original/` a
 **Add a game from the IF Archive:** add a manifest entry with `id`, `filename` and `url` (add `sha256` from
 `sha256sum` after the first download), then run `npm run setup`.
 
-**Add a novel game** (recommended for benchmarking, since classics are in training data):
+**Add a novel game** (recommended for benchmarking, since classics are in training data). There are two ways.
+
+*With Grue's built-in engine (no toolchain).* Write the game as a plain JavaScript module in `games/original/`
+(rooms, objects, puzzle hooks, NPC topics, scoring) and give it a manifest entry with `"format": "native"`. The
+engine supplies a full parser (synonyms, disambiguation, pronouns, containers, light and darkness, locks, undo)
+with classic Inform wording, so scoring and ending detection work like any other game.
+[lib/native/AUTHORING.md](lib/native/AUTHORING.md) is the guide. Two original games ship this way:
+
+| id | difficulty | max score | notes |
+|---|---|---|---|
+| `lantern-lane` | tutorial | 10 | 5 rooms, about 22 moves; good for smoke tests and cheap runs |
+| `skerrin-light` | medium | 50 | 17 rooms, about 76 moves; the main memorization-free benchmark game |
+
+Walkthroughs and spoiler notes are in `games/src/<id>/`, and `node games/src/verify.mjs` checks that each
+game is winnable at full score. Native game files are executed in-process, so only install ones you trust.
+
+*With a standard IF system.*
 
 1. Write it in Inform 7, Inform 6, TADS or similar and compile to a story file Grue can run
    (`.ulx`/`.gblorb` for Glulx, `.z5`/`.z8` for the Z-machine).
@@ -174,6 +190,7 @@ when given. Downloaded binaries are git-ignored; files under `games/original/` a
 index.js                  startServer(options): HTTP + WebSocket upgrade routing + TCP; run directly to listen
 config.js                 environment-driven defaults
 lib/interpreterSession.js one emglken process in RemGlk JSON mode; send(command) -> Turn
+lib/nativeSession.js      same interface for games on the built-in engine (lib/native/)
 lib/parse.js              status line, score, ending and invalid-command heuristics (pure functions)
 lib/gameSession.js        one play-through: observations, score/ending logic, limits, replay, result
 lib/sessionManager.js     session registry (MAX_SESSIONS, lookup, shutdown) and result store

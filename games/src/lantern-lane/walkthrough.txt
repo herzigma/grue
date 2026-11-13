@@ -1,0 +1,22 @@
+look under flowerpot
+take key
+unlock door
+in
+read note
+take matchbox
+take lantern
+light lantern
+open tin
+take biscuit
+open trapdoor
+down
+take can
+up
+out
+n
+give biscuit to bram
+take ladder
+n
+drop ladder
+fill lamp
+light lamp
