@@ -231,6 +231,9 @@ server process exits.
 
 ## Running online
 
+The public instance is **https://grue.party**, and it needs an API key. The QA instance is at
+https://grue-qa.up.railway.app. [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md) covers environments, DNS and releasing.
+
 Grue listens on `127.0.0.1` by default. To host it for remote Brass Lantern clients:
 
 1. **Set keys and bind publicly:** `HOST=0.0.0.0 GRUE_API_KEYS=key-for-alice,key-for-bob npm start`. Each key holder
