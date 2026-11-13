@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Grue share card</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,800;1,9..144,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: #0c0a08; }
+  .card { position: relative; width: 1200px; height: 630px; color: #ebe0c8; font-family: "Fraunces", Georgia, serif; overflow: hidden;
+    background: radial-gradient(760px circle at 900px 250px, rgba(233,166,60,.36), rgba(233,166,60,.12) 40%, transparent 72%), #0c0a08; }
+  .grid { position: absolute; inset: 0; background-image: linear-gradient(rgba(235,224,200,.05) 1px, transparent 1px), linear-gradient(90deg, rgba(235,224,200,.05) 1px, transparent 1px);
+    background-size: 44px 44px; -webkit-mask-image: radial-gradient(ellipse at 70% 40%, #000 5%, transparent 70%); mask-image: radial-gradient(ellipse at 70% 40%, #000 5%, transparent 70%); }
+  .status { position: absolute; left: 0; right: 0; top: 0; background: #ebe0c8; color: #0c0a08; font: 500 20px/1 "IBM Plex Mono", monospace; display: flex; justify-content: space-between; padding: 12px 56px; }
+  .body { position: absolute; left: 56px; top: 120px; width: 700px; }
+  .eyebrow { font: 500 20px "IBM Plex Mono", monospace; letter-spacing: .14em; text-transform: uppercase; color: #e9a63c; margin: 0 0 22px; }
+  h1 { margin: 0; font-weight: 800; font-size: 84px; line-height: .98; letter-spacing: -.03em; }
+  h1 .a { display: block; color: #a79c84; font-weight: 400; font-style: italic; }
+  h1 em { color: #e9a63c; text-shadow: 0 0 30px rgba(233,166,60,.5); }
+  .name { position: absolute; left: 56px; bottom: 44px; font-size: 44px; font-weight: 800; letter-spacing: -.02em; }
+  .name small { display: block; font: 400 22px "IBM Plex Mono", monospace; color: #a79c84; letter-spacing: 0; margin-top: 4px; }
+  .tag { position: absolute; right: 56px; bottom: 44px; font: 500 22px "IBM Plex Mono", monospace; color: #e9a63c; }
+  svg { position: absolute; right: 120px; top: 110px; width: 330px; color: #e9a63c; filter: drop-shadow(0 0 40px rgba(233,166,60,.5)); }
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="grid"></div>
+  <div class="status"><span>Pitch Black</span><span>Score: 0 &nbsp;&nbsp; Moves: 1</span></div>
+  <div class="body">
+    <p class="eyebrow">Text adventures. Every turn scored.</p>
+    <h1><span class="a">It is pitch black.</span>You are likely to be eaten by a <em>grue.</em></h1>
+  </div>
+  <svg viewBox="0 0 200 270" fill="none" stroke="currentColor" stroke-width="5" stroke-linejoin="round" stroke-linecap="round">
+    <path d="M72 58C70 8 130 8 128 58"/><path d="M62 62h76l-12-22H74z"/><path d="M92 40v-9h16v9"/>
+    <path d="M68 66h64l6 124H62z"/><path d="M88 66l-3 124M112 66l3 124" stroke-width="2.5" opacity=".6"/>
+    <path d="M100 98c20 20 24 42 0 62-24-20-20-42 0-62z" stroke="none" fill="#f3bd63"/>
+    <path d="M100 126c8 9 9 17 0 25-9-8-8-16 0-25z" stroke="none" fill="#0c0a08" opacity=".75"/>
+    <path d="M52 190h96l8 26H44z" fill="currentColor" stroke="none"/>
+    <path d="M60 216l-6 16M140 216l6 16M80 216v12M120 216v12"/>
+  </svg>
+  <div class="name">Grue<small>An interactive-fiction benchmark for LLMs</small></div>
+  <div class="tag">grue.party</div>
+</div>
+</body>
+</html>
