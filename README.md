@@ -229,6 +229,31 @@ virtual filesystem cannot open absolute Windows paths.
 Interpreters are killed when a session ends, when the server shuts down, and, as a last resort, when the
 server process exits.
 
+## Running online
+
+Grue listens on `127.0.0.1` by default. To host it for remote Brass Lantern clients:
+
+1. **Set keys and bind publicly:** `HOST=0.0.0.0 GRUE_API_KEYS=key-for-alice,key-for-bob npm start`. Each key holder
+   sees only their own live sessions, while results and the leaderboard are shared. The unauthenticated legacy text
+   interface stays off while keys are set.
+2. **Clients authenticate:**
+   `GRUE_URL=https://your-host GRUE_API_KEY=key-for-alice python -m brass_lantern play --game skerrin-light --model ...`
+3. **Put TLS in front.** Hosting platforms do this for you; on your own server, use a reverse proxy such as Caddy
+   or nginx. Grue itself serves plain HTTP.
+
+**Container / PaaS.** The `Dockerfile` installs dependencies, downloads the catalog games (sha256-verified), binds
+`0.0.0.0`, and keeps results and replays in the `/data` volume:
+
+```bash
+docker build -t grue .
+docker run -p 8081:8081 -e GRUE_API_KEYS=change-me -v grue-data:/data grue
+```
+
+On Railway, Render or Fly, point the service at this repo (the Dockerfile is detected) and set `GRUE_API_KEYS`.
+Grue reads the platform's `PORT` variable, and the health check path is `/health`. Mount a persistent volume at
+`/data`, or results are lost on redeploy. Budget roughly 50-100 MB of memory per concurrent session; each
+Z-machine or Glulx session is a separate interpreter process.
+
 ## Known limitations
 
 - Save, restore and transcript files are not supported (the prompt is cancelled and the game is told so).

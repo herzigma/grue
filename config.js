@@ -40,7 +40,8 @@ const config = {
   HOST: str('HOST', '127.0.0.1'),
 
   /** HTTP port: REST API, dashboard, WebSocket JSON (/ws/v1) and legacy WS. WS_PORT is the old name. */
-  HTTP_PORT: int('HTTP_PORT', int('WS_PORT', 8081)),
+  // PORT is what hosting platforms (Railway, Render, Fly, Heroku) inject.
+  HTTP_PORT: int('HTTP_PORT', int('PORT', int('WS_PORT', 8081))),
 
   /** Legacy raw-text TCP port (use `nc`). */
   TCP_PORT: int('TCP_PORT', 8080),

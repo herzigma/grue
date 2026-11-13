@@ -1,0 +1,7 @@
+node_modules
+results
+replays
+saves
+.git
+.env
+*.log
