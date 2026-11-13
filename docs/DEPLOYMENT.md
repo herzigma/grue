@@ -40,9 +40,10 @@ QA works the same way with `GRUE_URL=https://grue-qa.up.railway.app` and a QA ke
 
 1. Push to `main` and let QA deploy it. Check QA's health, then play a game against it, for example:
    `GRUE_URL=https://grue-qa.up.railway.app python -m brass_lantern play --game lantern-lane --model mock:walkthrough.txt`.
-2. Promote that commit to production. In the Railway dashboard, go to production, open the grue service, then
-   Deployments, and choose **Deploy** for that commit. Alternatively, pin production's source to the commit SHA,
-   which leaves production on that commit until you move the pin.
+2. Promote that commit to production. Production is pinned to a commit, so promoting means moving the pin:
+   stage the new commit SHA as production's source (Railway dashboard: production, the grue service, Settings,
+   Source; or ask Claude, which stages it through the Railway connector), then in production click
+   **Apply changes / Deploy**. Pushes to `main` never touch production.
 
 ## QA auto-deploy: one-time setup
 
