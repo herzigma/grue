@@ -2,8 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { loadNativeGame } from '../../lib/native/index.js';
 import { make } from './fixture.js';
+import { GAMES } from '../../games/src/verify.mjs';
 
-const FILES = ['games/original/lantern-lane.js', 'games/original/skerrin-light.js'];
+// Public games, plus held-out ones when the private games checkout is available (GRUE_PRIVATE_DIR).
+const FILES = GAMES.map((g) => g.file);
 
 const JUNK = [
   '', ' ', '\t\n', '.', '...', ';;;', '!!!', '?', ',', ', , ,', '"', "'", "'''", '--', '-', '\0', '\u0000take lamp',

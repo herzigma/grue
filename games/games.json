@@ -19,12 +19,13 @@
     "title": "Skerrin Light",
     "author": "Joshua Herzig-Marx",
     "format": "native",
-    "filename": "original/skerrin-light.js",
+    "filename": "skerrin-light.js.enc",
     "max_score": 50,
     "difficulty": "medium",
     "suggested_turn_limit": 300,
     "tags": [
-      "original"
+      "original",
+      "private"
     ],
     "description": "Explore an abandoned island tide station, combine clues, work its sluice machinery and recover the hidden Harbour Charter before the launch returns.",
     "license": "MIT"

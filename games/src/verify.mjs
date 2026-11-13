@@ -1,16 +1,34 @@
 // Runs each original game's walkthrough through the native engine and checks the result.
 // Usage: node games/src/verify.mjs
+//
+// Public games live here (games/original + games/src/<id>/walkthrough.txt). Held-out games are checked too when
+// GRUE_PRIVATE_DIR points at the private games checkout (<id>/<id>.js and <id>/walkthrough.txt there).
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import '../../config.js'; // loads .env (GRUE_PRIVATE_DIR)
 import { loadNativeGame } from '../../lib/native/index.js';
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const root = path.resolve(here, '..', '..');
 
+function privateGames() {
+  const dir = process.env.GRUE_PRIVATE_DIR;
+  if (!dir || !fs.existsSync(dir)) return [];
+  const manifest = JSON.parse(fs.readFileSync(path.join(root, 'games', 'games.json'), 'utf8'));
+  return fs.readdirSync(dir)
+    .filter((id) => fs.existsSync(path.join(dir, id, `${id}.js`)) && fs.existsSync(path.join(dir, id, 'walkthrough.txt')))
+    .map((id) => ({
+      id,
+      file: path.join(dir, id, `${id}.js`),
+      walkthrough: path.join(dir, id, 'walkthrough.txt'),
+      maxScore: manifest.find((g) => g.id === id)?.max_score ?? null,
+    }));
+}
+
 export const GAMES = [
-  { id: 'lantern-lane', file: 'games/original/lantern-lane.js', maxScore: 10 },
-  { id: 'skerrin-light', file: 'games/original/skerrin-light.js', maxScore: 50 },
+  { id: 'lantern-lane', file: 'games/original/lantern-lane.js', walkthrough: path.join(here, 'lantern-lane', 'walkthrough.txt'), maxScore: 10 },
+  ...privateGames(),
 ];
 
 const FAILURES = [
@@ -26,8 +44,8 @@ const FAILURES = [
 ];
 
 export async function runWalkthrough(entry) {
-  const game = await loadNativeGame(path.join(root, entry.file));
-  const lines = fs.readFileSync(path.join(here, entry.id, 'walkthrough.txt'), 'utf8').split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
+  const game = await loadNativeGame(path.resolve(root, entry.file));
+  const lines = fs.readFileSync(entry.walkthrough, 'utf8').split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
   const problems = [];
   let obs = game.start();
   let n = 0;

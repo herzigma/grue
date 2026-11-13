@@ -155,7 +155,7 @@ Score: `g.award(key, points, msg?)` (once per key; the engine prints `[Your scor
 World: `g.goto(room)`, `g.go(dir)` (a normal move through the exits), `g.look()`, `g.visited(room)`, `g.dark()`.
 Endings: `g.win(text)`, `g.die(text)`.
 Time: `g.schedule(name, turns)` runs `spec.timers[name]` later; `g.cancel(name)`.
-Text: `g.name(id)`, `g.the(id)`, `g.a(id)`, `g.digits('twenty-seven eighteen')` -> `'2718'`, `g.cap(s)`.
+Text: `g.name(id)`, `g.the(id)`, `g.a(id)`, `g.digits('seventeen twenty-four')` -> `'1724'`, `g.cap(s)`.
 
 ## What the engine gives you for free
 

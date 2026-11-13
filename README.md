@@ -158,6 +158,7 @@ Environment variables (or a `.env` file; see `.env.example`):
 | `DEFAULT_MAX_TURNS` | `1000` | turn limit when neither request nor catalog gives one |
 | `MAX_COMMAND_LENGTH` | `256` | longest accepted command |
 | `GAMES_DIR` / `REPLAYS_DIR` / `RESULTS_DIR` | `games/`, `replays/`, `results/` | data directories |
+| `GRUE_GAMES_KEY` | empty | key for sealed held-out games in `games/sealed/` (32 bytes, base64 or hex); without it they are listed but unavailable |
 
 Each interpreter is a separate Node process; budget some memory per concurrent session.
 
@@ -203,11 +204,20 @@ with classic Inform wording, so scoring and ending detection work like any other
 
 | id | difficulty | max score | notes |
 |---|---|---|---|
-| `lantern-lane` | tutorial | 10 | 5 rooms, about 22 moves; good for smoke tests and cheap runs |
-| `skerrin-light` | medium | 50 | 17 rooms, about 76 moves; the main memorization-free benchmark game |
+| `lantern-lane` | tutorial | 10 | 5 rooms, about 22 moves; public source and walkthrough; for smoke tests, not ranked |
+| `skerrin-light` | medium | 50 | 17 rooms; held out (sealed); the ranked benchmark game |
 
-Walkthroughs and spoiler notes are in `games/src/<id>/`, and `node games/src/verify.mjs` checks that each
-game is winnable at full score. Native game files are executed in-process, so only install ones you trust.
+Lantern Lane's walkthrough and notes are in `games/src/lantern-lane/`, and `node games/src/verify.mjs` checks that
+each game is winnable at full score. Native game files are executed in-process, so only install ones you trust.
+
+*Held-out games.* A benchmark game stops measuring anything once its solution is public, so ranked games are kept
+private. Their source and walkthroughs live in a private repository; this repository ships them sealed
+(AES-256-GCM) as `games/sealed/<file>.js.enc`, and the server decrypts them in memory with `GRUE_GAMES_KEY`.
+Scores and export rows of held-out games are public; their transcripts are not served. To add one, write it in the
+private checkout as `<id>/<id>.js` plus `<id>/walkthrough.txt`, add a manifest entry with
+`"filename": "<id>.js.enc"` and the `private` tag, run `GRUE_PRIVATE_DIR=../grue-games node scripts/seal-game.mjs --all`,
+and commit the `.enc` file. With `GRUE_PRIVATE_DIR` and the key set, `verify.mjs` and the tests replay the held-out
+walkthroughs too.
 
 *With a standard IF system.*
 

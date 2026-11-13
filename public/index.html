@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Grue: text adventures for language models</title>
-<meta name="description" content="An open benchmark that has language models play text adventures. Original games, scored every turn, with full transcripts.">
+<meta name="description" content="An open benchmark that has language models play text adventures. Held-out original games, scored every turn.">
 <meta name="color-scheme" content="light dark">
 <meta name="theme-color" content="#0c0a08">
 <link rel="canonical" href="https://grue.party/">
@@ -304,7 +304,7 @@ footer ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: w
 <section class="sec" id="leaderboard" aria-labelledby="lb-h">
   <div class="wrap">
     <div class="sec-head"><h2 id="lb-h">Scores</h2></div>
-    <p class="sec-intro">Nine models played two original games. They are ranked by the share of points earned.</p>
+    <p class="sec-intro">Nine models played Skerrin Light, a held-out original game. They are ranked by the share of its 50 points they reached.</p>
     <div id="bm"><div class="box"><div class="empty">Lighting the lamp.</div></div></div>
   </div>
 </section>
@@ -343,11 +343,12 @@ footer ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: w
             <caption class="sr">Main columns of the export</caption>
             <thead><tr><th scope="col">Column</th><th scope="col">Meaning</th></tr></thead>
             <tbody>
-              <tr><td>session_id</td><td>The run. Its transcript is at <code>/api/results/{session_id}/transcript</code>.</td></tr>
+              <tr><td>session_id</td><td>The run. Its transcript is at <code>/api/results/{session_id}/transcript</code>, except for held-out games.</td></tr>
               <tr><td>game_id, collection</td><td>The game, and the featured collection a run belongs to (blank for the rest).</td></tr>
               <tr><td>model, effort</td><td>Provider and model, and the reasoning effort sent. Blank effort means the provider default.</td></tr>
               <tr><td>turns, max_turns</td><td>Commands played, and the turn limit.</td></tr>
               <tr><td>score, score_pct, won</td><td>Final score, its share of the maximum, and whether the game was won.</td></tr>
+              <tr><td>peak_score, peak_pct</td><td>The highest score the run reached, and its share. Rankings use this.</td></tr>
               <tr><td>ending</td><td>How it stopped: won, died, turn_limit, quit, timeout and so on.</td></tr>
               <tr><td>invalid_commands, invalid_rate</td><td>Commands the parser rejected, and that count per turn.</td></tr>
               <tr><td>unique_locations</td><td>Distinct rooms visited.</td></tr>
@@ -366,7 +367,7 @@ df = pd.read_csv("https://grue.party/api/export.csv")</pre>
         </div>
         <div class="code">
           <div class="code-h"><span>DuckDB</span><button type="button" data-copy="qs4">Copy</button></div>
-<pre id="qs4">duckdb -c "select model, effort, avg(score_pct) from 'https://grue.party/api/export.csv' where game_id = 'skerrin-light' group by all order by 3 desc"</pre>
+<pre id="qs4">duckdb -c "select model, effort, avg(peak_pct) from 'https://grue.party/api/export.csv' where game_id = 'skerrin-light' group by all order by 3 desc"</pre>
         </div>
       </div>
     </div>
@@ -378,7 +379,7 @@ df = pd.read_csv("https://grue.party/api/export.csv")</pre>
     <div class="sec-head"><h2 id="play-h">Plug in your model</h2></div>
     <div class="play">
       <div>
-        <p>Games, results, and transcripts are public. Playing here needs a key, which you get by opening a GitHub issue; self-hosting is free.</p>
+        <p>Games, results, and transcripts are public, except transcripts of held-out games, which would give away their solutions. Playing here needs a key, which you get by opening a GitHub issue; self-hosting is free.</p>
         <p>An original game is the most useful thing you can send, and no model has read it.</p>
         <ul class="shelf" id="shelf" aria-label="Games on this server"></ul>
       </div>
@@ -426,9 +427,10 @@ npm install &amp;&amp; npm run setup &amp;&amp; npm start   <span class="c"># lo
     empty_filters: 'You can\'t see any such run here.',
     empty_none: 'No runs have finished yet.',
     unavailable: 'The scoreboard is dark. Try again shortly.',
-    setup: 'November 2026. Nine models via OpenRouter, $7.86 in total, default Brass Lantern agent (30-turn memory, no notes, temperature 0.7, low reasoning effort, 150-turn limit). Budget models played Skerrin Light three times, the rest once; each dot is one run.',
+    private_t: 'This is a held-out game, so its transcripts stay private: a good run would give the solution away. The score is public.',
+    setup: 'November 2026. Nine models via OpenRouter, $7.86 in total, default Brass Lantern agent (30-turn memory, no notes, temperature 0.7, low reasoning effort, 150-turn limit). Budget models played Skerrin Light three times, the rest once; each dot is one run. Lantern Lane, the tutorial, is not ranked.',
     ctrl_h: 'Control group',
-    ctrl_p: 'On Zork I, six budget models scored between 11 and 15 percent, which looks like a tie. On Skerrin Light, which none of them had seen, the same six scored between 2 and 63. A perfect transcript is now published below, so ask again in a year.',
+    ctrl_p: 'On Zork I, six budget models scored between 11 and 15 percent, which looks like a tie. On Skerrin Light, which none of them had seen, the same six scored between 2 and 63. Its source and transcripts are kept private so that stays true.',
     asides: ['Gemini 3.5 Flash Lite scored 23, 30, and 41 on the same game.', 'DeepSeek V4 Flash kept writing the game\'s replies for it. Sixty-four percent of its commands were invalid.', 'GLM 5.3 Flash played four games for four cents.'],
   };
 
@@ -562,8 +564,8 @@ npm install &amp;&amp; npm run setup &amp;&amp; npm start   <span class="c"># lo
 
     if (orig.length) {
       parts.push(h('div', { class: 'rank-h', 'aria-hidden': 'true' },
-        h('span'), h('span', {}, 'Model'), h('span', {}, 'Both originals'), h('span', {}, 'Skerrin Light runs'), h('span', { class: 'r' }, 'Cost')));
-      parts.push(h('ol', { class: 'rank', 'aria-label': 'Models ranked by score on the original games' }, orig.map((r, i) => {
+        h('span'), h('span', {}, 'Model'), h('span', {}, 'Skerrin Light'), h('span', {}, 'Runs'), h('span', { class: 'r' }, 'Cost per run')));
+      parts.push(h('ol', { class: 'rank', 'aria-label': 'Models ranked by peak score on Skerrin Light' }, orig.map((r, i) => {
         const rs = (Array.isArray(runs[r.model]) && runs[r.model].length ? runs[r.model] : [r.skerrin_light]).filter((v) => v != null);
         return h('li', {},
           h('span', { class: 'n' }, i + 1),
@@ -572,7 +574,7 @@ npm install &amp;&amp; npm run setup &amp;&amp; npm start   <span class="c"># lo
             h('i', { style: 'width:' + pct(r.score_pct) + '%' }),
             h('b', { class: r.score_pct >= 22 ? 'in' : '', style: 'left:' + pct(r.score_pct) + '%' }, num(r.score_pct) + '%')),
           rs.length ? dots(rs.map((v) => v * 2), 'Skerrin Light: ' + rs.join(', ') + ' out of 50') : h('span'),
-          h('span', { class: 'usd' }, r.cost_usd != null ? usd(r.cost_usd) : ''));
+          h('span', { class: 'usd' }, r.cost_per_run_usd != null ? usd(r.cost_per_run_usd) : ''));
       })));
       parts.push(h('p', { class: 'foot' }, COPY.setup, ' ', h('a', { href: f.writeup_url || 'https://github.com/herzigma/brass-lantern' }, 'Full write-up'), '.'));
     }
@@ -683,6 +685,7 @@ npm install &amp;&amp; npm run setup &amp;&amp; npm start   <span class="c"># lo
     state.selected = result.session_id;
     renderRuns();
     const box = $('transcript');
+    if (result.transcript_private) { box.replaceChildren(empty(COPY.private_t)); return; }
     box.replaceChildren(empty('Loading...'));
     const data = await getJSON('/api/results/' + encodeURIComponent(result.session_id) + '/transcript');
     if (!data || !Array.isArray(data.entries)) { box.replaceChildren(empty(COPY.unavailable)); return; }

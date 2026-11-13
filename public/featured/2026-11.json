@@ -10,88 +10,78 @@
    "model": "openai/gpt-6.1-sol",
    "score_pct": 100.0,
    "win_rate": 1.0,
-   "runs": 2,
-   "cost_usd": 1.01,
-   "lantern_lane": 10,
-   "skerrin_light": 50
+   "runs": 1,
+   "cost_per_run_usd": 0.991,
+   "skerrin_light": 50.0
   },
   {
    "model": "google/gemini-4-argon",
-   "score_pct": 91.0,
-   "win_rate": 0.5,
-   "runs": 2,
-   "cost_usd": 1.8,
-   "lantern_lane": 10,
-   "skerrin_light": 41
+   "score_pct": 82.0,
+   "win_rate": 0.0,
+   "runs": 1,
+   "cost_per_run_usd": 1.664,
+   "skerrin_light": 41.0
   },
   {
    "model": "anthropic/claude-sonnet-5.5",
-   "score_pct": 82.0,
-   "win_rate": 0.5,
-   "runs": 2,
-   "cost_usd": 1.26,
-   "lantern_lane": 10,
-   "skerrin_light": 32
+   "score_pct": 64.0,
+   "win_rate": 0.0,
+   "runs": 1,
+   "cost_per_run_usd": 1.116,
+   "skerrin_light": 32.0
   },
   {
    "model": "google/gemini-3.5-flash-lite",
-   "score_pct": 81.3,
-   "win_rate": 0.25,
-   "runs": 4,
-   "cost_usd": 0.46,
-   "lantern_lane": 10,
+   "score_pct": 62.7,
+   "win_rate": 0.0,
+   "runs": 3,
+   "cost_per_run_usd": 0.148,
    "skerrin_light": 31.3
   },
   {
    "model": "openai/gpt-6-luna",
-   "score_pct": 72.7,
-   "win_rate": 0.25,
-   "runs": 4,
-   "cost_usd": 0.14,
-   "lantern_lane": 10,
+   "score_pct": 45.3,
+   "win_rate": 0.0,
+   "runs": 3,
+   "cost_per_run_usd": 0.046,
    "skerrin_light": 22.7
   },
   {
    "model": "qwen/qwen3.8-flash",
-   "score_pct": 71.3,
-   "win_rate": 0.25,
-   "runs": 4,
-   "cost_usd": 0.19,
-   "lantern_lane": 10,
+   "score_pct": 42.7,
+   "win_rate": 0.0,
+   "runs": 3,
+   "cost_per_run_usd": 0.062,
    "skerrin_light": 21.3
   },
   {
    "model": "anthropic/claude-haiku-5.5",
-   "score_pct": 69.7,
-   "win_rate": 0.25,
-   "runs": 4,
-   "cost_usd": 0.23,
-   "lantern_lane": 10,
+   "score_pct": 39.3,
+   "win_rate": 0.0,
+   "runs": 3,
+   "cost_per_run_usd": 0.074,
    "skerrin_light": 19.7
   },
   {
    "model": "z-ai/glm-5.3-flash",
-   "score_pct": 69.0,
-   "win_rate": 0.25,
-   "runs": 4,
-   "cost_usd": 0.04,
-   "lantern_lane": 10,
-   "skerrin_light": 19
+   "score_pct": 38.0,
+   "win_rate": 0.0,
+   "runs": 3,
+   "cost_per_run_usd": 0.013,
+   "skerrin_light": 19.0
   },
   {
    "model": "deepseek/deepseek-v4-flash",
-   "score_pct": 21.0,
+   "score_pct": 2.0,
    "win_rate": 0.0,
-   "runs": 4,
-   "cost_usd": 0.23,
-   "lantern_lane": 4,
-   "skerrin_light": 1
+   "runs": 3,
+   "cost_per_run_usd": 0.058,
+   "skerrin_light": 1.0
   }
  ],
  "budget_all_games": [
   {
    "model": "google/gemini-3.5-flash-lite",
-   "overall_pct": 50.8,
    "games": {
     "lantern-lane": 100,
     "skerrin-light": 63,
@@ -101,7 +91,6 @@
   },
   {
    "model": "openai/gpt-6-luna",
-   "overall_pct": 46.8,
    "games": {
     "lantern-lane": 100,
     "skerrin-light": 45,
@@ -111,7 +100,6 @@
   },
   {
    "model": "anthropic/claude-haiku-5.5",
-   "overall_pct": 42.0,
    "games": {
     "lantern-lane": 100,
     "skerrin-light": 39,
@@ -121,7 +109,6 @@
   },
   {
    "model": "qwen/qwen3.8-flash",
-   "overall_pct": 42.0,
    "games": {
     "lantern-lane": 100,
     "skerrin-light": 43,
@@ -131,7 +118,6 @@
   },
   {
    "model": "z-ai/glm-5.3-flash",
-   "overall_pct": 41.5,
    "games": {
     "lantern-lane": 100,
     "skerrin-light": 38,
@@ -141,7 +127,6 @@
   },
   {
    "model": "deepseek/deepseek-v4-flash",
-   "overall_pct": 16.8,
    "games": {
     "lantern-lane": 40,
     "skerrin-light": 2,
@@ -151,44 +136,44 @@
   }
  ],
  "skerrin_runs": {
-  "anthropic/claude-haiku-5.5": [
-   19,
-   19,
-   21
-  ],
-  "google/gemini-3.5-flash-lite": [
-   23,
-   30,
-   41
+  "deepseek/deepseek-v4-flash": [
+   1,
+   1,
+   1
   ],
   "openai/gpt-6-luna": [
    19,
+   30,
+   19
+  ],
+  "z-ai/glm-5.3-flash": [
+   20,
+   18,
+   19
+  ],
+  "anthropic/claude-haiku-5.5": [
+   21,
    19,
+   19
+  ],
+  "google/gemini-3.5-flash-lite": [
+   41,
+   23,
    30
+  ],
+  "anthropic/claude-sonnet-5.5": [
+   32
   ],
   "qwen/qwen3.8-flash": [
    19,
    19,
    26
   ],
-  "z-ai/glm-5.3-flash": [
-   18,
-   19,
-   20
-  ],
-  "deepseek/deepseek-v4-flash": [
-   1,
-   1,
-   1
-  ],
-  "anthropic/claude-sonnet-5.5": [
-   32
+  "openai/gpt-6.1-sol": [
+   50
   ],
   "google/gemini-4-argon": [
    41
-  ],
-  "openai/gpt-6.1-sol": [
-   50
   ]
  },
  "findings": [
@@ -197,5 +182,6 @@
   "Variance is real: Gemini 3.5 Flash Lite scored 23, 30 and 41 on three runs of the same game. Use three or more runs before ranking close models.",
   "Following the output format is part of the test. DeepSeek V4 Flash kept inventing the game's replies after its own command, so 64% of its commands were invalid.",
   "Cost per point varies about 50x: GLM 5.3 Flash played four games for $0.04, while Gemini 4 Argon spent $1.80 on two."
- ]
+ ],
+ "ranking": "Ranked on Skerrin Light only: the mean peak score (highest score reached in a run) as a share of its 50 points. Lantern Lane is a tutorial every model wins, and classics are memorized, so neither counts."
 }

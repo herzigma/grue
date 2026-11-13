@@ -10,25 +10,44 @@ let s;
 before(async () => { s = await testServer(); });
 after(async () => { await s.close(); });
 
+// Held-out games are sealed: playable only with GRUE_GAMES_KEY, and their walkthroughs live in the private
+// games checkout (GRUE_PRIVATE_DIR). Without both, their walkthrough test is skipped.
+const PRIVATE_DIR = process.env.GRUE_PRIVATE_DIR;
+const hasKey = Boolean(process.env.GRUE_GAMES_KEY);
+
+function walkthroughFile(id) {
+  const pub = path.join(ROOT, 'games', 'src', id, 'walkthrough.txt');
+  if (fs.existsSync(pub)) return pub;
+  const priv = PRIVATE_DIR ? path.join(PRIVATE_DIR, id, 'walkthrough.txt') : null;
+  return priv && fs.existsSync(priv) ? priv : null;
+}
+
 function walkthrough(id) {
-  return fs.readFileSync(path.join(ROOT, 'games', 'src', id, 'walkthrough.txt'), 'utf8')
+  return fs.readFileSync(walkthroughFile(id), 'utf8')
     .split(/\r?\n/).map((l) => l.trim()).filter((l) => l && !l.startsWith('#'));
 }
 
-test('native games are listed with format "native"', async () => {
+test('native games are listed with format "native"; held-out ones are private', async () => {
   const { json } = await s.get('/api/games');
   for (const id of ['lantern-lane', 'skerrin-light']) {
     const g = json.games.find((x) => x.id === id);
     assert.ok(g, `${id} listed`);
     assert.equal(g.format, 'native');
-    assert.equal(g.available, true);
   }
+  const lane = json.games.find((x) => x.id === 'lantern-lane');
+  const skerrin = json.games.find((x) => x.id === 'skerrin-light');
+  assert.equal(lane.available, true);
+  assert.equal(lane.private, false);
+  assert.equal(skerrin.private, true);
+  assert.equal(skerrin.available, hasKey, 'a sealed game is playable only with the key');
   // A native game appears once, not also as an auto-scanned duplicate.
   assert.equal(json.games.filter((g) => g.filename.endsWith('lantern-lane.js')).length, 1);
+  assert.equal(json.games.filter((g) => g.filename.startsWith('skerrin-light')).length, 1);
 });
 
 for (const [id, max] of [['lantern-lane', 10], ['skerrin-light', 50]]) {
-  test(`${id}: walkthrough wins with full score via REST`, async () => {
+  const skip = !walkthroughFile(id) || (id !== 'lantern-lane' && !hasKey) ? 'needs GRUE_PRIVATE_DIR and GRUE_GAMES_KEY' : false;
+  test(`${id}: walkthrough wins with full score via REST`, { skip }, async () => {
     const first = await s.start(id, { meta: { agent: 'test' } });
     assert.equal(first.input_type, 'line');
     assert.ok(first.location, 'location parsed from status line');

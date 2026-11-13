@@ -185,18 +185,18 @@ test('report: works without API keys (no owner scoping)', async () => {
 test('export: row mapping, derived columns and column order', () => {
   const row = exportRow({
     session_id: 'sid', collection: 'c1', game_id: 'skerrin-light', started_at: 'a', ended_at: 'b', turn: 40, max_turns: 150,
-    score: 25, max_score: 50, ending: 'won', invalid_commands: 10, unique_locations: 9,
+    score: 25, max_score: 50, max_score_reached: 30, ending: 'won', invalid_commands: 10, unique_locations: 9,
     meta: { model: 'openrouter:z-ai/glm', effort: 'high', format: 'text', cache: false, history: 30, notes: true, max_tokens: 1024,
       temperature: 0.7, agent: 'brass-lantern/0.2.0', run_id: 'r1', bench: 'budget', repeat: 2, ignored: 'x' },
     client_report: { ...REPORT, extra: 'ignored' },
   });
   assert.deepEqual(Object.keys(row), EXPORT_COLUMNS);
-  assert.equal(EXPORT_COLUMNS.length, 36);
+  assert.equal(EXPORT_COLUMNS.length, 38);
   assert.deepEqual(row, {
     session_id: 'sid', collection: 'c1', game_id: 'skerrin-light', started_at: 'a', ended_at: 'b', model: 'openrouter:z-ai/glm',
     provider: 'openrouter', effort: 'high', format: 'text', cache: false, history: 30, notes: true, max_tokens: 1024, temperature: 0.7,
     agent: 'brass-lantern/0.2.0', run_id: 'r1', bench: 'budget', repeat: 2, max_turns: 150, turns: 40, score: 25, max_score: 50,
-    score_pct: 50, ending: 'won', won: true, invalid_commands: 10, invalid_rate: 0.25, unique_locations: 9,
+    score_pct: 50, peak_score: 30, peak_pct: 60, ending: 'won', won: true, invalid_commands: 10, invalid_rate: 0.25, unique_locations: 9,
     input_tokens: 65890, output_tokens: 1062, cache_read_tokens: 0, cache_write_tokens: 0, cost_usd: 0.00712, cost_source: 'provider',
     model_time_s: 19.88, parse_failures: 1,
   });
@@ -214,6 +214,10 @@ test('export: missing values, odd inputs, rounding', () => {
   assert.equal(exportRow({ meta: { model: ':x' } }).provider, null);
   assert.equal(exportRow({ score: 1, max_score: 3 }).score_pct, 33.3);
   assert.equal(exportRow({ score: 5, max_score: 0 }).score_pct, null);
+  // peak falls back to the final score, and is never below it
+  assert.equal(exportRow({ score: 7, max_score: 10 }).peak_pct, 70);
+  assert.equal(exportRow({ score: 7, max_score: 10, max_score_reached: 4 }).peak_score, 7);
+  assert.equal(bare.peak_score, null);
   assert.equal(exportRow({ turn: 3, invalid_commands: 1 }).invalid_rate, 0.3333);
   // objects in meta or the report never leak into a cell
   const odd = exportRow({ meta: { model: { a: 1 }, effort: ['x'], notes: null }, client_report: 'nope' });
@@ -269,7 +273,7 @@ test('export: endpoints, headers, filters, include_tests, newest first', async (
   const meta = { model: 'openrouter:acme/x, "y"', effort: 'high', format: 'text', cache: false, history: 30, run_id: 'run,1' };
   const id1 = await finished(meta);
   await s.post(`/api/sessions/${id1}/report`, { client_report: REPORT }, A);
-  const id2 = await finished({ model: 'openrouter:acme/z', effort: null }, A, 'skerrin-light');
+  const id2 = await finished({ model: 'openrouter:acme/z', effort: null }, A, 'lantern-lane');
   const idMock = await finished({ model: 'mock:walkthrough.txt' });
 
   const res = await s.get('/api/export.csv'); // no key: public read
@@ -296,8 +300,8 @@ test('export: endpoints, headers, filters, include_tests, newest first', async (
   const ended = table.slice(1).map((r) => col(r, 'ended_at'));
   assert.deepEqual(ended, [...ended].sort().reverse(), 'newest first');
 
-  const game = parseCsv((await s.get('/api/export.csv?game=skerrin-light')).text).slice(1);
-  assert.ok(game.length >= 1 && game.every((r) => col(r, 'game_id') === 'skerrin-light'));
+  const game = parseCsv((await s.get('/api/export.csv?game=lantern-lane')).text).slice(1);
+  assert.ok(game.length >= 1 && game.every((r) => col(r, 'game_id') === 'lantern-lane'));
   assert.ok(game.some((r) => col(r, 'session_id') === id2));
 
   const withTests = parseCsv((await s.get('/api/export.csv?include_tests=1')).text).slice(1);

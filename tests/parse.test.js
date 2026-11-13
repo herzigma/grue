@@ -212,6 +212,25 @@ test('invalid command detection: Inform 6/7 and native engine messages', () => {
   for (const t of others) assert.equal(isInvalidCommandResponse(t), true, t);
 });
 
+test('invalid command detection: Lost Pig (Grunk) parser messages', () => {
+  const grunk = [
+    'Grunk not see that there.',
+    'Grunk not know what that mean.',
+    'Grunk not know where that at.',
+    'That not make sense after part about cross stream.',
+    'That not word that Grunk need for story.',
+  ];
+  for (const t of grunk) assert.equal(isInvalidCommandResponse(t), true, t);
+  // Real Lost Pig replies that are game answers or the parser asking for help, not failures.
+  const fine = [
+    'Grunk not know how to read.',
+    'What that mean, picture on west wall or picture on east wall?',
+    'Grunk not see any way for opening box up.',
+    'That not turn on and off.',
+  ];
+  for (const t of fine) assert.equal(isInvalidCommandResponse(t), false, t);
+});
+
 test('invalid command detection: questions, prose and mid-text matches are not failures', () => {
   const fine = [
     'What do you want to take?',

@@ -42,14 +42,19 @@ All three share the same sessions, replay logs, results, and metrics.
   "tags": ["classic", "memorization-risk"],
   "description": "The classic underground treasure hunt.",
   "license": "MIT",
+  "private": false,
   "available": true
 }
 ```
 
-- `format`: `"glulx" | "zcode" | "tads" | "hugo" | "adrift" | "unknown"`.
+- `format`: `"glulx" | "zcode" | "tads" | "hugo" | "adrift" | "native" | "unknown"`.
 - `max_score`: integer or `null` if the game has no score.
 - `difficulty`: `"tutorial" | "easy" | "medium" | "hard"` or `null`.
-- `available`: false when listed in the manifest but the file is not downloaded yet.
+- `private`: true for a held-out game (manifest tag `private`, or a sealed file in `games/sealed/`). Its scores
+  and export rows are public; its transcripts are not: `GET /api/results/:id/transcript` answers
+  `403 private_game`, and its Results carry `"transcript": null, "transcript_private": true`.
+- `available`: false when listed in the manifest but the file is not downloaded yet, or when the game is sealed
+  and the server has no `GRUE_GAMES_KEY`.
 - `games/games.json` is the manifest (array of these objects plus `url` and optional `sha256`).
   Files dropped into `games/` without a manifest entry are auto-listed with `id` = slugified
   filename and null metadata.
@@ -123,7 +128,7 @@ Notes:
   with `notice` set. If the interpreter dies, `ending:"crashed"`.
 - Commands: max 256 chars (`400 command_too_long` beyond). Empty string is allowed (sends a blank line).
 - Commands to a finished session: `409 {"error":"game_over"}`. Unknown session: `404`.
-- Errors codes: `bad_request`, `unknown_game`, `game_unavailable`, `unknown_session`, `game_over`,
+- Errors codes: `bad_request`, `unknown_game`, `game_unavailable`, `unknown_session`, `game_over`, `private_game` (403),
   `session_active`, `already_reported`, `read_only`, `command_too_long`, `too_many_sessions` (429), `unauthorized` (401), `internal`.
 
 ### Char-input mode
@@ -345,7 +350,8 @@ Public, like `/api/results`. One row per finished run, newest first. Query: `gam
 Columns, in this order:
 
 `session_id, collection, game_id, started_at, ended_at, model, provider, effort, format, cache, history, notes,
-max_tokens, temperature, agent, run_id, bench, repeat, max_turns, turns, score, max_score, score_pct, ending, won,
+max_tokens, temperature, agent, run_id, bench, repeat, max_turns, turns, score, max_score, score_pct, peak_score,
+peak_pct, ending, won,
 invalid_commands, invalid_rate, unique_locations, input_tokens, output_tokens, cache_read_tokens,
 cache_write_tokens, cost_usd, cost_source, model_time_s, parse_failures`
 
@@ -354,6 +360,8 @@ cache_write_tokens, cost_usd, cost_source, model_time_s, parse_failures`
 - `model` through `repeat` (except `provider`) come from `meta`; the token, cost and timing columns from `client_report`.
 - `provider` is the text before the first `:` of `model` (empty if there is none).
 - `score_pct` = `score / max_score * 100`, rounded to 1 decimal (empty if either is unknown or `max_score` is 0).
+  `peak_score` = the highest score the run reached (the Result's `max_score_reached`, never below `score`);
+  `peak_pct` is its share, like `score_pct`. Rank on peak: a run can lose points before it ends.
   `won` = `ending == "won"`. `invalid_rate` = `invalid_commands / turns`, rounded to 4 decimals (empty if there are no turns).
 - A missing value is an empty cell in CSV and `null` in JSONL. Booleans are `true` / `false`.
 - CSV: RFC 4180 quoting, UTF-8, a header row, CRLF line ends, `Content-Disposition: attachment; filename="grue-results-YYYYMMDD.csv"`

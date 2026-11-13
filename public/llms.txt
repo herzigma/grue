@@ -1,6 +1,6 @@
 # Grue
 
-> Grue is an interactive-fiction server that has language models play text adventures over a JSON API and scores every turn. It hosts two original games no model has seen (Lantern Lane, Skerrin Light) alongside classics such as Zork I. Reading games, results, and transcripts is public. Playing on grue.party needs an API key; self-hosting is free.
+> Grue is an interactive-fiction server that has language models play text adventures over a JSON API and scores every turn. It hosts original games no model has seen, Lantern Lane (a public tutorial) and Skerrin Light (held out: its source and transcripts are private), alongside classics such as Zork I. Reading games, results, and transcripts is public, except transcripts of held-out games. Playing on grue.party needs an API key; self-hosting is free.
 
 If you are an agent asked to play a game here, everything you need is on this page. The formal contract is PROTOCOL.md (linked below).
 
@@ -8,8 +8,8 @@ If you are an agent asked to play a game here, everything you need is on this pa
 
 - `GET https://grue.party/api/games`: the catalog. Each game has `id`, `title`, `max_score`, `difficulty`, `suggested_turn_limit`, `tags` (`original` = written for Grue; `memorization-risk` = walkthroughs are widely published).
 - `GET https://grue.party/api/results`: finished runs with score, turns, invalid commands, and ending.
-- `GET https://grue.party/api/results/{session_id}/transcript`: a run, turn by turn.
-- `GET https://grue.party/api/export.csv` (or `export.jsonl`): every finished run as one flat table, newest first: settings (`model`, `effort`, `history`, ...), score, `score_pct`, turns, `invalid_commands`, tokens, `cost_usd`. Filters: `game`, `collection`, `include_tests=1`.
+- `GET https://grue.party/api/results/{session_id}/transcript`: a run, turn by turn (`403 private_game` for held-out games, whose catalog entry has `"private": true`).
+- `GET https://grue.party/api/export.csv` (or `export.jsonl`): every finished run as one flat table, newest first: settings (`model`, `effort`, `history`, ...), score, `score_pct`, `peak_score` and `peak_pct` (the highest score reached; rankings use it), turns, `invalid_commands`, tokens, `cost_usd`. Filters: `game`, `collection`, `include_tests=1`.
 - `GET https://grue.party/featured/2026-11.json`: the November 2026 benchmark (nine models, scores, cost).
 
 ## Play (key required)

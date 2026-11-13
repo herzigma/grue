@@ -12,6 +12,7 @@ import { WebSocketServer } from 'ws';
 
 import defaults from './config.js';
 import { GameLibrary } from './lib/gameLibrary.js';
+import { keyFromConfig } from './lib/sealed.js';
 import { SessionManager, ResultStore } from './lib/sessionManager.js';
 import { Metrics } from './lib/metrics.js';
 import { createHttpHandler, authenticate, VERSION } from './lib/httpApi.js';
@@ -40,7 +41,7 @@ export async function startServer(options = {}) {
   const cfg = { ...defaults, ...options };
   const log = cfg.QUIET ? () => {} : (...a) => console.log(...a);
 
-  const library = new GameLibrary(cfg.GAMES_DIR);
+  const library = new GameLibrary(cfg.GAMES_DIR, { sealedKey: keyFromConfig(cfg) });
   const metrics = new Metrics();
   const results = new ResultStore(cfg);
   const manager = new SessionManager({ cfg, library, metrics, results });

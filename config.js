@@ -52,6 +52,9 @@ const config = {
   /** Bearer keys for /api/* and /ws/v1. Empty = no auth. */
   API_KEYS: apiKeys,
 
+  /** Key for sealed (encrypted) held-out games in games/sealed: 32 bytes, base64 or hex. Empty = they are unavailable. */
+  GAMES_KEY: str('GRUE_GAMES_KEY', ''),
+
   /** Directories. */
   GAMES_DIR: str('GAMES_DIR', path.join(ROOT, 'games')),
   REPLAYS_DIR: str('REPLAYS_DIR', path.join(ROOT, 'replays')),
