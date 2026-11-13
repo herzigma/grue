@@ -206,6 +206,11 @@ tbody tr.click:hover, tbody tr.sel { background: var(--accent-soft); }
 .code pre { margin: 0; padding: 14px; overflow-x: auto; font-size: .82rem; line-height: 1.65; white-space: pre-wrap; overflow-wrap: anywhere; }
 .code .c { color: var(--muted); }
 
+/* data */
+.data { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 20px 40px; align-items: start; margin-top: 26px; }
+.cols td { white-space: normal; vertical-align: top; }
+.cols td:first-child { font: 500 .8rem var(--mono); width: 38%; overflow-wrap: anywhere; }
+
 /* footer */
 footer { margin-top: clamp(56px, 9vw, 100px); border-top: 3px double var(--ink); padding: 22px 0 48px; font-size: .9rem; color: var(--muted); }
 footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 10px 24px; }
@@ -226,7 +231,7 @@ footer ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: w
 
 /* responsive */
 @media (max-width: 860px) {
-  .play, .ctrl { grid-template-columns: minmax(0, 1fr); }
+  .play, .ctrl, .data { grid-template-columns: minmax(0, 1fr); }
   .rank-h { display: none; }
   .rank li { grid-template-columns: 1.8rem minmax(0, 1fr) 3.6rem; }
   .rank .bar { grid-column: 2 / -1; grid-row: 2; }
@@ -259,6 +264,7 @@ footer ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: w
     <ul class="nav-links">
       <li><a href="#leaderboard">Leaderboard</a></li>
       <li><a href="#runs">Runs</a></li>
+      <li><a href="#data">Data</a></li>
       <li><a href="#play">Play</a></li>
     </ul>
     <button class="theme" id="theme" type="button" aria-label="Switch colour theme">
@@ -319,6 +325,51 @@ footer ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: w
     <div id="results"><div class="box"><div class="empty">Lighting the lamp.</div></div></div>
     <h3 style="margin-top:40px">Transcript</h3>
     <div id="transcript" style="margin-top:10px"><div class="box"><div class="empty">No run selected. Select a run to read it.</div></div></div>
+  </div>
+</section>
+
+<section class="sec" id="data" aria-labelledby="data-h">
+  <div class="wrap">
+    <div class="sec-head"><h2 id="data-h">Get the data</h2></div>
+    <p class="sec-intro">One row per finished run: the settings, the score, the tokens and the cost. No key needed.</p>
+    <ul class="cmds">
+      <li><a href="/api/export.csv" download>grue-results.csv</a></li>
+      <li><a href="/api/export.jsonl" download>grue-results.jsonl</a></li>
+    </ul>
+    <div class="data">
+      <div>
+        <div class="tbl cols">
+          <table>
+            <caption class="sr">Main columns of the export</caption>
+            <thead><tr><th scope="col">Column</th><th scope="col">Meaning</th></tr></thead>
+            <tbody>
+              <tr><td>session_id</td><td>The run. Its transcript is at <code>/api/results/{session_id}/transcript</code>.</td></tr>
+              <tr><td>game_id, collection</td><td>The game, and the featured collection a run belongs to (blank for the rest).</td></tr>
+              <tr><td>model, effort</td><td>Provider and model, and the reasoning effort sent. Blank effort means the provider default.</td></tr>
+              <tr><td>turns, max_turns</td><td>Commands played, and the turn limit.</td></tr>
+              <tr><td>score, score_pct, won</td><td>Final score, its share of the maximum, and whether the game was won.</td></tr>
+              <tr><td>ending</td><td>How it stopped: won, died, turn_limit, quit, timeout and so on.</td></tr>
+              <tr><td>invalid_commands, invalid_rate</td><td>Commands the parser rejected, and that count per turn.</td></tr>
+              <tr><td>unique_locations</td><td>Distinct rooms visited.</td></tr>
+              <tr><td>input_tokens, output_tokens</td><td>Reported by the client after the run.</td></tr>
+              <tr><td>cost_usd, cost_source</td><td>Cost in dollars. <code>provider</code> was billed by the API, <code>prices</code> is an estimate.</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <p class="foot">36 columns in all, including the run settings (history, notes, temperature, max_tokens). A blank cell means not reported. Filters: <code>?game=</code>, <code>?collection=</code>, <code>?include_tests=1</code>. Details in <a href="https://github.com/herzigma/grue/blob/main/docs/PROTOCOL.md">PROTOCOL.md</a>.</p>
+      </div>
+      <div>
+        <div class="code">
+          <div class="code-h"><span>pandas</span><button type="button" data-copy="qs3">Copy</button></div>
+<pre id="qs3">import pandas as pd
+df = pd.read_csv("https://grue.party/api/export.csv")</pre>
+        </div>
+        <div class="code">
+          <div class="code-h"><span>DuckDB</span><button type="button" data-copy="qs4">Copy</button></div>
+<pre id="qs4">duckdb -c "select model, effort, avg(score_pct) from 'https://grue.party/api/export.csv' where game_id = 'skerrin-light' group by all order by 3 desc"</pre>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -413,7 +464,18 @@ npm install &amp;&amp; npm run setup &amp;&amp; npm start   <span class="c"># lo
   const usd = (v) => '$' + Number(v).toFixed(2);
   const pct = (v) => Math.max(0, Math.min(100, Number(v) || 0));
   const modelKey = (m) => String(m || 'unknown').replace(/^openrouter:/, '');
-  const who = (meta) => { meta = meta || {}; return modelKey(meta.model || meta.agent); };
+  // Model and effort are one entry: the same model at two efforts is two models.
+  const baseModel = (meta) => { meta = meta || {}; return modelKey(meta.model || meta.agent); };
+  const who = (meta) => { const e = meta && typeof meta.effort === 'string' ? meta.effort : ''; return e ? baseModel(meta) + ' \u00b7 ' + e : baseModel(meta); };
+  const isModel = (r, m) => who(r.meta) === m || baseModel(r.meta) === m; // the leaderboard links a model without effort
+  const tokens = (n) => (n >= 1e6 ? (n / 1e6).toFixed(1) + 'M' : n >= 1e3 ? Math.round(n / 1e3) + 'k' : String(n));
+  function usage(cr) {
+    if (!cr || typeof cr !== 'object') return '';
+    const bits = [];
+    if (typeof cr.cost_usd === 'number') bits.push((cr.cost_source === 'prices' ? '~$' : '$') + cr.cost_usd.toFixed(cr.cost_usd >= 0.1 ? 2 : 4));
+    if (typeof cr.input_tokens === 'number' && typeof cr.output_tokens === 'number') bits.push(tokens(cr.input_tokens) + ' in / ' + tokens(cr.output_tokens) + ' out');
+    return bits.join(' \u00b7 ');
+  }
   const collection = (r) => r.collection || (r.meta && r.meta.collection) || '';
   const gameTitle = (id) => (state.games.find((g) => g.id === id) || {}).title || id;
   const pill = (text, cls) => h('span', { class: 'pill ' + (cls || '') }, text);
@@ -557,8 +619,9 @@ npm install &amp;&amp; npm run setup &amp;&amp; npm start   <span class="c"># lo
   }
   function syncModelSelect() {
     const ms = $('modelfilter');
-    const names = [...new Set(state.results.map((r) => who(r.meta)))].sort();
+    const names = [...new Set(state.results.map((r) => who(r.meta)))];
     if (state.model && !names.includes(state.model)) names.push(state.model);
+    names.sort();
     if (names.join() !== [...ms.options].slice(1).map((o) => o.value).join()) {
       while (ms.options.length > 1) ms.remove(1);
       for (const n of names) ms.append(h('option', { value: n }, n));
@@ -596,7 +659,7 @@ npm install &amp;&amp; npm run setup &amp;&amp; npm start   <span class="c"># lo
   }
 
   function renderRuns() {
-    const results = state.results.filter((r) => (!state.game || r.game_id === state.game) && (!state.model || who(r.meta) === state.model));
+    const results = state.results.filter((r) => (!state.game || r.game_id === state.game) && (!state.model || isModel(r, state.model)));
     $('resultcount').textContent = state.results.length ? results.length + ' run' + (results.length === 1 ? '' : 's') : '';
     $('clearf').hidden = !(state.game || state.model);
     const box = $('results');
@@ -642,6 +705,7 @@ npm install &amp;&amp; npm run setup &amp;&amp; npm start   <span class="c"># lo
     const head = h('div', { class: 't-head' },
       h('strong', {}, gameTitle(result.game_id)), h('span', {}, who(result.meta)),
       h('span', {}, 'score ' + fmtScore(result.score, result.max_score)), h('span', {}, result.turn + ' turns'),
+      usage(result.client_report) && h('span', {}, usage(result.client_report)),
       pill(result.ending, result.ending), h('span', { class: 'dim' }, fmtDate(result.ended_at)));
     box.replaceChildren(h('div', { class: 'box' }, head, body));
     scrollTo(box);

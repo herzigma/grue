@@ -14,12 +14,33 @@
     "run_id": "20261112-224440-lantern-lane-openrouter-openai-gpt-6.1-sol-bc6a",
     "temperature": 0.7,
     "bench": "frontier",
-    "repeat": 1
+    "repeat": 1,
+    "format": "text",
+    "cache": false,
+    "history": 30,
+    "notes": false,
+    "max_tokens": 1024,
+    "effort": "low"
   },
   "ended_at": "2026-11-13T03:45:19.717Z",
   "duration_ms": 37940,
   "invalid_commands": 0,
   "unique_locations": 5,
   "max_score_reached": 10,
-  "transcript": "replays/lantern-lane_910e9e57-2fe6-404d-b989-d53a1f97a5a1.jsonl"
+  "transcript": "replays/lantern-lane_910e9e57-2fe6-404d-b989-d53a1f97a5a1.jsonl",
+  "client_report": {
+    "input_tokens": 38054,
+    "output_tokens": 192,
+    "cache_read_tokens": null,
+    "cache_write_tokens": null,
+    "cost_usd": 0.021732,
+    "cost_source": "provider",
+    "model_time_s": 37.87,
+    "parse_failures": 0,
+    "provider_errors": null,
+    "stop_reason": "game_over",
+    "status": "completed",
+    "client_version": "0.2.0"
+  },
+  "client_report_at": "2026-11-13T18:56:52.293Z"
 }

@@ -14,12 +14,33 @@
     "run_id": "20261112-232201-lost-pig-openrouter-deepseek-deepseek-v4-flash-9495",
     "temperature": 0.7,
     "bench": "budget",
-    "repeat": 1
+    "repeat": 1,
+    "format": "text",
+    "cache": false,
+    "history": 30,
+    "notes": false,
+    "max_tokens": 1024,
+    "effort": "low"
   },
   "ended_at": "2026-11-13T04:26:08.956Z",
   "duration_ms": 247065,
   "invalid_commands": 0,
   "unique_locations": 8,
   "max_score_reached": 1,
-  "transcript": "replays/lost-pig_83bd01de-a695-4d5f-bd70-a6b8d632c6a2.jsonl"
+  "transcript": "replays/lost-pig_83bd01de-a695-4d5f-bd70-a6b8d632c6a2.jsonl",
+  "client_report": {
+    "input_tokens": 518470,
+    "output_tokens": 55539,
+    "cache_read_tokens": null,
+    "cache_write_tokens": null,
+    "cost_usd": 0.050916,
+    "cost_source": "provider",
+    "model_time_s": 245.44,
+    "parse_failures": 22,
+    "provider_errors": null,
+    "stop_reason": "game_over",
+    "status": "completed",
+    "client_version": "0.2.0"
+  },
+  "client_report_at": "2026-11-13T18:56:52.293Z"
 }

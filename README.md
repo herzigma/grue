@@ -73,6 +73,8 @@ All three share the same sessions, replays and results.
 | `GET /api/sessions/:id`, `GET /api/sessions` | session state; active sessions |
 | `DELETE /api/sessions/:id` | end (`aborted`) and return the Result |
 | `GET /api/results?game=&limit=`, `GET /api/results/:id`, `GET /api/results/:id/transcript` | finished runs |
+| `POST /api/sessions/:id/report` | `{"client_report"}` -> the client's token, cost and timing totals, added once to a finished run |
+| `GET /api/export.csv`, `GET /api/export.jsonl` | one flat row per finished run (`?game=&collection=&include_tests=1`) |
 | `GET /` | dashboard |
 
 An Observation looks like this:
@@ -92,6 +94,21 @@ read as one key (`return`, `space`, `escape`, `up`, `down`, a letter...). Ending
 `turn_limit`, `quit`, `timeout`, `crashed` or `aborted`. The full field list, error codes and parsing rules are in
 [docs/PROTOCOL.md](docs/PROTOCOL.md).
 
+### Run settings, client report and export
+
+Clients describe how a run was set up with `meta` keys when they start the session (`model`, `effort`, `format`,
+`cache`, `history`, `notes`, `max_tokens`, `temperature`, ...; the full list is in
+[docs/PROTOCOL.md](docs/PROTOCOL.md) section 10). When the session has ended they can send what only they know,
+tokens and cost, once, with `POST /api/sessions/:id/report` and `{"client_report": {"input_tokens": 65890,
+"output_tokens": 1062, "cost_usd": 0.00712, "cost_source": "provider", ...}}`. It is stored on the result and
+shows up in `/api/results`. Only the key that played the session can report it, and only while the server still
+has it in memory (the last 200 finished sessions); featured results are read-only.
+
+`GET /api/export.csv` and `GET /api/export.jsonl` turn all finished runs into one table, newest first: 36 columns
+covering the settings, score, turns, invalid commands, tokens and cost (listed in PROTOCOL.md). They are public like
+`/api/results`, and take `game`, `collection` and `include_tests=1`. For example, with pandas:
+`pd.read_csv("https://grue.party/api/export.csv")`.
+
 ### WebSocket JSON
 
 Connect to `/ws/v1` and send `{"type":"list_games"}`, `{"type":"start","game":"zork1","meta":{}}`,
@@ -102,7 +119,7 @@ Connect to `/ws/v1` and send `{"type":"list_games"}`, `{"type":"start","game":"z
 
 Set `GRUE_API_KEYS=key1,key2` and playing needs `Authorization: Bearer <key>`: every `/api/sessions` request
 and `/ws/v1` (WebSocket clients that cannot set headers may use `?api_key=`). Reading the catalog, finished
-results and transcripts (`GET /api/games*`, `GET /api/results*`) stays public so the website and leaderboard work
+results and transcripts (`GET /api/games*`, `GET /api/results*`, plus the export) stays public so the website and leaderboard work
 for everyone. Set `PUBLIC_READ=false` to put those behind the key too.
 The legacy text interface cannot authenticate, so it is turned off when keys are set unless you also set
 `LEGACY_ENABLED=true`.
@@ -133,7 +150,7 @@ Environment variables (or a `.env` file; see `.env.example`):
 | `TCP_PORT` | `8080` | legacy text over TCP |
 | `LEGACY_ENABLED` | `true` (`false` if keys set) | serve the legacy text interface |
 | `GRUE_API_KEYS` | empty | comma-separated bearer keys; empty means no auth |
-| `PUBLIC_READ` | `true` | with keys set, still allow `GET /api/games*` and `/api/results*` without a key |
+| `PUBLIC_READ` | `true` | with keys set, still allow `GET /api/games*`, `/api/results*` and `/api/export.*` without a key |
 | `FEATURED_DIR` | `data/featured/` | read-only result collections bundled with the server, shown with the live results |
 | `MAX_SESSIONS` | `16` | concurrent sessions; more get `429` |
 | `IDLE_TIMEOUT_MS` | `600000` | no command for this long ends the session with `timeout` |
@@ -215,6 +232,7 @@ lib/gameSession.js        one play-through: observations, score/ending logic, li
 lib/sessionManager.js     session registry (MAX_SESSIONS, lookup, shutdown) and result store
 lib/gameLibrary.js        manifest + disk scan -> catalog
 lib/httpApi.js            REST routes, auth, dashboard
+lib/export.js             flat rows for the CSV / JSONL export (pure functions)
 lib/wsJson.js             /ws/v1 handler
 lib/legacy.js             line-based text interface for TCP and WebSocket
 lib/replayLogger.js       JSONL transcripts      lib/metrics.js   counters for /metrics

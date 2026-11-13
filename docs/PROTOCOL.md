@@ -90,8 +90,8 @@ All three share the same sessions, replay logs, results, and metrics.
 
 All bodies are JSON. Errors: non-2xx with `{"error": "<code>", "message": "<human text>"}`.
 If the server is started with `GRUE_API_KEYS` (comma-separated), every `/api/sessions*` request must send
-`Authorization: Bearer <key>`; otherwise 401 `{"error":"unauthorized"}`. `GET /api/games*` and `GET /api/results*`
-are public unless the server sets `PUBLIC_READ=false`, in which case they need the key too. With keys configured, a session
+`Authorization: Bearer <key>`; otherwise 401 `{"error":"unauthorized"}`. `GET /api/games*`, `GET /api/results*` and
+the export (`GET /api/export.csv`, `GET /api/export.jsonl`) are public unless the server sets `PUBLIC_READ=false`, in which case they need the key too. With keys configured, a session
 belongs to the key that created it (see section 9, Auth).
 
 | Method & path | Body | Response |
@@ -108,6 +108,8 @@ belongs to the key that created it (see section 9, Auth).
 | `GET /api/results` | query: `game`, `limit`, `include_tests` | `{"results":[Result,...]}` newest first; harness test runs (`meta.model` starting `mock:` or `human:`, or `meta.agent` `probe`) are left out unless `include_tests=1` |
 | `GET /api/results/:id` | – | `Result` |
 | `GET /api/results/:id/transcript` | – | `{"entries":[ReplayEntry,...]}` |
+| `POST /api/sessions/:id/report` | `{"client_report":{...}}` | 200 `Result` with `client_report` (finished sessions only, once; see section 10) |
+| `GET /api/export.csv`, `GET /api/export.jsonl` | query: `game`, `collection`, `include_tests` | one flat row per finished run, newest first (section 10) |
 | `GET /` | – | HTML dashboard (games, live sessions, leaderboard, transcript viewer) |
 
 Notes:
@@ -122,7 +124,7 @@ Notes:
 - Commands: max 256 chars (`400 command_too_long` beyond). Empty string is allowed (sends a blank line).
 - Commands to a finished session: `409 {"error":"game_over"}`. Unknown session: `404`.
 - Errors codes: `bad_request`, `unknown_game`, `game_unavailable`, `unknown_session`, `game_over`,
-  `command_too_long`, `too_many_sessions` (429), `unauthorized` (401), `internal`.
+  `session_active`, `already_reported`, `read_only`, `command_too_long`, `too_many_sessions` (429), `unauthorized` (401), `internal`.
 
 ### Char-input mode
 
@@ -153,7 +155,8 @@ Result = SessionSummary + {
 ```
 
 `score` in the Result is the final observed score; `max_score_reached` is the peak.
-Results are persisted as `results/<session_id>.json`.
+Results are persisted as `results/<session_id>.json`. A Result may also carry `client_report` and
+`client_report_at`, added by the client after the session ended (section 10).
 
 ## 6. WebSocket JSON (`/ws/v1`)
 
@@ -277,3 +280,81 @@ returns the Result and closes.
 line mode and sent as `return` in char mode. Output is the observation text plus a one-line footer
 (`[Location: ... | Score: 5/350 | Moves: 4 | Turn: 6]`) and a `> ` prompt; the connection closes at game over.
 Sessions started this way carry `meta.agent = "grue-legacy-tcp"` / `"grue-legacy-ws"`.
+
+---
+
+## 10. Run settings, client report and export
+
+Together these let a benchmark client record how a run was configured and what it cost, and let anyone
+download the results as a table.
+
+### Session meta keys
+
+`meta` is free-form (section 4). Brass Lantern sends these keys, and other clients may too. All are optional.
+
+| key | type | meaning |
+|---|---|---|
+| `agent` | string | `"brass-lantern/<version>"` |
+| `model` | string | `provider:model`, without any effort suffix, e.g. `"anthropic:claude-sonnet-5-5"` |
+| `effort` | string or null | reasoning effort as sent (`minimal`, `low`, `medium`, `high`, `xhigh`, `max`); null = provider default |
+| `format` | string | `"text"` or `"tools"` |
+| `cache` | bool | prompt caching on |
+| `history` | int | history turns kept |
+| `history_step` | int | 10 with cache on, 0 = sliding window |
+| `notes` | bool | notes scratchpad on |
+| `max_tokens` | int | output cap per reply |
+| `temperature` | number or null | null = not sent (model default) |
+| `run_id`, `bench`, `repeat` | string, string, int | run identity and benchmark grouping |
+
+### Client report: `POST /api/sessions/:id/report`
+
+After a session has ended, the client can attach its own statistics (tokens, cost, timing) to the Result.
+Body: `{"client_report": {...}}`, at most 4096 bytes. Each value is a number, a string of at most 200
+characters, a boolean or null; no nesting. Brass Lantern sends:
+
+| key | type |
+|---|---|
+| `input_tokens`, `output_tokens`, `cache_read_tokens`, `cache_write_tokens` | int |
+| `cost_usd` | number or null |
+| `cost_source` | `"provider"` (reported by the API, e.g. OpenRouter), `"prices"` (estimated from a price table) or null |
+| `model_time_s` | number |
+| `parse_failures`, `provider_errors` | int |
+| `stop_reason` | the runner's reason: `completed`, `max_cost`, `max_time`, `provider_error`, `interrupted`, ... |
+| `status` | run status in the client's run record |
+| `client_version` | string |
+
+The server stores it as `client_report` plus `client_report_at` (ISO time) on the Result, writes
+`results/<session_id>.json` again (temporary file, then rename) and returns the updated Result with 200. The
+report is then part of `GET /api/results`, `GET /api/results/:id` and the export.
+
+Rules, with the same key rules as the other `/api/sessions/:id` routes (the session must belong to the caller's key):
+
+| Status | Code | When |
+|---|---|---|
+| 400 | `bad_request` | no `client_report` object, a nested or oversized value, or a body over 4096 bytes |
+| 404 | `unknown_session` | not a session this key finished, or it is no longer in server memory (finished sessions are kept in memory, the last 200; after a restart the report cannot be added) |
+| 409 | `session_active` | the session has not ended yet |
+| 409 | `already_reported` | one report per session |
+| 409 | `read_only` | a featured result (bundled collections cannot be changed) |
+
+### Export: `GET /api/export.csv` and `GET /api/export.jsonl`
+
+Public, like `/api/results`. One row per finished run, newest first. Query: `game` (a game id),
+`collection` (a featured collection name), `include_tests=1` (also harness test runs, see section 4).
+
+Columns, in this order:
+
+`session_id, collection, game_id, started_at, ended_at, model, provider, effort, format, cache, history, notes,
+max_tokens, temperature, agent, run_id, bench, repeat, max_turns, turns, score, max_score, score_pct, ending, won,
+invalid_commands, invalid_rate, unique_locations, input_tokens, output_tokens, cache_read_tokens,
+cache_write_tokens, cost_usd, cost_source, model_time_s, parse_failures`
+
+- `collection`, `started_at`, `ended_at`, `game_id`, `max_turns`, `score`, `max_score`, `ending`,
+  `invalid_commands`, `unique_locations` come from the Result; `turns` is the Result's `turn`.
+- `model` through `repeat` (except `provider`) come from `meta`; the token, cost and timing columns from `client_report`.
+- `provider` is the text before the first `:` of `model` (empty if there is none).
+- `score_pct` = `score / max_score * 100`, rounded to 1 decimal (empty if either is unknown or `max_score` is 0).
+  `won` = `ending == "won"`. `invalid_rate` = `invalid_commands / turns`, rounded to 4 decimals (empty if there are no turns).
+- A missing value is an empty cell in CSV and `null` in JSONL. Booleans are `true` / `false`.
+- CSV: RFC 4180 quoting, UTF-8, a header row, CRLF line ends, `Content-Disposition: attachment; filename="grue-results-YYYYMMDD.csv"`
+  (UTC date). JSONL: one object per line with the same keys, `application/x-ndjson`.

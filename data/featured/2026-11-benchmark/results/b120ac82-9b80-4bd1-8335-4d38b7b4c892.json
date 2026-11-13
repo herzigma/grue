@@ -14,12 +14,33 @@
     "run_id": "20261112-225052-zork1-openrouter-google-gemini-3.5-flash-lite-9d8c",
     "temperature": 0.7,
     "bench": "budget",
-    "repeat": 1
+    "repeat": 1,
+    "format": "text",
+    "cache": false,
+    "history": 30,
+    "notes": false,
+    "max_tokens": 1024,
+    "effort": "low"
   },
   "ended_at": "2026-11-13T03:52:54.336Z",
   "duration_ms": 121523,
   "invalid_commands": 7,
   "unique_locations": 17,
   "max_score_reached": 40,
-  "transcript": "replays/zork1_b120ac82-9b80-4bd1-8335-4d38b7b4c892.jsonl"
+  "transcript": "replays/zork1_b120ac82-9b80-4bd1-8335-4d38b7b4c892.jsonl",
+  "client_report": {
+    "input_tokens": 373619,
+    "output_tokens": 3630,
+    "cache_read_tokens": null,
+    "cache_write_tokens": null,
+    "cost_usd": 0.121161,
+    "cost_source": "provider",
+    "model_time_s": 120.34,
+    "parse_failures": 2,
+    "provider_errors": null,
+    "stop_reason": "game_over",
+    "status": "completed",
+    "client_version": "0.2.0"
+  },
+  "client_report_at": "2026-11-13T18:56:52.293Z"
 }

@@ -14,12 +14,33 @@
     "run_id": "20261112-232748-skerrin-light-openrouter-openai-gpt-6-luna-f376",
     "temperature": 0.7,
     "bench": "budget-skerrin-repeats",
-    "repeat": 2
+    "repeat": 2,
+    "format": "text",
+    "cache": false,
+    "history": 30,
+    "notes": false,
+    "max_tokens": 1024,
+    "effort": "low"
   },
   "ended_at": "2026-11-13T04:32:13.679Z",
   "duration_ms": 264457,
   "invalid_commands": 2,
   "unique_locations": 12,
   "max_score_reached": 19,
-  "transcript": "replays/skerrin-light_0a599285-5cec-4f47-af6b-4103bd647a73.jsonl"
+  "transcript": "replays/skerrin-light_0a599285-5cec-4f47-af6b-4103bd647a73.jsonl",
+  "client_report": {
+    "input_tokens": 398486,
+    "output_tokens": 3325,
+    "cache_read_tokens": null,
+    "cache_write_tokens": null,
+    "cost_usd": 0.045825,
+    "cost_source": "provider",
+    "model_time_s": 264.11,
+    "parse_failures": 0,
+    "provider_errors": null,
+    "stop_reason": "game_over",
+    "status": "completed",
+    "client_version": "0.2.0"
+  },
+  "client_report_at": "2026-11-13T18:56:52.293Z"
 }
