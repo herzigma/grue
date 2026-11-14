@@ -105,16 +105,16 @@ belongs to the key that created it (see section 9, Auth).
 | `GET /metrics` | – | plain-text metrics |
 | `GET /api/games` | – | `{"games":[Game,...]}` |
 | `GET /api/games/:id` | – | `Game` |
-| `POST /api/sessions` | `{"game":"zork1","max_turns":500,"meta":{...}}` | 201 `Observation` (turn 0) |
+| `POST /api/sessions` | `{"game":"zork1","max_turns":500,"meta":{...}}`, or `{"game_url":"https://...","sha256":"..."}` instead of `game` (section 11) | 201 `Observation` (turn 0) |
 | `POST /api/sessions/:id/commands` | `{"command":"open mailbox"}` | 200 `Observation` |
 | `GET /api/sessions/:id` | – | `{"session":SessionSummary,"observation":Observation}` (last obs) |
 | `DELETE /api/sessions/:id` | – | 200 `Result` (ends with `ending:"aborted"` if still running) |
 | `GET /api/sessions` | – | `{"sessions":[SessionSummary,...]}` (active only; with API keys, only the caller's) |
-| `GET /api/results` | query: `game`, `limit`, `include_tests` | `{"results":[Result,...]}` newest first; harness test runs (`meta.model` starting `mock:` or `human:`, or `meta.agent` `probe`) are left out unless `include_tests=1` |
+| `GET /api/results` | query: `game`, `limit`, `include_tests`, `include_unranked` | `{"results":[Result,...]}` newest first; harness test runs (`meta.model` starting `mock:` or `human:`, or `meta.agent` `probe`) are left out unless `include_tests=1`, and unranked runs (section 11) unless `include_unranked=1` |
 | `GET /api/results/:id` | – | `Result` |
 | `GET /api/results/:id/transcript` | – | `{"entries":[ReplayEntry,...]}` |
 | `POST /api/sessions/:id/report` | `{"client_report":{...}}` | 200 `Result` with `client_report` (finished sessions only, once; see section 10) |
-| `GET /api/export.csv`, `GET /api/export.jsonl` | query: `game`, `collection`, `include_tests` | one flat row per finished run, newest first (section 10) |
+| `GET /api/export.csv`, `GET /api/export.jsonl` | query: `game`, `collection`, `include_tests`, `include_unranked` | one flat row per finished run, newest first (section 10) |
 | `GET /` | – | HTML dashboard (games, live sessions, leaderboard, transcript viewer) |
 
 Notes:
@@ -129,7 +129,8 @@ Notes:
 - Commands: max 256 chars (`400 command_too_long` beyond). Empty string is allowed (sends a blank line).
 - Commands to a finished session: `409 {"error":"game_over"}`. Unknown session: `404`.
 - Errors codes: `bad_request`, `unknown_game`, `game_unavailable`, `unknown_session`, `game_over`, `private_game` (403),
-  `session_active`, `already_reported`, `read_only`, `command_too_long`, `too_many_sessions` (429), `unauthorized` (401), `internal`.
+  `session_active`, `already_reported`, `read_only`, `command_too_long`, `too_many_sessions` (429), `unauthorized` (401),
+  `game_url_rejected` (400), `game_url_failed` (502), `internal`.
 
 ### Char-input mode
 
@@ -170,7 +171,7 @@ Client → server messages and the server reply:
 | Client sends | Server replies |
 |---|---|
 | `{"type":"list_games"}` | `{"type":"games","games":[...]}` |
-| `{"type":"start","game":"zork1","max_turns":500,"meta":{}}` | `{"type":"observation", ...Observation}` |
+| `{"type":"start","game":"zork1","max_turns":500,"meta":{}}` (or `game_url` and `sha256`, section 11) | `{"type":"observation", ...Observation}` |
 | `{"type":"command","command":"look"}` | `{"type":"observation", ...Observation}` |
 | `{"type":"end"}` | `{"type":"result", ...Result}` then close |
 
@@ -345,7 +346,8 @@ Rules, with the same key rules as the other `/api/sessions/:id` routes (the sess
 ### Export: `GET /api/export.csv` and `GET /api/export.jsonl`
 
 Public, like `/api/results`. One row per finished run, newest first. Query: `game` (a game id),
-`collection` (a featured collection name), `include_tests=1` (also harness test runs, see section 4).
+`collection` (a featured collection name), `include_tests=1` (also harness test runs, see section 4),
+`include_unranked=1` (also runs of games loaded from a URL, section 11).
 
 Columns, in this order:
 
@@ -353,7 +355,7 @@ Columns, in this order:
 max_tokens, temperature, agent, run_id, bench, repeat, max_turns, turns, score, max_score, score_pct, peak_score,
 peak_pct, ending, won,
 invalid_commands, invalid_rate, unique_locations, input_tokens, output_tokens, cache_read_tokens,
-cache_write_tokens, cost_usd, cost_source, model_time_s, parse_failures`
+cache_write_tokens, cost_usd, cost_source, model_time_s, parse_failures, unranked, game_url, game_sha256`
 
 - `collection`, `started_at`, `ended_at`, `game_id`, `max_turns`, `score`, `max_score`, `ending`,
   `invalid_commands`, `unique_locations` come from the Result; `turns` is the Result's `turn`.
@@ -363,6 +365,44 @@ cache_write_tokens, cost_usd, cost_source, model_time_s, parse_failures`
   `peak_score` = the highest score the run reached (the Result's `max_score_reached`, never below `score`);
   `peak_pct` is its share, like `score_pct`. Rank on peak: a run can lose points before it ends.
   `won` = `ending == "won"`. `invalid_rate` = `invalid_commands / turns`, rounded to 4 decimals (empty if there are no turns).
+- `unranked` is `true` for a game loaded from a URL, else `false`; `game_url` and `game_sha256` come from the Result
+  (empty for catalog games).
 - A missing value is an empty cell in CSV and `null` in JSONL. Booleans are `true` / `false`.
 - CSV: RFC 4180 quoting, UTF-8, a header row, CRLF line ends, `Content-Disposition: attachment; filename="grue-results-YYYYMMDD.csv"`
   (UTC date). JSONL: one object per line with the same keys, `application/x-ndjson`.
+
+## 11. Games from a URL (unranked)
+
+A client can play a story file the server has not installed by sending `game_url` instead of `game`:
+
+```json
+POST /api/sessions
+{"game_url": "https://www.ifarchive.org/if-archive/games/zcode/LostPig.z8",
+ "sha256": "7bffe25e933a...",
+ "max_turns": 300, "meta": {"model": "..."}}
+```
+
+- `game_url`: an `https` URL on the default port, without credentials, on a host the server allows
+  (`GAME_URL_HOSTS`, default `ifarchive.org, github.com, githubusercontent.com`; a listed domain also allows its
+  subdomains). Redirects are followed (at most 5), and every hop must pass the same checks.
+- `sha256` (optional): the file's SHA-256 in hex. If the file differs, the start fails with `game_url_rejected`.
+  Send it to pin an exact release; without it the server records whatever the URL served.
+- The file must be at most `GAME_URL_MAX_BYTES` (default 16 MiB) and arrive within `GAME_URL_TIMEOUT_MS`
+  (default 30 s). Its format is read from its first bytes, not the URL: Z-code versions 3, 4, 5 or 8, Glulx, or a
+  Blorb containing one of them. Grue's native (JavaScript) games are never loaded from a URL.
+- The game id is `url-` plus the first 12 hex characters of the SHA-256, so runs of the same file share an id.
+  `max_score` comes from the game's status line or text, because there is no catalog entry; `max_turns` defaults
+  to `DEFAULT_MAX_TURNS`.
+- Each session plays its own copy in a throwaway directory, deleted when the session ends. Downloads are cached
+  by SHA-256 on the server, and a URL is not fetched again within an hour.
+- `GAME_URL_HOSTS=off` turns the feature off; `game_url` then fails with `game_url_rejected`.
+
+Errors: `400 game_url_rejected` (bad URL, host not allowed, wrong hash, too large, not a supported story file,
+or the feature is off), `502 game_url_failed` (the download failed, timed out or returned an HTTP error),
+`429 too_many_sessions` (server full, or several downloads already running).
+
+**Unranked runs.** The SessionSummary and Result of such a session carry `"unranked": true`, `"game_url"` (as
+requested) and `"game_sha256"`. Unranked runs are left out of `GET /api/results` and the export unless the query
+has `include_unranked=1`; `GET /api/results/:id` and its transcript work as usual. They never appear on the
+leaderboard.
+

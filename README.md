@@ -159,6 +159,11 @@ Environment variables (or a `.env` file; see `.env.example`):
 | `MAX_COMMAND_LENGTH` | `256` | longest accepted command |
 | `GAMES_DIR` / `REPLAYS_DIR` / `RESULTS_DIR` | `games/`, `replays/`, `results/` | data directories |
 | `GRUE_GAMES_KEY` | empty | key for sealed held-out games in `games/sealed/` (32 bytes, base64 or hex); without it they are listed but unavailable |
+| `GAME_URL_HOSTS` | `ifarchive.org,github.com,githubusercontent.com` | hosts a client may load an unranked game from with `game_url` (subdomains included); `off` disables it |
+| `GAME_URL_MAX_BYTES` | `16777216` | largest story file accepted from a URL |
+| `GAME_URL_TIMEOUT_MS` | `30000` | time limit for downloading one story file |
+| `GAME_URL_CACHE_DIR` | `<tmp>/grue-url-cache` | where downloaded story files are cached, by SHA-256 |
+| `GAME_URL_CACHE_FILES` | `32` | how many cached story files to keep |
 
 Each interpreter is a separate Node process; budget some memory per concurrent session.
 

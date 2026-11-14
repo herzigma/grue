@@ -55,6 +55,20 @@ const config = {
   /** Key for sealed (encrypted) held-out games in games/sealed: 32 bytes, base64 or hex. Empty = they are unavailable. */
   GAMES_KEY: str('GRUE_GAMES_KEY', ''),
 
+  /**
+   * Games loaded from a URL (POST /api/sessions {"game_url": ...}), played unranked. Hosts the server will
+   * fetch from (a domain also allows its subdomains); "off" disables URL games.
+   */
+  GAME_URL_HOSTS: str('GAME_URL_HOSTS', 'ifarchive.org,github.com,githubusercontent.com'),
+  /** Largest story file accepted from a URL (bytes). */
+  GAME_URL_MAX_BYTES: int('GAME_URL_MAX_BYTES', 16 * 1024 * 1024),
+  /** Time limit for fetching one story file (ms). */
+  GAME_URL_TIMEOUT_MS: int('GAME_URL_TIMEOUT_MS', 30_000),
+  /** Where downloaded story files are cached (by SHA-256); default: <os tmpdir>/grue-url-cache. */
+  GAME_URL_CACHE_DIR: str('GAME_URL_CACHE_DIR', ''),
+  /** How many downloaded story files to keep in the cache. */
+  GAME_URL_CACHE_FILES: int('GAME_URL_CACHE_FILES', 32),
+
   /** Directories. */
   GAMES_DIR: str('GAMES_DIR', path.join(ROOT, 'games')),
   REPLAYS_DIR: str('REPLAYS_DIR', path.join(ROOT, 'replays')),

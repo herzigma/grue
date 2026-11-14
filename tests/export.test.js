@@ -191,14 +191,14 @@ test('export: row mapping, derived columns and column order', () => {
     client_report: { ...REPORT, extra: 'ignored' },
   });
   assert.deepEqual(Object.keys(row), EXPORT_COLUMNS);
-  assert.equal(EXPORT_COLUMNS.length, 38);
+  assert.equal(EXPORT_COLUMNS.length, 41);
   assert.deepEqual(row, {
     session_id: 'sid', collection: 'c1', game_id: 'skerrin-light', started_at: 'a', ended_at: 'b', model: 'openrouter:z-ai/glm',
     provider: 'openrouter', effort: 'high', format: 'text', cache: false, history: 30, notes: true, max_tokens: 1024, temperature: 0.7,
     agent: 'brass-lantern/0.2.0', run_id: 'r1', bench: 'budget', repeat: 2, max_turns: 150, turns: 40, score: 25, max_score: 50,
     score_pct: 50, peak_score: 30, peak_pct: 60, ending: 'won', won: true, invalid_commands: 10, invalid_rate: 0.25, unique_locations: 9,
     input_tokens: 65890, output_tokens: 1062, cache_read_tokens: 0, cache_write_tokens: 0, cost_usd: 0.00712, cost_source: 'provider',
-    model_time_s: 19.88, parse_failures: 1,
+    model_time_s: 19.88, parse_failures: 1, unranked: false, game_url: null, game_sha256: null,
   });
 });
 
