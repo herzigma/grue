@@ -8,6 +8,7 @@
     "max_score": 10,
     "difficulty": "tutorial",
     "suggested_turn_limit": 80,
+    "par": 22,
     "tags": [
       "original"
     ],
@@ -23,6 +24,7 @@
     "max_score": 50,
     "difficulty": "medium",
     "suggested_turn_limit": 300,
+    "par": 76,
     "tags": [
       "original",
       "private"

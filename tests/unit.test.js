@@ -86,7 +86,7 @@ test('game library: manifest + auto-scan + original/ + availability', () => {
   for (const g of games) {
     assert.deepEqual(Object.keys(g).sort(), [
       'author', 'available', 'description', 'difficulty', 'filename', 'format', 'id', 'license',
-      'max_score', 'private', 'suggested_turn_limit', 'tags', 'title',
+      'max_score', 'par', 'private', 'suggested_turn_limit', 'tags', 'title',
     ]);
   }
 });

@@ -39,6 +39,7 @@ All three share the same sessions, replay logs, results, and metrics.
   "max_score": 350,
   "difficulty": "hard",
   "suggested_turn_limit": 600,
+  "par": null,
   "tags": ["classic", "memorization-risk"],
   "description": "The classic underground treasure hunt.",
   "license": "MIT",
@@ -50,6 +51,9 @@ All three share the same sessions, replay logs, results, and metrics.
 - `format`: `"glulx" | "zcode" | "tads" | "hugo" | "adrift" | "native" | "unknown"`.
 - `max_score`: integer or `null` if the game has no score.
 - `difficulty`: `"tutorial" | "easy" | "medium" | "hard"` or `null`.
+- `par`: the number of commands in a known full-score winning walkthrough, or `null`. Clients use it to rate how
+  efficiently a run won (Brass Lantern's efficiency = par / turns taken). It reveals only a count, so held-out
+  games may set it too.
 - `private`: true for a held-out game (manifest tag `private`, or a sealed file in `games/sealed/`). Its scores
   and export rows are public; its transcripts are not: `GET /api/results/:id/transcript` answers
   `403 private_game`, and its Results carry `"transcript": null, "transcript_private": true`.
