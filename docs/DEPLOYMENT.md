@@ -5,8 +5,8 @@ Grue runs on Railway in the project **grue**. There are two environments, built 
 
 | Environment | URL | Purpose | Deploys |
 |---|---|---|---|
-| `production` | https://grue.party (also `grue-production.up.railway.app`) | Public benchmark server | Manually, when a release is promoted |
-| `qa` | https://grue-qa.up.railway.app | Testing changes before release | Every push to `main` |
+| `production` | https://grue.party (also `grue-production.up.railway.app`) | Public benchmark server | Manually: Deploy Latest Commit (autodeploy off) |
+| `qa` | https://grue-qa.up.railway.app | Testing changes before release | Every push to `main` (after GitHub Actions pass, if any) |
 
 Each environment has:
 - Its own `GRUE_API_KEYS`. A key for one environment is rejected by the other.
@@ -40,10 +40,15 @@ QA works the same way with `GRUE_URL=https://grue-qa.up.railway.app` and a QA ke
 
 1. Push to `main` and let QA deploy it. Check QA's health, then play a game against it, for example:
    `GRUE_URL=https://grue-qa.up.railway.app python -m brass_lantern play --game lantern-lane --model mock:walkthrough.txt`.
-2. Promote that commit to production. Production is pinned to a commit, so promoting means moving the pin:
-   stage the new commit SHA as production's source (Railway dashboard: production, the grue service, Settings,
-   Source; or ask Claude, which stages it through the Railway connector), then in production click
-   **Apply changes / Deploy**. Pushes to `main` never touch production.
+2. Deploy `main`'s latest commit to production. Production tracks `main` with automatic deployments disabled,
+   so pushes to `main` never touch it. To release:
+   - **By hand:** in the Railway dashboard, switch to the `production` environment, open the grue service,
+     press Cmd+K (Ctrl+K on Windows) and choose **Deploy Latest Commit**.
+   - **Ask Claude** ("release to prod"): Claude deploys the latest commit of `main` to production through the
+     Railway connector, then checks that the deployment succeeded and `https://grue.party/health` answers.
+
+   This deploys whatever is newest on `main` at that moment. If something landed after you checked QA, check
+   QA again first. To roll back, open an earlier production deployment in Railway and choose **Rollback**.
 
 ## QA auto-deploy: one-time setup
 
@@ -52,7 +57,9 @@ Verified: a push to `main` deploys QA and leaves production alone.
 
 Railway only deploys on push when its GitHub App can see the repository. On GitHub, go to Settings, then
 Applications, then **Railway**, and under Repository access add `herzigma/grue`. Once that is done, check that
-in production the service's branch trigger is off (or production is pinned to a commit), so pushes deploy only QA.
+production's automatic deployments are disabled (production, the grue service, Settings, Source: **Disable**),
+so pushes deploy only QA. Production used to be pinned to a commit SHA instead; that pin was removed on
+2026-11-14.
 
 ## Gotchas found while setting this up
 
