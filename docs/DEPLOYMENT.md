@@ -14,6 +14,12 @@ Each environment has:
 - The same settings otherwise: `HOST=0.0.0.0`, `PORT=8081`, `RESULTS_DIR=/data/results`, `REPLAYS_DIR=/data/replays`,
   `MAX_SESSIONS=12`, health check `/health`, restart on failure.
 
+QA has Railway's **Serverless** setting on (since 2026-11-15): it sleeps after about 10 minutes without
+outbound traffic, so an idle QA costs nothing, and the first request wakes it in a second or two. An open
+dashboard tab keeps it awake, since the page polls results every 15 seconds. Production does not sleep.
+After changing Serverless, use **Deploy Latest Commit**: a plain redeploy of the existing build did not
+apply the setting.
+
 ## DNS (Cloudflare)
 
 `grue.party` is registered and served by Cloudflare. It has two records, both **DNS only** (grey cloud), so
